@@ -1,0 +1,26 @@
+Các class trong framework:
+- ```Building```:
+    - ```Floor```:
+        - ```Indicator```:
+            - ```neighbors```: ```List<Corridor>```, chứa các cạnh kề với đỉnh tương ứng.
+            - ```next```: ```Indicator```, là đỉnh tiếp theo đang chỉ dẫn tới.
+        - ```Corridor```:
+            - ```length```, ```capacity```, ```density```, ```trustiness```: ```double```, bốn thông số LCDT. 2 thông số đầu tiên là hằng số. ```density``` chỉ có thể chỉnh sửa nội bộ khi cập nhật người chạy trong tòa nhà. ```trustiness``` có thể cập nhật từ bên ngoài thông qua hàm ```setTrustiness()```.
+            - ```from```, ```to```: ```Indicator```, đỉnh xuất phát và đỉnh đi tới.
+        - ```stairs```: ```List<Indicator>```, chứa danh sách các Stair Node. Read-only.
+    - ```exits```: ```List<Indicator>```, chứa danh sách các Exit Node. Read-only.
+    - ```People```:
+        - ```speedMax```: ```double```, tốc độ tối đa. Có thể bị thay đổi do mức độ ```trustiness``` trên ```Corridor```. Read-only
+        - ```location```: ```Corridor```, là cạnh mà người này đang chạy trên. Bằng null nếu như người đã chạy thoát.
+        - ```completedPercentage```: ```double```, là phần trăm người này đã hoàn thành xong con đường ```location```.
+    - ```Building(string filepath)```: Hàm khởi tạo tòa nhà từ một file mô tả có đường dẫn là ```filepath```. Cần phải thống nhất về cấu trúc của file này. 
+    - ```void movePeople(double updatePeriod)```: Hàm cập nhật vị trí của mọi ```People``` và ```density``` của mọi ```Corridor``` trong tòa nhà sau khoảng thời gian ```updatePeriod```.
+- Interface ```Algorithm```: 
+    - ```void initialize(Building target)```: Gán thuật toán chạy trên tòa nhà ```target```. Việc xây dựng đồ thị ảo có thể thực hiện tại đây.
+    - ```void run()```: Chạy 1 lần thuật toán. Sẽ được chuyển cho tiến trình song song thực hiện.
+- ```Simulator```:
+    - ```Hazard```: Interface mô tả thảm họa
+        - ```void initialize(Building target)```: Gán thảm họa chạy trên tòa nhà ```target```. Khởi tạo tình trạng ban đầu của thảm họa.
+        - ```void update(double updatePeriod)```: Cập nhật tình hình thảm họa sau một khoảng thời gian ```updatePeriod```.
+    - ```Simulator(Building building, Algorithm algorithm, Hazard hazard)```: Hàm khởi tạo đối tượng Simulator, chạy giả lập trên một đối tượng tòa nhà cụ thể, với một đối tượng thuật toán cụ thể, và một thảm hoạ cụ thể.
+    - ```double runSimulator(double updatePeriod)```: Chạy giả lập với khoảng thời gian cập nhật ```updatePeriod```.
