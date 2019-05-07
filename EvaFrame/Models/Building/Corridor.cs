@@ -23,8 +23,8 @@ namespace EvaFrame.Models.Building
 
         private double density;
         /// <value>
-        /// Mật độ người đi qua trên hành lang. Throw ArgumentOutOfRangeException nếu như 
-        /// gán giá trị bằng một số âm.
+        /// Mật độ người đi qua trên hành lang. Throw <c>ArgumentOutOfRangeException</c> nếu như 
+        /// được gán giá trị bằng một số âm.
         /// </value>
         public double Density
         {
@@ -40,8 +40,8 @@ namespace EvaFrame.Models.Building
 
         private double trustiness;
         /// <value>
-        /// Giá trị độ tin tưởng của hành lang. Throw ArgumentOutOfRangeException nếu như 
-        /// gán giá trị bằng một số ngoài khoảng [0, 1].
+        /// Giá trị độ tin tưởng của hành lang. Throw <c>ArgumentOutOfRangeException</c> nếu như 
+        /// được gán giá trị bằng một số ngoài khoảng [0, 1].
         /// </value>
         public double Trustiness
         {
