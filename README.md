@@ -23,4 +23,4 @@ Các class trong framework:
         - ```void initialize(Building target)```: Gán thảm họa chạy trên tòa nhà ```target```. Khởi tạo tình trạng ban đầu của thảm họa.
         - ```void update(double updatePeriod)```: Cập nhật tình hình thảm họa sau một khoảng thời gian ```updatePeriod```.
     - ```Simulator(Building building, Algorithm algorithm, Hazard hazard)```: Hàm khởi tạo đối tượng Simulator, chạy giả lập trên một đối tượng tòa nhà cụ thể, với một đối tượng thuật toán cụ thể, và một thảm hoạ cụ thể.
-    - ```double runSimulator(double updatePeriod)```: Chạy giả lập với khoảng thời gian cập nhật ```updatePeriod```.
+    - ```double runSimulator(double hazardUpdatePeriod, double algorithmUpdatePeriod)```: Chạy giả lập với khoảng thời gian cập nhật tình trạng thảm họa là ```hazardUpdatePeriod``` và khoảng thời gian giữa hai lần chạy lại thuật toán là ```algorithmUpdatePeriod```.

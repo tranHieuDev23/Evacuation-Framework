@@ -16,7 +16,7 @@ namespace EvaFrame.Models.Building
 
         public Building(string filepath) {}
 
-        public void movePeople(double updatePeriod)
+        public void MovePeople(double updatePeriod)
         {
             
         }
