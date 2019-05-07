@@ -1,0 +1,11 @@
+/mnt/F/Homework/Evacuation Framework/bin/Debug/netcoreapp2.2/Evacuation Framework.deps.json
+/mnt/F/Homework/Evacuation Framework/bin/Debug/netcoreapp2.2/Evacuation Framework.runtimeconfig.json
+/mnt/F/Homework/Evacuation Framework/bin/Debug/netcoreapp2.2/Evacuation Framework.runtimeconfig.dev.json
+/mnt/F/Homework/Evacuation Framework/bin/Debug/netcoreapp2.2/Evacuation Framework.dll
+/mnt/F/Homework/Evacuation Framework/bin/Debug/netcoreapp2.2/Evacuation Framework.pdb
+/mnt/F/Homework/Evacuation Framework/obj/Debug/netcoreapp2.2/Evacuation Framework.csprojAssemblyReference.cache
+/mnt/F/Homework/Evacuation Framework/obj/Debug/netcoreapp2.2/Evacuation Framework.csproj.CoreCompileInputs.cache
+/mnt/F/Homework/Evacuation Framework/obj/Debug/netcoreapp2.2/Evacuation Framework.AssemblyInfoInputs.cache
+/mnt/F/Homework/Evacuation Framework/obj/Debug/netcoreapp2.2/Evacuation Framework.AssemblyInfo.cs
+/mnt/F/Homework/Evacuation Framework/obj/Debug/netcoreapp2.2/Evacuation Framework.dll
+/mnt/F/Homework/Evacuation Framework/obj/Debug/netcoreapp2.2/Evacuation Framework.pdb
