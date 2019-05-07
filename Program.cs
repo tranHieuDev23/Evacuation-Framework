@@ -33,7 +33,7 @@ class Program
 
     public static void Main(string[] args)
     {
-        Simulator simulator = new Simulator(null, new MyAlgorithm(), new MyHazard());
+        Simulator simulator = new Simulator(Building.LoadFromFile(null), new MyAlgorithm(), new MyHazard());
         double result = simulator.RunSimulator(0.2, 0.2);
         Console.Write(result);
     }
