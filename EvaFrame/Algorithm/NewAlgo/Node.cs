@@ -9,17 +9,17 @@ namespace EvaFrame.Algorithm.NewAlgo
     /// </summary>
     class Node
     {
-        internal List<Edge> adjacences;
+        internal struct adjacentEdge
+        {
+            Edge edge;
+            double passingWeight;
+        }
+
         /// <summary>
         /// Danh sách các cạnh kề 
         /// </summary>
         /// <value></value>
-        public List<Edge> Adjacences
-        {
-            get {
-                return adjacences; 
-            }
-        }
+        internal List<adjacentEdge> adjacences;
 
         internal Edge next;
         /// <summary>
@@ -37,12 +37,9 @@ namespace EvaFrame.Algorithm.NewAlgo
         }
 
         
-        internal Node reaching;
-        
         public Node()
         {
-            adjacences = new List<Edge>();
-            next = null;
+            
         }
     }
 }
