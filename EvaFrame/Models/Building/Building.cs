@@ -44,7 +44,7 @@ namespace EvaFrame.Models.Building
 
         /// <summary>
         /// Cập nhật sự di chuyển của cư dân trong tòa nhà sau một khoảng thời gian. Nếu cư dân di 
-        /// chuyển ra khỏi tòa nhà, đối tượng tương ứng sẽ được loại bỏ ra khỏi danh sách 
+        /// chuyển ra khỏi tòa nhà, đối tượng tương ứng sẽ được loại bỏ ra khỏi danh sách.
         /// <c>Inhabitants</c>.
         /// </summary>
         /// <param name="updatePeriod">Khoảng thời gian di chuyển.</param>
@@ -65,15 +65,19 @@ namespace EvaFrame.Models.Building
                         p.CompletedPercentage = 1.0 - distanceLeft / position.Length;
                         break;
                     }
-                    // Nếu như người này kịp di chuyển khỏi hành lang, và tới được Exit Node.
+                    // Nếu như người này kịp di chuyển khỏi hành lang
+                    position.Density --;
+
+                    // Nếu như người này tới được Exit Node.
                     if (exits.Contains(position.To))
                     {
                         inhabitants.Remove(p);
                         break;
                     }
-                    // Trường hợp còn lại: Người này kịp di chuyển khỏi hành lang, nhưng vẫn chưa ra tới Exit Node.
+                    // Nếu như người này vẫn chưa ra tới Exit Node.
                     remainingTime -= distanceLeft / speed;
                     p.Location = position.To.Next;
+                    p.Location.Density ++;
                     p.CompletedPercentage = 0;
                 }
             }

@@ -28,7 +28,7 @@ namespace EvaFrame.Simulator
         /// <summary>
         /// Chạy mô phỏng thuật toán cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
         /// </summary>
-        /// <param name="situationUpdatePerioditua">
+        /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân.
         /// </param>
         /// <param name="algorithmUpdatePeriod">

@@ -17,9 +17,12 @@ namespace EvaFrame.Models.Building
         /// <value>Độ dài của hành lang. Giá trị read-only</value>
         public double Length { get { return length; } }
 
-        private double capacity;
+        private double width;
+        /// <value>Độ rộng của hành lang. Giá trị read-only.</value>
+        public double Width { get { return width; } }
+
         /// <value>Khả năng thông qua của hành lang. Giá trị read-only.</value>
-        public double Capacity { get { return capacity; } }
+        public double Capacity { get { return length * width; } }
 
         private double density;
         /// <value>
@@ -61,15 +64,15 @@ namespace EvaFrame.Models.Building
         /// <param name="from"><c>Indicator</c> xuất phát.</param>
         /// <param name="to"><c>Indicator</c> kết thúc.</param>
         /// <param name="length">Độ dài của hành lang.</param>
-        /// <param name="capacity">Khả năng thông qua của hành lang.</param>
+        /// <param name="width">Độ rộng của hành lang.</param>
         /// <param name="density">Mật độ người đi qua ban đầu. Giá trị mặc định bằng 0 (không có ai đi qua).</param>
         /// <param name="trustiness">Độ tin tưởng của con đường ban đầu. Giá trị mặc định bằng 1 (con đường hoàn toàn không bị ảnh hưởng bởi thảm họa).</param>
-        public Corridor(Indicator from, Indicator to, double length, double capacity, double density = 0, double trustiness = 1)
+        public Corridor(Indicator from, Indicator to, double length, double width, double density = 0, double trustiness = 1)
         {
             this.from = from;
             this.to = to;
             this.length = length;
-            this.capacity = capacity;
+            this.width = width;
             this.density = density;
             this.trustiness = trustiness;
         }
