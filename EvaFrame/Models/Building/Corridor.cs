@@ -5,7 +5,7 @@ namespace EvaFrame.Models.Building
     /// <summary>
     /// Class <c>Corridor</c> mô tả hành lang kết nối giữa hai <c>Indicator</c> trong tòa nhà.
     /// </summary>
-    class Corridor
+    public class Corridor
     {
         private Indicator from, to;
         /// <value><c>Indicator</c> xuất phát của hành lang. Giá trị read-only.</value>

@@ -6,7 +6,7 @@ namespace EvaFrame.Models.Building
     /// <summary>
     /// Class mô tả đèn báo chỉ đường thoát hiểm thông minh trong tòa nhà.
     /// </summary>
-    class Indicator
+    public class Indicator
     {
         private List<Corridor> neighbors;
         /// <value>
