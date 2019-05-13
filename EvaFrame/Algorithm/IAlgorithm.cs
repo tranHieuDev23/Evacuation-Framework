@@ -13,7 +13,7 @@ namespace EvaFrame.Algorithm
         /// thuật toán LCDT-GV) hoặc để trống nếu không cần thiết (VD: thuật toán Dijikstra bình thường).
         /// </summary>
         /// <param name="target">Tòa nhà mục tiêu.</param>
-        void Intialize(Building target);
+        void Initialize(Building target);
 
         /// <summary>
         /// Chạy một lần thuật toán trên tòa nhà đã khởi tạo. Hàm này được gọi sau khi đã gọi hàm 

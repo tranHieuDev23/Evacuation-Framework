@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +10,7 @@ namespace EvaFrame.Models.Building
     /// Class mô tả tòa nhà trong mô hình LCDT. Các thuật toán sẽ thực hiện tính toán trên đối tượng
     /// thuộc class này.
     /// </summary>
-    class Building
+    public class Building
     {
         private List<Floor> floors;
         /// <value>Danh sách các tầng của tòa nhà. Giá trị read-only.</value>
@@ -23,6 +24,13 @@ namespace EvaFrame.Models.Building
         /// <value>Danh sách cư dân còn lại trong tòa nhà. Giá trị read-only.</value>
         public ReadOnlyCollection<Person> Inhabitants { get { return inhabitants.AsReadOnly(); } }
 
+        private Building()
+        {
+            floors = new List<Floor>();
+            exits = new List<Indicator>();
+            inhabitants = new List<Person>();
+        }
+
         /// <summary>
         /// Xây dựng một đối tượng <c>Building</c> từ file.
         /// </summary>
@@ -30,21 +38,27 @@ namespace EvaFrame.Models.Building
         /// <returns>Đối tượng được xây dựng.</returns>
         public static Building LoadFromFile(string filepath)
         {
-            return null;
-        }
-
-        /// <summary>
-        /// Lưu thông tin của đối tượng hiện tại lên file.
-        /// </summary>
-        /// <param name="filepath">Đường dẫn tới file.</param>
-        public static void SaveToFile(string filepath)
-        {
-
+            try
+            {
+                Building result = new Building();
+                using (StreamReader sr = new StreamReader(filepath))
+                {
+                    int numFloor = Int32.Parse(sr.ReadLine());
+                    for (int floorId = 0; floorId < numFloor; floorId++)
+                        LoadFloor(sr, result, floorId);
+                    LoadPeople(sr, result);
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Exception occurred while reading file!", e);
+            }
         }
 
         /// <summary>
         /// Cập nhật sự di chuyển của cư dân trong tòa nhà sau một khoảng thời gian. Nếu cư dân di 
-        /// chuyển ra khỏi tòa nhà, đối tượng tương ứng sẽ được loại bỏ ra khỏi danh sách 
+        /// chuyển ra khỏi tòa nhà, đối tượng tương ứng sẽ được loại bỏ ra khỏi danh sách.
         /// <c>Inhabitants</c>.
         /// </summary>
         /// <param name="updatePeriod">Khoảng thời gian di chuyển.</param>
@@ -52,44 +66,90 @@ namespace EvaFrame.Models.Building
         {
             foreach (Person p in inhabitants)
             {
-                double remainingTime = updatePeriod;
-                while (true)
-                {
-                    Corridor position = p.Location;
-                    double distanceLeft = position.Length * (1 - p.CompletedPercentage);
-                    double speed = calculateSpeed(p, position);
-                    // Nếu như người này không kịp di chuyển khỏi hành lang trong khoảng thời gian còn lại.
-                    if (speed * remainingTime < distanceLeft) 
-                    {
-                        distanceLeft -= speed * remainingTime;
-                        p.CompletedPercentage = 1.0 - distanceLeft / position.Length;
-                        break;
-                    }
-                    // Nếu như người này kịp di chuyển khỏi hành lang, và tới được Exit Node.
-                    if (exits.Contains(position.To))
-                    {
-                        inhabitants.Remove(p);
-                        break;
-                    }
-                    // Trường hợp còn lại: Người này kịp di chuyển khỏi hành lang, nhưng vẫn chưa ra tới Exit Node.
-                    remainingTime -= distanceLeft / speed;
-                    p.Location = position.To.Next;
-                    p.CompletedPercentage = 0;
-                }
+                if (p.evacuate(updatePeriod))
+                    inhabitants.Remove(p);
             }
         }
 
-        /// <summary>
-        /// Tính toán tốc độ di chuyển của cư dân trên một hành lang cụ thể, phụ thuộc vào mật độ người và
-        /// tình trang của hành lang đó.
-        /// </summary>
-        /// <param name="person">Cư dân cần tính toán</param>
-        /// <param name="corridor">Hành lang đang di chuyển</param>
-        /// <returns></returns>
-        private double calculateSpeed(Person person, Corridor corridor)
+        private static void LoadFloor(StreamReader sr, Building target, int floorId)
         {
-            return corridor.Trustiness * person.SpeedMax
-                * ((corridor.Capacity - corridor.Density + 1) / corridor.Capacity);
+            List<Indicator> indicatorList = new List<Indicator>();
+            int numInd = Int32.Parse(sr.ReadLine());
+            sr.ReadLine(); // TODO: This line contains the coordinates of the Indicators, and can be used in graphic representation
+            for (int i = 0; i < numInd; i++)
+                indicatorList.Add(new Indicator());
+
+            int numCor = Int32.Parse(sr.ReadLine());
+            string[] corridorData = sr.ReadLine().Split(',');
+            foreach (string data in corridorData)
+            {
+                string[] values = data.Split(';');
+                int fromId = Int32.Parse(values[0]);
+                Indicator from = indicatorList[fromId - 1];
+                int toId = Int32.Parse(values[1]);
+                Indicator to = indicatorList[toId - 1];
+                double length = Double.Parse(values[2]);
+                double width = Double.Parse(values[2]);
+                double trustiness = Double.Parse(values[2]);
+
+                from.Neighbors.Add(new Corridor(from, to, length, width, 0, trustiness));
+            }
+
+            List<Indicator> stairList = new List<Indicator>();
+            int numStair = Int32.Parse(sr.ReadLine());
+            string[] stairNodeIds = sr.ReadLine().Split(',');
+            foreach (string idString in stairNodeIds)
+            {
+                int id = Int32.Parse(idString) - 1;
+                indicatorList[id].IsStairNode = true;
+                stairList.Add(indicatorList[id]);
+            }
+
+            if (floorId == 0)
+            {
+                int numExit = Int32.Parse(sr.ReadLine());
+                string[] exitNodeIds = sr.ReadLine().Split(',');
+                foreach (string idString in exitNodeIds)
+                {
+                    int id = Int32.Parse(idString) - 1;
+                    indicatorList[id].IsExitNode = true;
+                    target.exits.Add(indicatorList[id]);
+                }
+            }
+            else
+            {
+                int numStairCor = Int32.Parse(sr.ReadLine());
+                string[] stairData = sr.ReadLine().Split(',');
+                foreach (string data in stairData)
+                {
+                    string[] values = data.Split(';');
+                    int fromId = Int32.Parse(values[0]);
+                    Indicator from = indicatorList[fromId - 1];
+                    int toId = Int32.Parse(values[1]);
+                    Indicator to = target.floors[floorId - 1].Indicators[toId - 1];
+                    double length = Double.Parse(values[2]);
+                    double width = Double.Parse(values[2]);
+                    double trustiness = Double.Parse(values[2]);
+
+                    from.Neighbors.Add(new Corridor(from, to, length, width, 0, trustiness));
+                }
+            }
+            target.floors.Add(new Floor(indicatorList, stairList));
+        }
+
+        private static void LoadPeople(StreamReader sr, Building target)
+        {
+            int numPeople = Int32.Parse(sr.ReadLine());
+            for (int i = 0; i < numPeople; i ++)
+            {
+                string[] peopleData = sr.ReadLine().Split(';');
+                int floorId = Int32.Parse(peopleData[0]);
+                double speedMax = Double.Parse(peopleData[1]);
+                int followingId = Int32.Parse(peopleData[4]);
+                Indicator following = target.floors[floorId - 1].Indicators[followingId - 1];
+
+                target.inhabitants.Add(new Person(speedMax, following));
+            }
         }
     }
 }

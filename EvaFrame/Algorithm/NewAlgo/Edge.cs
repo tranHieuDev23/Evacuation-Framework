@@ -1,35 +1,38 @@
 using System;
 using System.Collections.Generic;
+using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.NewAlgo
 {
-    class Edge
+    public class Edge
     {
-        internal List<Edge> inComing;
-        internal Node from;
+        /// <summary>
+        /// <c>Corridor</c> trong <c>building</c> tương ứng với 
+        /// <c>Edge</c>, dùng trong quá trình trao đổi thông tin 
+        /// giữa <c>Graph</c> và <c>Building</c>.
+        /// </summary>
+        public Corridor corridor;
 
-        internal Node to;
+        public Node to;
 
-        internal Node reaching;
+        public double lenght;
 
-        internal double lenght;
+        public double width;
 
-        internal double width;
+        public double trustNess;
 
-        internal double trustNess;
+        public double density;
 
-        internal double density;
+        /// <summary>
+        /// Số người hiện tại đang ở cạnh
+        /// </summary>
+        public int numberPeople;
 
-        internal int numberPeople;
+        public double weight;
 
-        internal double weight;
+        public Edge(){
 
-        internal double constW1;
+        }
 
-        internal double constW2;
-
-        internal double trivialW1;
-
-        internal double trivialW2;
     }
 }

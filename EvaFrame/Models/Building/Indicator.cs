@@ -6,7 +6,7 @@ namespace EvaFrame.Models.Building
     /// <summary>
     /// Class mô tả đèn báo chỉ đường thoát hiểm thông minh trong tòa nhà.
     /// </summary>
-    class Indicator
+    public class Indicator
     {
         private List<Corridor> neighbors;
         /// <value>
@@ -31,6 +31,26 @@ namespace EvaFrame.Models.Building
                     throw new InvalidOperationException("Corridor not found in neighbors.");
                 next = value;
             }
+        }
+
+        private bool isStairNode;
+        /// <value>
+        /// Trả về true nếu như <c>Indicator</c> này là một Stair Node.
+        /// </value>
+        public bool IsStairNode
+        {
+            get { return isStairNode; }
+            set { isStairNode = value; }
+        }
+
+        private bool isExitNode;
+        /// <value>
+        /// Trả về true nếu như <c>Indicator</c> này là một Stair Node.
+        /// </value>
+        public bool IsExitNode
+        {
+            get { return isExitNode; }
+            set { isExitNode = value; }
         }
 
         /// <summary>
