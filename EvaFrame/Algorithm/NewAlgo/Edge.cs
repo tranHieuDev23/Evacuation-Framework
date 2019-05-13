@@ -4,7 +4,7 @@ using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.NewAlgo
 {
-    class Edge
+    public class Edge
     {
         /// <summary>
         /// <c>Corridor</c> trong <c>building</c> tương ứng với 

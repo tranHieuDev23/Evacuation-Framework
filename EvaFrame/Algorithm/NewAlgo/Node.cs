@@ -8,7 +8,7 @@ namespace EvaFrame.Algorithm.NewAlgo
     /// Class thu gọn của Indicator với mục đích chỉ dành cho
     /// thực hiện thuật toán
     /// </summary>
-    class Node
+    public class Node
     {
         /// <summary>
         /// cấu trúc lưu thông tin các đỉnh và cạnh gần kề 
