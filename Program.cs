@@ -33,8 +33,9 @@ class Program
 
     public static void Main(string[] args)
     {
-        Simulator simulator = new Simulator(Building.LoadFromFile(null), new MyAlgorithm(), new MyHazard());
-        double result = simulator.RunSimulator(0.2, 10);
-        Console.Write(result);
+        Building building = Building.LoadFromFile("data.bld");
+        Console.WriteLine(building.Floors.Count);
+        Console.WriteLine(building.Exits.Count);
+        Console.WriteLine(building.Inhabitants.Count);
     }
 }

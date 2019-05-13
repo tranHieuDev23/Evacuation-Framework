@@ -29,6 +29,8 @@ namespace EvaFrame.Models.Building
         {
             this.indicators = indicators;
             this.stairs = stairs;
+            foreach (Indicator i in stairs)
+                i.IsStairNode = true;
         }
     }
 }

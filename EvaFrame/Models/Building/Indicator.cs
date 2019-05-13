@@ -33,6 +33,26 @@ namespace EvaFrame.Models.Building
             }
         }
 
+        private bool isStairNode;
+        /// <value>
+        /// Trả về true nếu như <c>Indicator</c> này là một Stair Node.
+        /// </value>
+        public bool IsStairNode
+        {
+            get { return isStairNode; }
+            set { isStairNode = value; }
+        }
+
+        private bool isExitNode;
+        /// <value>
+        /// Trả về true nếu như <c>Indicator</c> này là một Stair Node.
+        /// </value>
+        public bool IsExitNode
+        {
+            get { return isExitNode; }
+            set { isExitNode = value; }
+        }
+
         /// <summary>
         /// Khởi tạo một đối tượng đèn báo không có hành lang nào kế cận, và không chỉ tới đâu cả.
         /// </summary>
