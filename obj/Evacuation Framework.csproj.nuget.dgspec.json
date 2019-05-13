@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "/mnt/F/Homework/Evacuation Framework/Evacuation Framework.csproj": {}
+    "/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/Evacuation Framework.csproj": {}
   },
   "projects": {
-    "/mnt/F/Homework/Evacuation Framework/Evacuation Framework.csproj": {
+    "/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/Evacuation Framework.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/mnt/F/Homework/Evacuation Framework/Evacuation Framework.csproj",
+        "projectUniqueName": "/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/Evacuation Framework.csproj",
         "projectName": "Evacuation Framework",
-        "projectPath": "/mnt/F/Homework/Evacuation Framework/Evacuation Framework.csproj",
-        "packagesPath": "/home/tranhieudev23/.nuget/packages/",
-        "outputPath": "/mnt/F/Homework/Evacuation Framework/obj/",
+        "projectPath": "/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/Evacuation Framework.csproj",
+        "packagesPath": "/home/kiritsugu/.nuget/packages/",
+        "outputPath": "/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/home/tranhieudev23/.nuget/NuGet/NuGet.Config"
+          "/home/kiritsugu/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"

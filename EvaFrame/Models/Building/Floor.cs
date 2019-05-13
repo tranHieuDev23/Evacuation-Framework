@@ -6,7 +6,7 @@ namespace EvaFrame.Models.Building
     /// <summary>
     /// Class mô tả một tầng trong mô hình LCDT.
     /// </summary>
-    class Floor
+    public class Floor
     {
         List<Indicator> indicators, stairs;
 
