@@ -7,7 +7,7 @@ class Program
 {
     class MyAlgorithm : IAlgorithm
     {
-        void IAlgorithm.Intialize(Building target)
+        void IAlgorithm.Initialize(Building target)
         {
 
         }
@@ -35,6 +35,6 @@ class Program
     {
         Building building = Building.LoadFromFile("data.bld");
         Simulator simulator = new Simulator(building, new MyAlgorithm(), new MyHazard());
-        simulator.RunSimulator(2000, 10000);
+        double result = simulator.RunSimulator(2000, 10000);
     }
 }

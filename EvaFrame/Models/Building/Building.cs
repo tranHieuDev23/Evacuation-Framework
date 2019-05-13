@@ -10,7 +10,7 @@ namespace EvaFrame.Models.Building
     /// Class mô tả tòa nhà trong mô hình LCDT. Các thuật toán sẽ thực hiện tính toán trên đối tượng
     /// thuộc class này.
     /// </summary>
-    class Building
+    public class Building
     {
         private List<Floor> floors;
         /// <value>Danh sách các tầng của tòa nhà. Giá trị read-only.</value>

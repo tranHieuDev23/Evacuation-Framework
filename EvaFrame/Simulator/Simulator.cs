@@ -41,7 +41,7 @@ namespace EvaFrame.Simulator
         public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod)
         {
             hazard.Intialize(target);
-            algorithm.Intialize(target);
+            algorithm.Initialize(target);
 
             DateTime simulationStart = DateTime.Now, 
                 lastSituationUpdate, lastAlgorithmRun, simulationLast;
