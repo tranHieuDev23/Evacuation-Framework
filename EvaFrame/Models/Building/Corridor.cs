@@ -67,15 +67,7 @@ namespace EvaFrame.Models.Building
         /// <param name="width">Độ rộng của hành lang.</param>
         /// <param name="density">Mật độ người đi qua ban đầu. Giá trị mặc định bằng 0 (không có ai đi qua).</param>
         /// <param name="trustiness">Độ tin tưởng của con đường ban đầu. Giá trị mặc định bằng 1 (con đường hoàn toàn không bị ảnh hưởng bởi thảm họa).</param>
-<<<<<<< HEAD
         public Corridor(Indicator from, Indicator to, double length, double width, double density = 0, double trustiness = 1)
-=======
-        public Corridor(Indicator from, Indicator to, 
-                        double length, 
-                        double capacity,     
-                        double density = 0, 
-                        double trustiness = 1)
->>>>>>> 703b8f6734354fd1a12b046ddf3b1faf9d3f5488
         {
             this.from = from;
             this.to = to;
