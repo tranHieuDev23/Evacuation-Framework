@@ -1,10 +1,40 @@
-﻿using EvaFrame.Models.Building;
+﻿using EvaFrame.Simulator;
+using EvaFrame.Models.Building;
+using EvaFrame.Algorithm;
 using System;
 
-class Program {
-    public static void Main(string[] args) {
-        Corridor c = new Corridor(null, null, 0, 0);
-        
-        
+class Program
+{
+    class MyAlgorithm : IAlgorithm
+    {
+        void IAlgorithm.Intialize(Building target)
+        {
+
+        }
+
+        void IAlgorithm.Run()
+        {
+
+        }
+    }
+
+    class MyHazard: IHazard
+    {
+        void IHazard.Intialize(Building target)
+        {
+
+        }
+
+        void IHazard.Update(double updatePeriod)
+        {
+
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        Simulator simulator = new Simulator(Building.LoadFromFile(null), new MyAlgorithm(), new MyHazard());
+        double result = simulator.RunSimulator(0.2, 10);
+        Console.Write(result);
     }
 }
