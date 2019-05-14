@@ -4,33 +4,40 @@ using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.NewAlgo
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Edge
     {
-        /// <summary>
+        private Corridor correspondingCorridor;
+        /// <value>
         /// <c>Corridor</c> trong <c>building</c> tương ứng với 
         /// <c>Edge</c>, dùng trong quá trình trao đổi thông tin 
         /// giữa <c>Graph</c> và <c>Building</c>.
-        /// </summary>
-        public Corridor corridor;
+        /// </value>
+        public Corridor CorrespondingCorridor { get { return correspondingCorridor; } }
 
-        public Node to;
-
-        public double lenght;
-
-        public double width;
-
-        public double trustNess;
-
-        public double density;
+        private Node to;
+        /// <value>
+        /// 
+        /// </value>
+        public Node To { get { return to; } }
 
         /// <summary>
         /// Số người hiện tại đang ở cạnh
         /// </summary>
         public int numberPeople;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public double weight;
 
-        public Edge(){
+        /// <summary>
+        /// 
+        /// </summary>
+        public Edge()
+        {
 
         }
 
