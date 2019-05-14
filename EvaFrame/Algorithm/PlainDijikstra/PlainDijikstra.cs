@@ -56,6 +56,7 @@ namespace EvaFrame.Algorithm.PlainDijikstra
             if (target == null || done)
                 return;
             done = true;
+            Console.WriteLine("Algorithm start running!");
 
             // Các cấu trúc dữ liệu cần thiết cho thuật toán Dijikstra
             MinHeap<Data> heap = new MinHeap<Data>();
@@ -93,11 +94,13 @@ namespace EvaFrame.Algorithm.PlainDijikstra
                     if (wv <= wu + c.Length)
                         continue;
                     wv = wu + c.Length;
-                    v.Next = c;
+                    v.Next = v.Neighbors.Find(cor => cor.To == u);
                     weightToExit[v] = wv;
                     heap.Push(new Data(v, wv));
                 }
             }
+
+            Console.WriteLine("Algorithm finished running!");
         }
     }
 }

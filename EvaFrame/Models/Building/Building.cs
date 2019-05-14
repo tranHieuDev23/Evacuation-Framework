@@ -64,10 +64,14 @@ namespace EvaFrame.Models.Building
         /// <param name="updatePeriod">Khoảng thời gian di chuyển.</param>
         public void MoveInhabitants(double updatePeriod)
         {
-            foreach (Person p in inhabitants)
+            for (int i = 0; i < inhabitants.Count; i ++)
             {
-                if (p.evacuate(updatePeriod))
-                    inhabitants.Remove(p);
+                Person p = inhabitants[i];
+                if (p.Evacuate(updatePeriod))
+                {
+                    inhabitants.RemoveAt(i);
+                    i --;
+                }
             }
         }
 
@@ -88,9 +92,9 @@ namespace EvaFrame.Models.Building
                 Indicator from = indicatorList[fromId - 1];
                 int toId = Int32.Parse(values[1]);
                 Indicator to = indicatorList[toId - 1];
-                double length = Double.Parse(values[2]);
-                double width = Double.Parse(values[2]);
-                double trustiness = Double.Parse(values[2]);
+                double length = Double.Parse(values[2]) / 10;
+                double width = Double.Parse(values[3]);
+                double trustiness = Double.Parse(values[4]);
 
                 from.Neighbors.Add(new Corridor(from, to, length, width, 0, trustiness));
             }
@@ -127,11 +131,12 @@ namespace EvaFrame.Models.Building
                     Indicator from = indicatorList[fromId - 1];
                     int toId = Int32.Parse(values[1]);
                     Indicator to = target.floors[floorId - 1].Indicators[toId - 1];
-                    double length = Double.Parse(values[2]);
-                    double width = Double.Parse(values[2]);
-                    double trustiness = Double.Parse(values[2]);
+                    double length = Double.Parse(values[2]) / 10;
+                    double width = Double.Parse(values[3]);
+                    double trustiness = Double.Parse(values[4]);
 
                     from.Neighbors.Add(new Corridor(from, to, length, width, 0, trustiness));
+                    to.Neighbors.Add(new Corridor(to, from, length, width, 0, trustiness));
                 }
             }
             target.floors.Add(new Floor(indicatorList, stairList));

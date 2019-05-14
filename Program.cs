@@ -20,7 +20,7 @@ class Program
 
     public static void Main(string[] args)
     {
-        Building building = Building.LoadFromFile("data.bld");
+        Building building = Building.LoadFromFile("data_prime.bld");
         Simulator simulator = new Simulator(building, new PlainDijikstra(), new MyHazard());
         double result = simulator.RunSimulator(2000, 10000);
     }

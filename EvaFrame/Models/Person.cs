@@ -64,10 +64,11 @@ namespace EvaFrame.Models
         /// </summary>
         /// <param name="corridor">Hành lang đang di chuyển</param>
         /// <returns></returns>
-        public double calculateActualSpeed(Corridor corridor)
+        public double CalculateActualSpeed(Corridor corridor)
         {
-            return corridor.Trustiness * speedMax
+            double result = corridor.Trustiness * speedMax
                 * ((corridor.Capacity - corridor.Density + 1) / corridor.Capacity);
+            return (result > 0? result : 0);
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace EvaFrame.Models
         /// <returns>
         /// Trả về <c>true</c> nếu như người này di chuyển tới được một Exit Node trong khoảng thời gian đã cho.
         /// </returns>
-        public bool evacuate(double updatePeriod)
+        public bool Evacuate(double updatePeriod)
         {
             // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c> nào cả.
             if (location == null)
@@ -87,6 +88,7 @@ namespace EvaFrame.Models
                 if (following.Next == null)
                     return false;
                 location = following.Next;
+                location.Density ++;
                 completedPercentage = 0;
             }
 
@@ -94,7 +96,7 @@ namespace EvaFrame.Models
             while (true)
             {
                 double distanceLeft = location.Length * (1 - completedPercentage);
-                double speed = calculateActualSpeed(location);
+                double speed = CalculateActualSpeed(location);
                 // Nếu như người này không kịp di chuyển khỏi hành lang trong khoảng thời gian còn lại.
                 if (speed * remainingTime < distanceLeft)
                 {
