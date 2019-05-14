@@ -5,7 +5,7 @@ namespace EvaFrame.Models
     /// <summary>
     /// Class mô tả cư dân trong tòa nhà.
     /// </summary>
-    class Person
+    public class Person
     {
         private double speedMax;
         /// <value>

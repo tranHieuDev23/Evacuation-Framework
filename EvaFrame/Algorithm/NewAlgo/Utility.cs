@@ -31,6 +31,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         public Node FindCrossNode(Node from, Edge passing)
         {
             /*Implement code in here */
+            return null;
         }
 
         /// <summary>
@@ -45,6 +46,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
+            return 0;
         }
         
         /// <summary>

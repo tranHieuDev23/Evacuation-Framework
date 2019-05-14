@@ -39,7 +39,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <summary>
         /// Danh sách các cạnh kề 
         /// </summary>
-        /// <value></value>
         public List<Adjacences> adjacences;
 
         /// <summary>
@@ -84,6 +83,9 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         public Indicator indicator;
         
+        /// <summary>
+        /// 
+        /// </summary>
         public Node()
         {
             
