@@ -4,6 +4,9 @@ using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.NewAlgo
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Edge
     {
         private Corridor correspondingCorridor;

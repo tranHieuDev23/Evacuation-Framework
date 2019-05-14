@@ -1,23 +1,10 @@
 ﻿using EvaFrame.Simulator;
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm;
+using EvaFrame.Algorithm.PlainDijikstra;
 using System;
 
 class Program
 {
-    class MyAlgorithm : IAlgorithm
-    {
-        void IAlgorithm.Initialize(Building target)
-        {
-
-        }
-
-        void IAlgorithm.Run()
-        {
-
-        }
-    }
-
     class MyHazard: IHazard
     {
         void IHazard.Intialize(Building target)
@@ -34,7 +21,7 @@ class Program
     public static void Main(string[] args)
     {
         Building building = Building.LoadFromFile("data.bld");
-        Simulator simulator = new Simulator(building, new MyAlgorithm(), new MyHazard());
+        Simulator simulator = new Simulator(building, new PlainDijikstra(), new MyHazard());
         double result = simulator.RunSimulator(2000, 10000);
     }
 }
