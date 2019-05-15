@@ -29,7 +29,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Chỉ số ảnh hưởng</returns>
         private double ContextFunction(double trustness, double density)
         {
-
+            return 0;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Giá trị trọng số của đoạn đường</returns>
         private double GetWeight(Edge edge, int numberPeople)
         {
-            
+            return 0;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Giá trị mật độ người trên con đường</returns>
         private double GetDensity(Edge edge, int numberPeople)
         {
-
+            return 0;
         }
 
         /// <summary>
