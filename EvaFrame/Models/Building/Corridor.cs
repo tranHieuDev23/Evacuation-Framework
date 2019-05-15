@@ -22,7 +22,7 @@ namespace EvaFrame.Models.Building
         public double Width { get { return width; } }
 
         /// <value>Khả năng thông qua của hành lang. Giá trị read-only.</value>
-        public double Capacity { get { return length * width; } }
+        public double Capacity { get { return length * width / 10; } }
 
         private double density;
         /// <value>

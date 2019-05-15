@@ -92,7 +92,7 @@ namespace EvaFrame.Models.Building
                 Indicator from = indicatorList[fromId - 1];
                 int toId = Int32.Parse(values[1]);
                 Indicator to = indicatorList[toId - 1];
-                double length = Double.Parse(values[2]) / 10;
+                double length = Double.Parse(values[2]);
                 double width = Double.Parse(values[3]);
                 double trustiness = Double.Parse(values[4]);
 
@@ -131,7 +131,7 @@ namespace EvaFrame.Models.Building
                     Indicator from = indicatorList[fromId - 1];
                     int toId = Int32.Parse(values[1]);
                     Indicator to = target.floors[floorId - 1].Indicators[toId - 1];
-                    double length = Double.Parse(values[2]) / 10;
+                    double length = Double.Parse(values[2]);
                     double width = Double.Parse(values[3]);
                     double trustiness = Double.Parse(values[4]);
 

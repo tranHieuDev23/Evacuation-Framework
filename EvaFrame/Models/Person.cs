@@ -81,20 +81,23 @@ namespace EvaFrame.Models
         /// </returns>
         public bool Evacuate(double updatePeriod)
         {
-            // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c> nào cả.
-            if (location == null)
-            {
-                // Nếu như <c>Indicator</c> đang tuân theo chưa có chỉ thị gì.
-                if (following.Next == null)
-                    return false;
-                location = following.Next;
-                location.Density ++;
-                completedPercentage = 0;
-            }
-
             double remainingTime = updatePeriod;
             while (true)
             {
+                // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>.
+                if (location == null)
+                {
+                    // Nếu như <c>Indicator</c> đang tuân theo chưa có chỉ thị gì.
+                    if (following.Next == null)
+                        return false;
+                    // Hoặc nếu đường đi được chỉ bởi <c>Indicator</c> này đang đầy.
+                    if (following.Next.Density + 1 > following.Next.Capacity)
+                        return false;
+                    // Nhận chỉ dẫn từ Indicator.
+                    location = following.Next;
+                    location.Density ++;
+                }
+
                 double distanceLeft = location.Length * (1 - completedPercentage);
                 double speed = CalculateActualSpeed(location);
                 // Nếu như người này không kịp di chuyển khỏi hành lang trong khoảng thời gian còn lại.
@@ -104,8 +107,9 @@ namespace EvaFrame.Models
                     completedPercentage = 1.0 - distanceLeft / location.Length;
                     break;
                 }
+
                 // Nếu như người này kịp di chuyển khỏi hành lang.
-                location.Density--;
+                location.Density --;
 
                 // Nếu như người này tới được Exit Node.
                 if (location.To.IsExitNode)
@@ -114,8 +118,7 @@ namespace EvaFrame.Models
                 // Nếu như người này vẫn chưa ra tới Exit Node.
                 remainingTime -= distanceLeft / speed;
                 following = location.To;
-                location = following.Next;
-                location.Density++;
+                location = null;
                 completedPercentage = 0;
             }
             return false;
