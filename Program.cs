@@ -10,6 +10,6 @@ class Program
     {
         Building building = Building.LoadFromFile("data.bld");
         Simulator simulator = new Simulator(building, new PlainDijikstra(), new BasicConstantHazard());
-        double result = simulator.RunSimulator(2000, 10000);
+        double result = simulator.RunSimulator(200, 10000);
     }
 }

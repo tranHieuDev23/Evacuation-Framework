@@ -58,8 +58,8 @@ namespace EvaFrame.Simulator
 
                 if (situationWait >= situationUpdatePeriod)
                 {
-                    hazard.Update(situationUpdatePeriod / 1000);
-                    target.MoveInhabitants(situationUpdatePeriod / 1000);
+                    hazard.Update((double)situationUpdatePeriod / 1000);
+                    target.MoveInhabitants((double)situationUpdatePeriod / 1000);
                     lastSituationUpdate = simulationLast;
                     Console.WriteLine("Remaining inhabitants: " + target.Inhabitants.Count);
 
