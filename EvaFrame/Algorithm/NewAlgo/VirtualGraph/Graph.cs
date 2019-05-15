@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.NewAlgo
+namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
 {
     class Graph
     {
@@ -13,7 +13,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
         public Graph()
         {
-            root = new Node();
+            root = new Node(null);
         }
         /// <summary>
         /// Phương thức <c> MakeGraph() </c> thực hiện khởi tạo đồ thị biểu 

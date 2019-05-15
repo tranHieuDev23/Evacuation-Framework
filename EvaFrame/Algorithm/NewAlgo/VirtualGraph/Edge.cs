@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.NewAlgo
+namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
 {
     /// <summary>
     /// 
@@ -15,13 +15,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <c>Edge</c>, dùng trong quá trình trao đổi thông tin 
         /// giữa <c>Graph</c> và <c>Building</c>.
         /// </value>
-        public Corridor CorrespondingCorridor { get { return correspondingCorridor; } }
+        public Corridor CorrespondingCorridor 
+        {
+            get { return correspondingCorridor; } 
+        }
 
         private Node to;
         /// <value>
         /// 
         /// </value>
-        public Node To { get { return to; } }
+        public Node To 
+        { 
+            get { return to; } 
+        }
 
         /// <summary>
         /// Số người hiện tại đang ở cạnh
