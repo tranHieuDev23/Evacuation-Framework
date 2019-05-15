@@ -157,19 +157,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         private void GetNextNode(Node node)
         {
             /*Implement code in here */
-            foreach (var adjacence in node.adjacences)
-            {
-                if(adjacence.node.label)
-                {
-                    if (adjacence.passingWeight < node.weight)
-                    {
-                        node.weight = adjacence.passingWeight;
-                        node.next = adjacence.node;
-                        node.nextEdge = adjacence.edge;
-                        node.reachedNode = adjacence.reaching;
-                    }
-                }
-            }
         }
 
         /// <summary>
