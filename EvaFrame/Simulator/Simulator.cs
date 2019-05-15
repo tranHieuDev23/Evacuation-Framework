@@ -47,7 +47,7 @@ namespace EvaFrame.Simulator
             DateTime lastSituationUpdate = DateTime.MinValue;
             DateTime lastAlgorithmRun = DateTime.MinValue;
             DateTime simulationLast;
-            while(true)
+            while (true)
             {
                 simulationLast = DateTime.Now;
                 if (target.Inhabitants.Count == 0)
@@ -62,19 +62,19 @@ namespace EvaFrame.Simulator
                     target.MoveInhabitants(situationUpdatePeriod / 1000);
                     lastSituationUpdate = simulationLast;
                     Console.WriteLine("Remaining inhabitants: " + target.Inhabitants.Count);
-                    Console.WriteLine("First inhabitant location: " + target.Inhabitants[0].Location);
+
                     if (target.Inhabitants[0].Location != null)
                     {
+                        Console.WriteLine("First inhabitant location: " + target.Inhabitants[0].Location.Id);
                         Console.WriteLine("First inhabitant location length: " + target.Inhabitants[0].Location.Length);
                         Console.WriteLine("First inhabitant location width: " + target.Inhabitants[0].Location.Width);
                         Console.WriteLine("First inhabitant location capacity: " + target.Inhabitants[0].Location.Capacity);
                         Console.WriteLine("First inhabitant location density: " + target.Inhabitants[0].Location.Density);
                         Console.WriteLine("First inhabitant location trustiness: " + target.Inhabitants[0].Location.Trustiness);
-                    }
-                    Console.WriteLine("First inhabitant completedPercentage: " + target.Inhabitants[0].CompletedPercentage);
-                    Console.WriteLine("First inhabitant SpeedMax: " + target.Inhabitants[0].SpeedMax);
-                    if (target.Inhabitants[0].Location != null)
+                        Console.WriteLine("First inhabitant completedPercentage: " + target.Inhabitants[0].CompletedPercentage);
+                        Console.WriteLine("First inhabitant SpeedMax: " + target.Inhabitants[0].SpeedMax);
                         Console.WriteLine("First inhabitant actualSpeed: " + target.Inhabitants[0].CalculateActualSpeed(target.Inhabitants[0].Location));
+                    }
                 }
 
                 if (algorithmWait >= algorithmUpdatePeriod)

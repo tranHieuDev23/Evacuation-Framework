@@ -44,8 +44,8 @@ namespace EvaFrame.Models.Building
                 using (StreamReader sr = new StreamReader(filepath))
                 {
                     int numFloor = Int32.Parse(sr.ReadLine());
-                    for (int floorId = 0; floorId < numFloor; floorId++)
-                        LoadFloor(sr, result);
+                    for (int floorId = 1; floorId <= numFloor; floorId++)
+                        LoadFloor(sr, result, floorId);
                     LoadExitNodes(sr, result);
                     LoadPeople(sr, result);
                 }
@@ -76,24 +76,24 @@ namespace EvaFrame.Models.Building
             }
         }
 
-        private static void LoadFloor(StreamReader sr, Building target)
+        private static void LoadFloor(StreamReader sr, Building target, int floorId)
         {
-            List<Indicator> indicatorList = LoadIndicatorsInFloor(sr);
+            List<Indicator> indicatorList = LoadIndicatorsInFloor(sr, floorId);
             LoadCorridorsInFloor(sr, indicatorList);
             List<Indicator> stairList = LoadStairNodesInFloor(sr, indicatorList);
             LoadStairCorridorsInFloor(sr, target, indicatorList);
             target.floors.Add(new Floor(indicatorList, stairList));
         }
 
-        private static List<Indicator> LoadIndicatorsInFloor(StreamReader sr)
+        private static List<Indicator> LoadIndicatorsInFloor(StreamReader sr, int floorId)
         {
             List<Indicator> indicatorList = new List<Indicator>();
             int numInd = Int32.Parse(sr.ReadLine());
             if (numInd == 0)
                 return indicatorList;
             sr.ReadLine(); // TODO: This line contains the coordinates of the Indicators, and can be used in graphic representation
-            for (int i = 0; i < numInd; i++)
-                indicatorList.Add(new Indicator());
+            for (int i = 1; i <= numInd; i++)
+                indicatorList.Add(new Indicator(i.ToString() + '@' + floorId.ToString()));
             return indicatorList;
         }
 

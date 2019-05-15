@@ -8,6 +8,10 @@ namespace EvaFrame.Models.Building
     /// </summary>
     public class Indicator
     {
+        private string id;
+        /// <value>String định danh của <c>Indicator</c>, có dạng [số thứ tự trong tầng]@[số tầng].</value>
+        public string Id { get { return id; } }
+
         private List<Corridor> neighbors;
         /// <value>
         /// Danh sách các hành lang dẫn tới các đèn báo kế cận với đèn báo này.
@@ -56,10 +60,11 @@ namespace EvaFrame.Models.Building
         /// <summary>
         /// Khởi tạo một đối tượng đèn báo không có hành lang nào kế cận, và không chỉ tới đâu cả.
         /// </summary>
-        public Indicator()
+        public Indicator(string id)
         {
-            neighbors = new List<Corridor>();
-            next = null;
+            this.id = id;
+            this.neighbors = new List<Corridor>();
+            this.next = null;
         }
     }
 }
