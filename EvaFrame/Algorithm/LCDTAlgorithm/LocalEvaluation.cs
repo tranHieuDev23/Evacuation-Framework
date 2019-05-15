@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
+using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
+//using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm{
 
@@ -9,42 +11,51 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
     public class LocalEvaluation {
         private Floor floor;
         
-        LocalEvaluation() { this.floor = null; }
-        LocalEvaluation(Floor floor) {
+        public LocalEvaluation() { this.floor = null; }
+        public LocalEvaluation(Floor floor) {
             this.floor = floor;
         }
 
-        private double calcWeight(Corridor cor) {
-
-            double w = cor.Length / (cor.Trustiness * (cor.Capacity - cor.Density + 1));
-
-            return w;
-        }
+        
         /// <summary>
         ///  
         /// </summary>
-        public void Run() {
-            List<List<double>> wLocal = new List<List<double>>();
+        public Dictionary<PairII, double> Run() {
+            Dictionary<PairII, double> wLocal = new Dictionary<PairII, double>();
 
-            foreach (Indicator indicator in floor.Indicators) 
-            if (indicator.IsStairNode) {
-                Dictionary<Pair<Indicator, Indicator>, double> tempWeights = runDijkstra(indicator);
+            foreach (Indicator u in floor.Indicators) 
+            if (u.IsStairNode) {
+                Dictionary<PairII, double> tempWeights = runDijkstra(u);
+                foreach (Indicator v in floor.Indicators) {
+                    double weightToS = tempWeights[new PairII(u,v)];
+                    Corridor next = v.Next;
+                    v.NextOptions.add(next, weightToS, u);
+
+                    if ((v.IsStairNode == true || v.IsExitNode == true) && v.Equals(u) == false) {
+                        wLocal[new PairII(u,v)] = weightToS;
+                    }
+                }
+
             }
+            return wLocal;
         }
 
         /// <summary>
-        /// Chạy thuật toán dijkstra trên 1 
+        /// Chạy thuật toán dijkstra từ 1 Stair Node trong Floor đến các Node khác
         /// </summary>
         /// <param name="start">
-        /// 
+        /// Stair Node xuất phát.
         /// </param>
-        /// <returns></returns>
-        public Dictionary<Pair<Indicator, Indicator>, double> runDijkstra(Indicator start) {
+        /// <returns>
+        ///     Trọng số giữa Stair Node xuất phát đến các Node các trong tầng. 
+        /// </returns>
+        public Dictionary<PairII, double> runDijkstra(Indicator start) {
             MinHeap<Data> heap = new MinHeap<Data>();
-            Dictionary<Pair<Indicator, Indicator>, double> weights = new Dictionary<Pair<Indicator, Indicator>, double>();
+            Dictionary<PairII, double> weights = new Dictionary<PairII, double>();
 
             foreach (Indicator v in floor.Indicators) {
-                weights[new Pair<Indicator, Indicator>(start, v)] = Double.PositiveInfinity;
+                weights[new PairII(start, v)] = Double.PositiveInfinity;
+                v.Next = null;
             }
             
             heap.Push(new Data(start, 0));
@@ -54,16 +65,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                 double wu = heap.Top().weightToExit;
                 heap.Pop();
 
-                if (weights[new Pair<Indicator, Indicator>(start, u)] != wu) continue;
+                if (weights[new PairII(start, u)] != wu) continue;
 
                 foreach (Corridor cor in u.Neighbors) {
                     Indicator v = cor.To;
-                    double wv = weights[new Pair<Indicator, Indicator>(start,v)];
-                    if (wv > wu + calcWeight(cor)) {
-                        wv = wu + calcWeight(cor);
+                    double wv = weights[new PairII(start,v)];
+                    if (wv > wu + cor.calcWeight()) {
+                        wv = wu + cor.calcWeight();
                         heap.Push(new Data(v, wv));
+                        v.Next = v.Neighbors.Find(corridor => corridor.To == u);
 
-                        weights[new Pair<Indicator, Indicator>(start, v)] = wv;
+                        weights[new PairII(start, v)] = wv;
                     }
                 }
             }
