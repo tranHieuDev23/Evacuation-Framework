@@ -9,30 +9,31 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
 
     
     public class LocalEvaluation {
-        private Floor floor;
+        private SubGraph subGraph;
         
-        public LocalEvaluation() { this.floor = null; }
-        public LocalEvaluation(Floor floor) {
-            this.floor = floor;
+        public LocalEvaluation() { this.subGraph = null; }
+        public LocalEvaluation(SubGraph subGraph) {
+            this.subGraph = subGraph;
         }
 
         
         /// <summary>
         ///  
         /// </summary>
-        public Dictionary<PairII, double> Run() {
-            Dictionary<PairII, double> wLocal = new Dictionary<PairII, double>();
+        public Dictionary<PairNN, double> Run() {
+            Dictionary<PairNN, double> wLocal = new Dictionary<PairNN, double>();
 
-            foreach (Indicator u in floor.Indicators) 
+            foreach (Node u in subGraph.Nodes) 
             if (u.IsStairNode) {
-                Dictionary<PairII, double> tempWeights = runDijkstra(u);
-                foreach (Indicator v in floor.Indicators) {
-                    double weightToS = tempWeights[new PairII(u,v)];
-                    Corridor next = v.Next;
-                    v.NextOptions.add(next, weightToS, u);
+                Dictionary<PairNN, double> tempWeights = runDijkstra(u);
+                
+                foreach (Node v in subGraph.Nodes) {
+                    double weightToS = tempWeights[new PairNN(u,v)];
+                    Edge next = v.Next;
+                    v.NextOptions.Add(new NodeOption(next, weightToS, u));
 
                     if ((v.IsStairNode == true || v.IsExitNode == true) && v.Equals(u) == false) {
-                        wLocal[new PairII(u,v)] = weightToS;
+                        wLocal[new PairNN(u,v)] = weightToS;
                     }
                 }
 
@@ -49,33 +50,34 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         /// <returns>
         ///     Trọng số giữa Stair Node xuất phát đến các Node các trong tầng. 
         /// </returns>
-        public Dictionary<PairII, double> runDijkstra(Indicator start) {
+        public Dictionary<PairNN, double> runDijkstra(Node start) {
             MinHeap<Data> heap = new MinHeap<Data>();
-            Dictionary<PairII, double> weights = new Dictionary<PairII, double>();
+            Dictionary<PairNN, double> weights = new Dictionary<PairNN, double>();
 
-            foreach (Indicator v in floor.Indicators) {
-                weights[new PairII(start, v)] = Double.PositiveInfinity;
+            foreach (Node v in subGraph.Nodes) {
+                weights[new PairNN(start, v)] = Double.PositiveInfinity;
                 v.Next = null;
             }
             
+            weights[new PairNN(start, start)] = 0;
             heap.Push(new Data(start, 0));
 
             while(heap.Count > 0) {
-                Indicator u = heap.Top().indicator;
+                Node u = heap.Top().node;
                 double wu = heap.Top().weightToExit;
                 heap.Pop();
 
-                if (weights[new PairII(start, u)] != wu) continue;
+                if (weights[new PairNN(start, u)] != wu) continue;
 
-                foreach (Corridor cor in u.Neighbors) {
-                    Indicator v = cor.To;
-                    double wv = weights[new PairII(start,v)];
-                    if (wv > wu + cor.calcWeight()) {
-                        wv = wu + cor.calcWeight();
+                foreach (Edge e in u.Adjencents) {
+                    Node v = e.To;
+                    double wv = weights[new PairNN(start,v)];
+                    if (wv > wu + e.Weight) {
+                        wv = wu + e.Weight;
                         heap.Push(new Data(v, wv));
-                        v.Next = v.Neighbors.Find(corridor => corridor.To == u);
+                        v.Next = v.Adjencents.Find(edge => edge.To == u);
 
-                        weights[new PairII(start, v)] = wv;
+                        weights[new PairNN(start, v)] = wv;
                     }
                 }
             }

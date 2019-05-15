@@ -8,26 +8,32 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
     
     class MainAlgo : IAlgorithm {
         private Building target;
+        CrossGraph crossGraph;
         void IAlgorithm.Initialize(Building target) {
             this.target = target;
             
-            CrossGraph crossGraph = new CrossGraph(target);
+            this.crossGraph = new CrossGraph(target);
             crossGraph.buildGraph();
         }
 
         void IAlgorithm.Run() {
-            Dictionary<PairII, double> wGlobal = new Dictionary<PairII, double>();
+            Dictionary<PairNN, double> wGlobal = new Dictionary<PairNN, double>();
+            /* foreach (Edge edge in crossGraph.Edges) {
+                wGlobal[new PairII(edge.From, edge.To)] = edge.Weight;
+            }*/
 
             foreach(Floor floor in target.Floors) {
-                LocalEvaluation local = new LocalEvaluation(floor);
-                Dictionary<PairII, double> weightInFloor = local.Run();
+                SubGraph subGraph = new SubGraph(floor);
+                LocalEvaluation local = new LocalEvaluation(subGraph);
+                Dictionary<PairNN, double> weightInFloor = local.Run();
 
-                foreach(KeyValuePair<PairII, double> item in weightInFloor) {
+                crossGraph.updateGraph(weightInFloor);
+                foreach(KeyValuePair<PairNN, double> item in weightInFloor) {
                     wGlobal[item.Key] = item.Value;
                 }
             }
 
-            GlobalEvaluation global = new GlobalEvaluation(wGlobal, target.Exits);
+            GlobalEvaluation global = new GlobalEvaluation(crossGraph);
         }
 
 

@@ -4,12 +4,12 @@ using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
     class Data: IComparable, ICloneable {
-        public Indicator indicator;
+        public Node node;
         public double weightToExit;
 
-        public Data(Indicator indicator, double weightToExit)
+        public Data(Node node, double weightToExit)
         {
-            this.indicator = indicator;
+            this.node = node;
             this.weightToExit = weightToExit;
         }
 
@@ -21,7 +21,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
             return weightToExit.CompareTo(data.weightToExit);
         }
 
-        object ICloneable.Clone() { return new Data(indicator, weightToExit); }
+        object ICloneable.Clone() { return new Data(node, weightToExit); }
     }
 
     public class Pair<T, U> {
@@ -46,6 +46,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         
         public Indicator First{get; set;}
         public Indicator Second{get; set;}
+    }
+
+    public class PairNN {
+        public PairNN() {}
+        public PairNN(Node first, Node second) {
+            this.First = first;
+            this.Second = second;
+        }
+        
+        public Node First{get; set;}
+        public Node Second{get; set;}
     }
 
     public static class CaculatinExtensionMethod {
