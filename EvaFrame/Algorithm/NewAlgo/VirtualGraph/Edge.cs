@@ -42,10 +42,16 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <summary>
         /// 
         /// </summary>
-        public Edge()
+        public Edge(Corridor cor, Node nod)
         {
-
+            correspondingCorridor = cor;
+            numberPeople = Convert.ToInt32(cor.Density);
+            to = nod;
         }
 
+        public void Update()
+        {
+            
+        }
     }
 }
