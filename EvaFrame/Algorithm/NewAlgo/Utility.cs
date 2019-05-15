@@ -43,6 +43,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             double density = GetDensity(edge, numberPeople);
             return edge.CorrespondingCorridor.Length
                  * ContextFunction(edge.CorrespondingCorridor.Trustiness, density);
+
         }
 
         /// <summary>
@@ -56,6 +57,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             double density;
             density = numberPeople / (edge.CorrespondingCorridor.Capacity);
             return density;
+
         }
 
         /// <summary>

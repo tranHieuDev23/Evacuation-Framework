@@ -16,9 +16,9 @@ namespace EvaFrame.Models.Building
         public ReadOnlyCollection<Indicator> Indicators { get { return indicators.AsReadOnly(); } }
 
         /// <value>
-        /// Danh sách các <c>Indicator</c> là Stair Node trên tầng này. Giá trị Read-Only.
+        /// Danh sách các <c>Indicator</c> là Stair Node trên tầng này. Là một tập hợp con của danh sách <c>Indicators</c>. Giá trị Read-Only.
         /// </value>
-        public List<Indicator> Stairs { get { return stairs; } }
+        public ReadOnlyCollection<Indicator> Stairs { get { return stairs.AsReadOnly(); } }
 
         /// <summary>
         /// Khởi tạo một tầng mới.
