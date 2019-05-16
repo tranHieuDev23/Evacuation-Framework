@@ -7,6 +7,7 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 namespace EvaFrame.Algorithm.LCDTAlgorithm {
     public class CrossGraph {
         private Building building;
+        
         private List<Edge> edges;
         public List<Edge> Edges{
             get { return edges; }

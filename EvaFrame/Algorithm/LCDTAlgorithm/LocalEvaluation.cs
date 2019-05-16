@@ -48,7 +48,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         /// Stair Node xuất phát.
         /// </param>
         /// <returns>
-        ///     Trọng số giữa Stair Node xuất phát đến các Node các trong tầng. 
+        ///     Trọng số giữa Stair Node xuất phát đến các Node các trong đồ thị. 
         /// </returns>
         public Dictionary<PairNN, double> runDijkstra(Node start) {
             MinHeap<Data> heap = new MinHeap<Data>();
@@ -68,13 +68,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                 double wu = heap.Top().weightToExit;
                 heap.Pop();
                 
-
-                PairNN su = new PairNN(start, u);
-                bool ocur = weights.ContainsKey(su);
-
-                //Console.WriteLine("start = {0} u = {1}", start, u);
-                //Console.WriteLine("Type of weight = {0}", typeof(weights[new PairNN(start, u)]));
-                if (weights[su] != wu) continue;
+                if (weights[new PairNN(start, u)] != wu) continue;
 
                 foreach (Edge e in u.Adjencents) {
                     Node v = e.To;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
@@ -8,17 +9,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
     
     class LCDTAlgorithm : IAlgorithm {
         private Building target;
-        CrossGraph crossGraph;
+        
         void IAlgorithm.Initialize(Building target) {
             this.target = target;
-            this.crossGraph = new CrossGraph(target);
         }
 
         void IAlgorithm.Run() {
-            Dictionary<PairNN, double> wGlobal = new Dictionary<PairNN, double>();
+            Dictionary<PairNN, double> wLocals = new Dictionary<PairNN, double>();
             /* foreach (Edge edge in crossGraph.Edges) {
                 wGlobal[new PairII(edge.From, edge.To)] = edge.Weight;
             }*/
+            CrossGraph crossGraph = new CrossGraph(target);
             crossGraph.buildGraph();
 
             foreach(Floor floor in target.Floors) {
@@ -28,11 +29,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
                 crossGraph.updateGraph(weightInFloor);
                 foreach(KeyValuePair<PairNN, double> item in weightInFloor) {
-                    wGlobal[item.Key] = item.Value;
+                    wLocals[item.Key] = item.Value;
                 }
             }
 
+            
             GlobalEvaluation global = new GlobalEvaluation(crossGraph);
+            Dictionary<PairNN, double> wGlobal = global.Run();
+
+            EvacuationRouteSelector selector = new EvacuationRouteSelector(crossGraph, wLocals, wGlobal);
+
+
         }
 
 
