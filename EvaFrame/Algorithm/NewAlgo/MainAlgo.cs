@@ -21,7 +21,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             public Node node;
             public double weightToRoot;
 
-            public Data(Node node, double weightToRoot)
+            public Data(Node node, double weightToRoot) 
             {
                 this.node = node;
                 this.weightToRoot = weightToRoot;

@@ -125,7 +125,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
         /// 
         //private MainAlgo mainAlgo = new MainAlgo();
-        //private MainAlgo.Data data = new mainAlgo.Data();
+        //private MainAlgo.Data data = new mainAlgo.Data(); 
         public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
