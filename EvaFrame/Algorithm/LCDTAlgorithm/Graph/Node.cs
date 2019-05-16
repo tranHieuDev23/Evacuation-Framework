@@ -28,8 +28,10 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public Node(Indicator indicator) {
             this.corresspondingIndicator = indicator;
             this.adjencents = new List<Edge>();
-            isStairNode = false;
-            isExitNode = false;
+            this.isStairNode = false;
+            this.isExitNode = false;
+            this.next = null;
+            this.nextOptions = new List<NodeOption>();
         }
 
         private bool isStairNode;
@@ -50,8 +52,10 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public Edge Next {
             get { return next; }
             set {
-                if (value == null) 
+                if (value != null && !adjencents.Contains(value)) 
                     throw new InvalidOperationException("Invalid Edge");
+                if (value != null)
+                    corresspondingIndicator.Next = value.CorrespondingCorridor;
                 next = value;
             }
         }

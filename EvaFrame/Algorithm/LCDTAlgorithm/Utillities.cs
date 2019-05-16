@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 using EvaFrame.Utilities;
 using EvaFrame.Models.Building;
 
@@ -49,14 +51,38 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
     }
 
     public class PairNN {
+        private Node first, second;
         public PairNN() {}
         public PairNN(Node first, Node second) {
-            this.First = first;
-            this.Second = second;
+            this.first = first;
+            this.second = second;
         }
         
-        public Node First{get; set;}
-        public Node Second{get; set;}
+        public Node First{
+            get { return first;}
+            set {
+                first = value;
+            }}
+        public Node Second{
+            get{ return second; }
+            set{
+                second = value;
+            }}
+    }
+
+    public class NodeEqualityComparer: IEqualityComparer<PairNN> {
+        public bool Equals(PairNN p1, PairNN p2) {
+            if (p1 == null && p2 == null) return true;
+            if (p1 == null || p2 == null) return false;
+            if (p1.First == p2.First && p1.Second == p2.Second) return true;
+            return false;
+        }
+
+        public int GetHashCode(PairNN p) {
+            if (p.First == null || p.Second == null) return 0;
+            int hCode = p.First.GetHashCode() ^ p.Second.GetHashCode();
+            return hCode.GetHashCode();    
+        }
     }
 
     public static class CaculatinExtensionMethod {

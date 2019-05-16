@@ -52,7 +52,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         /// </returns>
         public Dictionary<PairNN, double> runDijkstra(Node start) {
             MinHeap<Data> heap = new MinHeap<Data>();
-            Dictionary<PairNN, double> weights = new Dictionary<PairNN, double>();
+            NodeEqualityComparer nodeCompare = new NodeEqualityComparer();
+            Dictionary<PairNN, double>  weights = new Dictionary<PairNN, double>(nodeCompare);
 
             foreach (Node v in subGraph.Nodes) {
                 weights[new PairNN(start, v)] = Double.PositiveInfinity;
@@ -66,12 +67,20 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                 Node u = heap.Top().node;
                 double wu = heap.Top().weightToExit;
                 heap.Pop();
+                
 
-                if (weights[new PairNN(start, u)] != wu) continue;
+                PairNN su = new PairNN(start, u);
+                bool ocur = weights.ContainsKey(su);
+
+                //Console.WriteLine("start = {0} u = {1}", start, u);
+                //Console.WriteLine("Type of weight = {0}", typeof(weights[new PairNN(start, u)]));
+                if (weights[su] != wu) continue;
 
                 foreach (Edge e in u.Adjencents) {
                     Node v = e.To;
-                    double wv = weights[new PairNN(start,v)];
+                    PairNN sv = new PairNN(start, v);
+                    if (weights.ContainsKey(sv) == false) continue;
+                    double wv = weights[sv];
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;
                         heap.Push(new Data(v, wv));

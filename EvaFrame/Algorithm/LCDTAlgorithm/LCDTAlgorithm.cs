@@ -6,14 +6,12 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm {
     
-    class MainAlgo : IAlgorithm {
+    class LCDTAlgorithm : IAlgorithm {
         private Building target;
         CrossGraph crossGraph;
         void IAlgorithm.Initialize(Building target) {
             this.target = target;
-            
             this.crossGraph = new CrossGraph(target);
-            crossGraph.buildGraph();
         }
 
         void IAlgorithm.Run() {
@@ -21,6 +19,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             /* foreach (Edge edge in crossGraph.Edges) {
                 wGlobal[new PairII(edge.From, edge.To)] = edge.Weight;
             }*/
+            crossGraph.buildGraph();
 
             foreach(Floor floor in target.Floors) {
                 SubGraph subGraph = new SubGraph(floor);

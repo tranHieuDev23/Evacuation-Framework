@@ -31,7 +31,7 @@ public class GlobalEvaluation {
     }
 
     public Dictionary<PairNN, double> dijkstra(Node exitNode) {
-        Dictionary<PairNN, double> weights = new Dictionary<PairNN, double>();
+        Dictionary<PairNN, double> weights = new Dictionary<PairNN, double>(new NodeEqualityComparer());
         MinHeap<Data> heap = new MinHeap<Data>();
 
         foreach (Node u in crossGraph.Nodes) {

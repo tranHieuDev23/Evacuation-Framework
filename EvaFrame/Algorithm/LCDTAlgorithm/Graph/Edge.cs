@@ -12,10 +12,11 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         private double weight;
         public double Weight{ get{ return weight; } }
         public Edge(){}
-        public Edge(Node from, Node to, double weight) {
+        public Edge(Node from, Node to, double weight, Corridor cor = null) {
             this.from = from;
             this.to = to;
             this.weight = weight;
+            this.correspondingCorridor = cor;
         }
         public Edge(Corridor cor) {
             this.correspondingCorridor = cor;

@@ -23,6 +23,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public CrossGraph() {}
         public CrossGraph(Building building) {
             this.building = building;
+            this.edges = new List<Edge>();
+            this.nodes = new List<Node>();
         }
 
         public void buildGraph() {
@@ -41,7 +43,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     if (cor.IsStairway) {
                         Node from = new Node(cor.From);
                         Node to = new Node(cor.To);
-                        edges.Add(new Edge(from, to, cor.calcWeight()));
+                        edges.Add(new Edge(from, to, cor.calcWeight(), cor));
                         
                         addNode(from);
                         addNode(to);

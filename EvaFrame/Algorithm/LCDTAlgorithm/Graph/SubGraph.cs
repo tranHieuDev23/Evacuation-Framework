@@ -15,6 +15,9 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public bool IsFirstFloor { get {return isFirstFloor; } }
 
         public SubGraph(Floor floor, Building building = null) {
+            this.nodes = new List<Node>();
+            this.stairNodes = new List<Node>();
+
             if (building != null) {
                 foreach (Indicator exitNode in building.Exits) {
                     Node node = new Node(exitNode);
@@ -40,7 +43,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             foreach(Node u in nodes) {
                 foreach(Corridor cor in u.CorresspodingIndicator.Neighbors) {
                     Node v = nodes.Find(node => node.CorresspodingIndicator == cor.To);
-                    u.Adjencents.Add(new Edge(u, v, cor.calcWeight()));
+                    u.Adjencents.Add(new Edge(u, v, cor.calcWeight(), cor));
                 }
             }
 
