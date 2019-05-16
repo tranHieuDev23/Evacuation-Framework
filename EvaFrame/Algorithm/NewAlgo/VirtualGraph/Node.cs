@@ -8,7 +8,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
     /// cấu trúc lưu thông tin các đỉnh và cạnh gần kề 
     /// với đỉnh đang xét
     /// </summary>
-    public struct Adjacence
+    public class Adjacence
     {
         /// <summary>
         /// Đỉnh gần kề

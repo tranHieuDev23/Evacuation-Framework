@@ -29,7 +29,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Chỉ số ảnh hưởng</returns>
         private double ContextFunction(double trustness, double density)
         {
-            return (density + 1) / trustness;
+            return 1 /(trustness * (1.0001 - density));
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             int numberPeople = (int)passing.CorrespondingCorridor.Density;
             Node reach = from;
             Edge next = passing;
-            while (sumWeight > 0)
+            while (sumWeight - GetWeight(next, numberPeople) > 0)
             {
                 sumWeight = sumWeight - GetWeight(next, numberPeople);
                 reach = next.To;
@@ -103,14 +103,16 @@ namespace EvaFrame.Algorithm.NewAlgo
             /*Implement code in here */
             double weight = 0;
             Edge current = from.nextEdge;
+            Edge preEdge;
             do
             {
+                preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
                                 * ContextFunction(current.CorrespondingCorridor.Trustiness, 
                                                   density);
                 current = current.To.nextEdge;
-            } while (current.To != to);
+            } while (preEdge.To != to);
             return weight;
         }
         
@@ -157,6 +159,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         private void GetNextNode(Node node)
         {
             /*Implement code in here */
+            foreach (var adjacence in node.adjacences)
+            {
+                if(adjacence.node.label)
+                {
+                    if (adjacence.passingWeight < node.weight)
+                    {
+                        node.weight = adjacence.passingWeight;
+                        node.next = adjacence.node;
+                        node.nextEdge = adjacence.edge;
+                        node.reachedNode = adjacence.reaching;
+                    }
+                }
+            }
         }
 
         /// <summary>
