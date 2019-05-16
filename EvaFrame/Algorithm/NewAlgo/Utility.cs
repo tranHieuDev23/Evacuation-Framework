@@ -132,15 +132,9 @@ namespace EvaFrame.Algorithm.NewAlgo
                     continue;
                 }
                 /*Tìm đỉnh trung gian giữa reachedNode và comingNode */
-                Adjacence intermediate = new Adjacence();
-                foreach (var adjacence in comingNode.adjacences)
-                {
-                    if (adjacence.reaching == reachedNode)
-                    {
-                        intermediate = adjacence;
-                        break;
-                    }
-                }
+                Adjacence intermediate;
+                intermediate = comingNode.adjacences.Find(adj => adj.reaching == reachedNode);
+
                 /*Cập nhật lại trọng số con đường của comingNode mà đi tới được reachedNode */
                 int numberPeople = (int) intermediate.edge.CorrespondingCorridor.Density;
                 double w1 = CalculateWeight(intermediate.node, 
@@ -148,7 +142,11 @@ namespace EvaFrame.Algorithm.NewAlgo
                                             numberPeople);
                 double w2 = CalculateWeight(reachedNode, root, reachedNode.nComingPeople);
                 intermediate.passingWeight = intermediate.edge.weight + w1 + w2;
-                GetNextNode(comingNode);
+                bool isChaged = GetNextNode(comingNode);
+                if (isChaged)
+                {
+                    /*push lại phần tử comingNode vào heap */
+                }
             }
         }
 
@@ -156,9 +154,11 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// Duyệt trong những đỉnh kề với <c>node</c> để đặt lại quãng đường tốt nhất
         /// </summary>
         /// <param name="node">Đỉnh cần được cập nhật được tốt nhất</param>
-        private void GetNextNode(Node node)
+        /// <return>Giá trị <c>boolen</c> thể hiện <c>node</c> có thay đổi trọng số?</return> 
+        private bool GetNextNode(Node node)
         {
             /*Implement code in here */
+            bool isChanged = false; // biến cho biết node có thay đổi trọng số ?
             foreach (var adjacence in node.adjacences)
             {
                 if(adjacence.node.label)
@@ -169,9 +169,16 @@ namespace EvaFrame.Algorithm.NewAlgo
                         node.next = adjacence.node;
                         node.nextEdge = adjacence.edge;
                         node.reachedNode = adjacence.reaching;
+                        isChanged = true;
                     }
                 }
             }
+            if (isChanged)
+            {
+                /*Nếu trọng số  của node thay đổi cần phải lưu lại giá trị mới này
+                vào mảng dictionary */
+            }
+            return isChanged;
         }
 
         /// <summary>
