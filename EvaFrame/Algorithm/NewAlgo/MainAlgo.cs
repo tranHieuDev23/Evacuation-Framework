@@ -15,7 +15,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
         }
 
-        private class Data : IComparable, ICloneable
+        public class Data : IComparable, ICloneable
         {
             public Node node;
             public double weightToRoot;
@@ -37,18 +37,20 @@ namespace EvaFrame.Algorithm.NewAlgo
             object ICloneable.Clone() { return new Data(node, weightToRoot); }
         }
 
+        public MinHeap<Data> heap = new MinHeap<Data>();
+
         void IAlgorithm.Run()
         {
             //Các cấu trúc dữ liệu cần cho thuật toán
-            MinHeap<Data> heap = new MinHeap<Data>();
+         
 
             //Gán label tất cả các đỉnh bằng False;
             //foreach (var u in target.node)
             //{
             //    u.label = false;
             //}
-
-            heap.Push(target.root);
+            //MinHeap<Data> heap = new MinHeap<Data>();
+            heap.Push(new Data(target.Root, target.Root.weight));
 
             while (heap.Count > 0)
             {
@@ -56,14 +58,21 @@ namespace EvaFrame.Algorithm.NewAlgo
                 heap.Pop();
 
                 Node u = data.node;
-                if (u.label == true) break;
+                double wu = data.weightToRoot;
+
+                if (u.label == true) 
+                    break;
+
+                if(u.weight != wu) 
+                    continue;
+
                 u.label = true;
 
-                Node s = u.ReachedNode;
+                Node s = u.reachedNode;
                 s.nComingPeople += u.nextEdge.numberPeople;
-                s.ComingNodes.Add(u);
+                s.comingNodes.Add(u);
 
-                Utility.UpdateComingNode(s, target.root);
+                Utility.UpdateComingNode(s, target.Root);
 
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == true)
@@ -76,7 +85,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                         s.nComingPeople += v.edge.numberPeople;
 
                         double w1 = Utility.CalculateWeight(u, s, v.edge.numberPeople);
-                        double w2 = Utility.CalculateWeight(s, target.root, s.nComingPeople);
+                        double w2 = Utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
 
                         foreach (Adjacence ad in v.node.adjacences)
@@ -90,13 +99,12 @@ namespace EvaFrame.Algorithm.NewAlgo
                         {
                             v.node.weight = newW;
                             v.node.next = u;
-                            v.node.ReachedNode = s;
-                            heap.Push(v.node);
+                            v.node.reachedNode = s;
+                            heap.Push(new Data(v.node, v.node.weight));
                         }
 
                         s.nComingPeople -= v.edge.numberPeople;
                     }
-
             }
 
         }

@@ -52,7 +52,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="edge"></param> Đoạn đường đang xét
         /// <param name="numberPeople"></param>Số người đang đi trên con đường
         /// <returns>Giá trị mật độ người trên con đường</returns>
-        private double GetDensity(Edge edge, int numberPeople)
+        public double GetDensity(Edge edge, int numberPeople)
         {
             double density;
             density = numberPeople / (edge.CorrespondingCorridor.Capacity);
@@ -145,7 +145,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    /*push lại phần tử comingNode vào heap */
+                    MainAlgo.heap.push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
         }
