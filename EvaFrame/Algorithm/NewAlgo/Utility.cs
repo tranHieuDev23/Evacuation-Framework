@@ -185,7 +185,10 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// Cập nhật người từ các đỉnh nằm giữa các đỉnh đã được gán nhãn cho các đỉnh 
         /// phía trước trong cây khung Dijkstra
         /// </summary>
+        /// <param name="node">Đỉnh xuất phát</param>
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
+        /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong 
+        /// đồ thị</param>
         public void UpdateComingPeople(Node node, Edge edge, Node root)
         {
             /*Implement code in here */
