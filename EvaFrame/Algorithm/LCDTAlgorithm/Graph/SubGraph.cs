@@ -43,6 +43,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             foreach(Node u in nodes) {
                 foreach(Corridor cor in u.CorresspodingIndicator.Neighbors) {
                     Node v = nodes.Find(node => node.CorresspodingIndicator == cor.To);
+                    if (v == null) continue;
                     u.Adjencents.Add(new Edge(u, v, cor.calcWeight(), cor));
                 }
             }

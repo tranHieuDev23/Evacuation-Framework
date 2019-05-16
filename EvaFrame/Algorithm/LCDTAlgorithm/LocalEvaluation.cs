@@ -25,15 +25,15 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
 
             foreach (Node u in subGraph.Nodes) 
             if (u.IsStairNode) {
-                Dictionary<PairNN, double> tempWeights = runDijkstra(u);
+                Dictionary<Node, double> tempWeights = runDijkstra(u);
                 
                 foreach (Node v in subGraph.Nodes) {
-                    double weightToS = tempWeights[new PairNN(u,v)];
+                    double weightToS = tempWeights[v];
                     Edge next = v.Next;
                     v.NextOptions.Add(new NodeOption(next, weightToS, u));
 
                     if ((v.IsStairNode == true || v.IsExitNode == true) && v.Equals(u) == false) {
-                        wLocal[new PairNN(u,v)] = weightToS;
+                        wLocal[new PairNN(v, u)] = weightToS;
                     }
                 }
 
@@ -50,17 +50,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         /// <returns>
         ///     Trọng số giữa Stair Node xuất phát đến các Node các trong đồ thị. 
         /// </returns>
-        public Dictionary<PairNN, double> runDijkstra(Node start) {
+        public Dictionary<Node, double> runDijkstra(Node start) {
             MinHeap<Data> heap = new MinHeap<Data>();
             NodeEqualityComparer nodeCompare = new NodeEqualityComparer();
-            Dictionary<PairNN, double>  weights = new Dictionary<PairNN, double>(nodeCompare);
+            Dictionary<Node, double>  weights = new Dictionary<Node, double>();
 
             foreach (Node v in subGraph.Nodes) {
-                weights[new PairNN(start, v)] = Double.PositiveInfinity;
+                weights[v] = Double.PositiveInfinity;
                 v.Next = null;
             }
             
-            weights[new PairNN(start, start)] = 0;
+            weights[start] = 0;
             heap.Push(new Data(start, 0));
 
             while(heap.Count > 0) {
@@ -68,19 +68,18 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                 double wu = heap.Top().weightToExit;
                 heap.Pop();
                 
-                if (weights[new PairNN(start, u)] != wu) continue;
+                if (weights[u] != wu) continue;
 
                 foreach (Edge e in u.Adjencents) {
                     Node v = e.To;
-                    PairNN sv = new PairNN(start, v);
-                    if (weights.ContainsKey(sv) == false) continue;
-                    double wv = weights[sv];
+                    if (weights.ContainsKey(v) == false) continue;
+                    double wv = weights[v];
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;
                         heap.Push(new Data(v, wv));
                         v.Next = v.Adjencents.Find(edge => edge.To == u);
 
-                        weights[new PairNN(start, v)] = wv;
+                        weights[v] = wv;
                     }
                 }
             }

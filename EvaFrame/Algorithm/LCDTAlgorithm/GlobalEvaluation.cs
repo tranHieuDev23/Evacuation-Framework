@@ -36,7 +36,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             MinHeap<Data> heap = new MinHeap<Data>();
 
             foreach (Node u in crossGraph.Nodes) {
-                weights[new PairNN(exitNode, u)] = double.PositiveInfinity;
+                weights[new PairNN(u, exitNode)] = double.PositiveInfinity;
                 u.Next = null;
             }
 
@@ -55,7 +55,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;
-                        weights[new PairNN(exitNode, v)] = wv;
+                        weights[new PairNN(v, exitNode)] = wv;
                         v.Next = v.Adjencents.Find(edge => edge.To == u);
                         heap.Push(new Data(v, wv));
                     }

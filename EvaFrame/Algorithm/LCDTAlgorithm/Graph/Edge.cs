@@ -1,3 +1,5 @@
+using System;
+
 using EvaFrame.Algorithm.LCDTAlgorithm;
 using EvaFrame.Models.Building;
 
@@ -13,6 +15,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public double Weight{ get{ return weight; } }
         public Edge(){}
         public Edge(Node from, Node to, double weight, Corridor cor = null) {
+            if (to == null) 
+                throw new ArgumentNullException("To is Null");
             this.from = from;
             this.to = to;
             this.weight = weight;

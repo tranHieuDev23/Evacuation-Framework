@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 using EvaFrame.Models.Building;
 
@@ -8,6 +9,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         private Building correspondingBuilding;
         private List<SubGraph> subGraphs;
         private List<Node> nodes;
+        private List<Node> exitNodes;
 
         Graph() {}
         Graph(Building building) {
@@ -17,7 +19,9 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         } 
 
         void initialize() {
-            foreach(Floor floor in correspondingBuilding.) 
+            foreach(Floor floor in correspondingBuilding.Floors) {
+                SubGraph subGraph = new SubGraph(floor);
+            } 
         }
     }
 }

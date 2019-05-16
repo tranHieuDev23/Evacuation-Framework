@@ -15,7 +15,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         }
 
         void IAlgorithm.Run() {
-            Dictionary<PairNN, double> wLocals = new Dictionary<PairNN, double>();
+            Dictionary<PairNN, double> wLocals = new Dictionary<PairNN, double>(new NodeEqualityComparer());
             /* foreach (Edge edge in crossGraph.Edges) {
                 wGlobal[new PairII(edge.From, edge.To)] = edge.Weight;
             }*/
@@ -38,7 +38,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             Dictionary<PairNN, double> wGlobal = global.Run();
 
             EvacuationRouteSelector selector = new EvacuationRouteSelector(crossGraph, wLocals, wGlobal);
-
+            selector.selectionPath(target);
 
         }
 
