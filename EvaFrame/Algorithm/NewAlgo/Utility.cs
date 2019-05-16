@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EvaFrame.Utilities;
 using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
@@ -122,7 +123,10 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
-        public void UpdateComingNode(Node reachedNode, Node root)
+        /// 
+        //private MainAlgo mainAlgo = new MainAlgo();
+        //private MainAlgo.Data data = new mainAlgo.Data();
+        public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             foreach (var comingNode in reachedNode.comingNodes)
@@ -145,7 +149,9 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    MainAlgo.heap.push(new MainAlgo.Data(comingNode, comingNode.weight));
+                    //MainAlgo mainAlgo = new MainAlgo();
+                    //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
+                    heap.push(new mainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
         }

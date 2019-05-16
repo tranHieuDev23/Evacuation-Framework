@@ -6,10 +6,11 @@ using EvaFrame.Utilities;
 using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
-{
+{ 
     class MainAlgo : IAlgorithm
     {
         private Graph target;
+
         void IAlgorithm.Initialize(Building target)
         {
 
@@ -37,19 +38,12 @@ namespace EvaFrame.Algorithm.NewAlgo
             object ICloneable.Clone() { return new Data(node, weightToRoot); }
         }
 
-        public MinHeap<Data> heap = new MinHeap<Data>();
-
         void IAlgorithm.Run()
         {
+            Utility utility = new Utility();
             //Các cấu trúc dữ liệu cần cho thuật toán
-         
+            MinHeap<Data> heap = new MinHeap<Data>();
 
-            //Gán label tất cả các đỉnh bằng False;
-            //foreach (var u in target.node)
-            //{
-            //    u.label = false;
-            //}
-            //MinHeap<Data> heap = new MinHeap<Data>();
             heap.Push(new Data(target.Root, target.Root.weight));
 
             while (heap.Count > 0)
@@ -72,20 +66,20 @@ namespace EvaFrame.Algorithm.NewAlgo
                 s.nComingPeople += u.nextEdge.numberPeople;
                 s.comingNodes.Add(u);
 
-                Utility.UpdateComingNode(s, target.Root);
+                utility.UpdateComingNode(s, target.Root, heap);
 
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == true)
-                        Utility.UpdateComingPeople(v.egde);
+                        utility.UpdateComingPeople(v.edge);
 
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
-                        s = Utility. FindCrossNode(v.node, v.edge);
+                        s = Uuility. FindCrossNode(v.node, v.edge);
                         s.nComingPeople += v.edge.numberPeople;
 
-                        double w1 = Utility.CalculateWeight(u, s, v.edge.numberPeople);
-                        double w2 = Utility.CalculateWeight(s, target.Root, s.nComingPeople);
+                        double w1 = utility.CalculateWeight(u, s, v.edge.numberPeople);
+                        double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
 
                         foreach (Adjacence ad in v.node.adjacences)
