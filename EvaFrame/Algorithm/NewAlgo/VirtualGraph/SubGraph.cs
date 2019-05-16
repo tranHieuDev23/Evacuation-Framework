@@ -56,15 +56,17 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             {
                 Node node = new Node(floor.Indicators[i]);
                 nodes.Add(node);
-            }
-            for (int i = 0; i < numberStair; i++)
-            {
-                Node node = new Node(floor.Stairs[i]);
-                stairs.Add(node);
+                if (floor.Indicators[i].IsStairNode)
+                {
+                    stairs.Add(node);
+                }
             }
             LinkNode();
         }
 
+        /// <summary>
+        /// Tạo cạnh tương ứng giữa các <c>node</c> trong <c>subgraph</c>
+        /// </summary>
         private void LinkNode()
         {
             foreach (var node in nodes)
