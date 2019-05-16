@@ -1,27 +1,15 @@
 ﻿using EvaFrame.Simulator;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.PlainDijikstra;
+using EvaFrame.Simulator.Hazards;
 using System;
 
 class Program
 {
-    class MyHazard: IHazard
-    {
-        void IHazard.Intialize(Building target)
-        {
-
-        }
-
-        void IHazard.Update(double updatePeriod)
-        {
-
-        }
-    }
-
     public static void Main(string[] args)
     {
-        Building building = Building.LoadFromFile("data_prime.bld");
-        Simulator simulator = new Simulator(building, new PlainDijikstra(), new MyHazard());
-        double result = simulator.RunSimulator(2000, 10000);
+        Building building = Building.LoadFromFile("data.bld");
+        Simulator simulator = new Simulator(building, new PlainDijikstra(), new BasicConstantHazard());
+        double result = simulator.RunSimulator(200, 10000);
     }
 }

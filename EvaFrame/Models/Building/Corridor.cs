@@ -7,6 +7,13 @@ namespace EvaFrame.Models.Building
     /// </summary>
     public class Corridor
     {
+        private string id;
+        /// <value>
+        /// <value>String định danh của <c>Corridor</c>, có dạng [định danh của <c>Indicator</c> đi]->[định danh của <c>Indicator</c> tới].</value>
+        /// </value>
+        public string Id { get { return id; } }
+
+
         private Indicator from, to;
         /// <value><c>Indicator</c> xuất phát của hành lang. Giá trị read-only.</value>
         public Indicator From { get { return from; } }
@@ -22,7 +29,7 @@ namespace EvaFrame.Models.Building
         public double Width { get { return width; } }
 
         /// <value>Khả năng thông qua của hành lang. Giá trị read-only.</value>
-        public double Capacity { get { return length * width; } }
+        public double Capacity { get { return length * width / 10; } }
 
         private double density;
         /// <value>
@@ -75,6 +82,12 @@ namespace EvaFrame.Models.Building
             this.width = width;
             this.density = density;
             this.trustiness = trustiness;
+            this.id = from.Id + "->" + to.Id;
         }
+
+        /// <value>
+        /// Trả lại <c>true</c> nếu như hành lang này là một cầu thang nối giữa hai Stair Node với nhau.
+        /// </value>
+        public bool IsStairway { get { return from.IsStairNode && to.IsStairNode; } }
     }
 }

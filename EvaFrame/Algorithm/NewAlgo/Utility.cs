@@ -29,7 +29,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Chỉ số ảnh hưởng</returns>
         private double ContextFunction(double trustness, double density)
         {
-
+            return (density + 1) / trustness;
         }
 
         /// <summary>
@@ -40,7 +40,10 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Giá trị trọng số của đoạn đường</returns>
         private double GetWeight(Edge edge, int numberPeople)
         {
-            
+            double density = GetDensity(edge, numberPeople);
+            return edge.CorrespondingCorridor.Length
+                 * ContextFunction(edge.CorrespondingCorridor.Trustiness, density);
+
         }
 
         /// <summary>
@@ -51,6 +54,9 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Giá trị mật độ người trên con đường</returns>
         private double GetDensity(Edge edge, int numberPeople)
         {
+            double density;
+            density = numberPeople / (edge.CorrespondingCorridor.Capacity);
+            return density;
 
         }
 
@@ -67,7 +73,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         {
             /*Implement code in here */
             double sumWeight = V_TB * TIME;
-            int numberPeople = passing.numberPeople;
+            int numberPeople = (int)passing.CorrespondingCorridor.Density;
             Node reach = from;
             Edge next = passing;
             while (sumWeight > 0)
@@ -134,9 +140,10 @@ namespace EvaFrame.Algorithm.NewAlgo
                     }
                 }
                 /*Cập nhật lại trọng số con đường của comingNode mà đi tới được reachedNode */
+                int numberPeople = (int) intermediate.edge.CorrespondingCorridor.Density;
                 double w1 = CalculateWeight(intermediate.node, 
                                             reachedNode, 
-                                            intermediate.edge.numberPeople);
+                                            numberPeople);
                 double w2 = CalculateWeight(reachedNode, root, reachedNode.nComingPeople);
                 intermediate.passingWeight = intermediate.edge.weight + w1 + w2;
                 GetNextNode(comingNode);
@@ -157,9 +164,13 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// phía trước trong cây khung Dijkstra
         /// </summary>
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
-        public void UpdateComingPeople(Edge edge)
+        public void UpdateComingPeople(Node node, Edge edge, Node root)
         {
             /*Implement code in here */
+            Node reachedNode = FindCrossNode(node, edge);
+            reachedNode.nComingPeople = reachedNode.nComingPeople 
+                                + (int) edge.CorrespondingCorridor.Density;
+            UpdateComingNode(reachedNode, root);
         }
     }
 }
