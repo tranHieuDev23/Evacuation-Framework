@@ -26,7 +26,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 this.node = node;
                 this.weightToRoot = weightToRoot;
             }
-            
+
             int IComparable.CompareTo(object obj)
             {
                 if (obj.GetType() != typeof(Data))
