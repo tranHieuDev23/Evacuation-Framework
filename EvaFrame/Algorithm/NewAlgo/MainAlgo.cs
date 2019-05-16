@@ -63,7 +63,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 s.nComingPeople += u.nextEdge.numberPeople;
                 s.ComingNodes.Add(u);
 
-                Utility.UpdateComingNode(s);
+                Utility.UpdateComingNode(s, target.root);
 
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == true)

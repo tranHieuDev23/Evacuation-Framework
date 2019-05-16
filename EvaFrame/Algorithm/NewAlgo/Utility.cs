@@ -76,7 +76,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             int numberPeople = (int)passing.CorrespondingCorridor.Density;
             Node reach = from;
             Edge next = passing;
-            while (sumWeight > 0)
+            while (sumWeight - GetWeight(next, numberPeople) > 0)
             {
                 sumWeight = sumWeight - GetWeight(next, numberPeople);
                 reach = next.To;
@@ -103,14 +103,16 @@ namespace EvaFrame.Algorithm.NewAlgo
             /*Implement code in here */
             double weight = 0;
             Edge current = from.nextEdge;
+            Edge preEdge;
             do
             {
+                preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
                                 * ContextFunction(current.CorrespondingCorridor.Trustiness, 
                                                   density);
                 current = current.To.nextEdge;
-            } while (current.To != to);
+            } while (preEdge.To != to);
             return weight;
         }
         
