@@ -7,21 +7,38 @@ using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
 { 
+    /// <summary>
+    /// Thuật toán tìm đường thoát hiểm trong các tòa nhà lớn theo phương pháp mới, 
+    /// áp dụng lên mô hình tòa nhà thông minh để tìm đường đi tối ưu nhất.
+    /// </summary>
     public class MainAlgo : IAlgorithm
     {
         private const double PositiveInfinity = 1000000000;
         private Graph target;
 
-        void IAlgorithm.Initialize(Building target)
+        /// <summary>
+        /// Nhận đầu vào thuật toán là một building và trả về đồ thị dùng cho thuật toán mới
+        /// </summary>
+        /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị</param>
+        void IAlgorithm.Initialize(Building building)
         {
-            this.target = new Graph(target);
+            target = new Graph(building);
         }
 
+        /// <summary>
+        /// Định nghĩa kiểu Data cho heap để sử dụng trong Dijkstra
+        /// </summary>
         public class Data : IComparable, ICloneable
         {
+            ///<value> </value>
             public Node node;
+
+            ///<value> khoảng cách từ <c>node</c> tới đỉnh root</value>
             public double weightToRoot;
 
+            /// <summary>
+            /// Khởi tạo một đối tượng <c>Data</c> mới.
+            /// </summary>
             public Data(Node node, double weightToRoot) 
             {
                 this.node = node;

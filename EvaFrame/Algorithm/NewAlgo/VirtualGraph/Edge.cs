@@ -54,6 +54,9 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             weightFunction = new LcdtFunction();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Update()
         {
             

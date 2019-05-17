@@ -202,8 +202,8 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         /// <param name="node">Đỉnh xuất phát</param>
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
-        /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong 
-        /// đồ thị</param>
+        /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong đồ thị</param>
+        /// <param name="heap">HeapMin trong MainAlgo để lưu lại trọng số đã được thay đổi</param>
         public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
