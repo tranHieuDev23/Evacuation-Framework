@@ -1,13 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\EvaFrame\\Algorithm",
-    "\\EvaFrame\\Algorithm\\NewAlgo",
-    "\\EvaFrame\\Algorithm\\NewAlgo\\Testing",
-    "\\EvaFrame\\Algorithm\\NewAlgo\\VirtualGraph",
-    "\\EvaFrame\\Models",
-    "\\EvaFrame\\Models\\Building",
-    "\\EvaFrame\\Utillities"
+    ""
   ],
   "SelectedNode": "\\Evacuation Framework.csproj",
   "PreviewInSolutionExplorer": false

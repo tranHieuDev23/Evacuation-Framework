@@ -15,6 +15,12 @@ namespace EvaFrame.Algorithm.NewAlgo
     {
         private const double PositiveInfinity = 1000000000;
         private Graph target;
+        private bool done;
+
+        /// <summary>
+        /// Khởi tạo đối tượng thuật toán ban đầu, chưa được gắn với tòa nhà mục tiêu cụ thể nào.
+        /// </summary>
+        public MainAlgo() { target = null; done = false; }
 
         /// <summary>
         /// Nhận đầu vào thuật toán là một building và trả về đồ thị dùng cho thuật toán mới
@@ -22,7 +28,8 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị</param>
         void IAlgorithm.Initialize(Building building)
         {
-            target = new Graph(building);
+            this.target = new Graph(building);
+            this.done = false;
         }
 
         /// <summary>
@@ -85,20 +92,24 @@ namespace EvaFrame.Algorithm.NewAlgo
 
         void IAlgorithm.Run()
         {
+            if (target == null || done)
+                return;
+            done = true;
+
             Utility utility = new Utility();
             //Các cấu trúc dữ liệu cần cho thuật toán
             MinHeap<Data> heap = new MinHeap<Data>();
                 
             Setup();
-            // heap.Push(new Data(target.Root, target.Root.weight));
-            foreach (var exit in target.Root.adjacences)
+            heap.Push(new Data(target.Root, target.Root.weight));
+            /*foreach (var exit in target.Root.adjacences)
             {
                 exit.node.nextEdge = exit.node.adjacences.Find(adj => adj.node == target.Root).edge;
                 exit.node.next = target.Root;
                 exit.node.reachedNode = target.Root;
                 exit.node.weight = 0;
                 heap.Push(new Data(exit.node, 0));
-            }
+            }*/
             
             while (heap.Count > 0)
             {
@@ -107,7 +118,8 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 Node u = data.node;
                 double wu = data.weightToRoot;
-                Console.WriteLine(u.nextEdge.CorrespondingCorridor.Length);
+                //Console.WriteLine(u.nextEdge.CorrespondingCorridor.Length);
+                Console.WriteLine(u);
 
                 if (u.label == true) 
                     break;
@@ -145,6 +157,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         if (newW < v.node.weight)
                         {
+                            v.node.nextEdge = v.node.adjacences.Find(adj => adj.node == u).edge;
                             v.node.weight = newW;
                             v.node.next = u;
                             v.node.reachedNode = s;
