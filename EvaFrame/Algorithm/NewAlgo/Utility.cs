@@ -123,6 +123,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
+        /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
         /// 
         //private MainAlgo mainAlgo = new MainAlgo();
         //private MainAlgo.Data data = new mainAlgo.Data();
@@ -151,7 +152,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 {
                     //MainAlgo mainAlgo = new MainAlgo();
                     //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
-                    heap.push(new mainAlgo.Data(comingNode, comingNode.weight));
+                    heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
         }
@@ -192,13 +193,13 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// phía trước trong cây khung Dijkstra
         /// </summary>
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
-        public void UpdateComingPeople(Node node, Edge edge, Node root)
+        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
-            UpdateComingNode(reachedNode, root);
+            UpdateComingNode(reachedNode, root, heap);
         }
     }
 }

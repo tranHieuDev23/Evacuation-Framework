@@ -37,6 +37,10 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         }
         private Node root;
 
+        /// <summary>
+        /// Đỉnh nguồn, đại diện cho phía bên ngoài tòa nhà.
+        /// </summary>
+        /// <value>Giá trị Read Only</value>
         public Node Root 
         {
             get

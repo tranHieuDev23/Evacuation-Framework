@@ -7,13 +7,13 @@ using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
 { 
-    class MainAlgo : IAlgorithm
+    public class MainAlgo : IAlgorithm
     {
         private Graph target;
 
         void IAlgorithm.Initialize(Building target)
         {
-
+            
         }
 
         public class Data : IComparable, ICloneable
@@ -70,12 +70,12 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == true)
-                        utility.UpdateComingPeople(v.edge);
+                        utility.UpdateComingPeople(u, v.edge, target.Root, heap);
 
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
-                        s = Uuility. FindCrossNode(v.node, v.edge);
+                        s = utility. FindCrossNode(v.node, v.edge);
                         s.nComingPeople += v.edge.numberPeople;
 
                         double w1 = utility.CalculateWeight(u, s, v.edge.numberPeople);
