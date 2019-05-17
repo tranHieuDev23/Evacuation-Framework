@@ -170,7 +170,7 @@ namespace EvaFrame.Models.Building
                 string[] peopleData = sr.ReadLine().Split(';');
                 Indicator following = IdToIndicator(target, peopleData[0]);
                 double speedMax = Double.Parse(peopleData[1]);
-                target.inhabitants.Add(new Person(speedMax, following));
+                target.inhabitants.Add(new Person("P-" + i.ToString(), speedMax, following));
             }
         }
 
