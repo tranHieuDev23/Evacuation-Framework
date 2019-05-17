@@ -48,56 +48,56 @@ namespace EvaFrame.Algorithm.NewAlgo
             //    u.label = false;
             //}
 
-            heap.Push(target.root);
+            // heap.Push(target.root);
 
-            while (heap.Count > 0)
-            {
-                Data data = heap.Top();
-                heap.Pop();
+            // while (heap.Count > 0)
+            // {
+            //     Data data = heap.Top();
+            //     heap.Pop();
 
-                Node u = data.node;
-                if (u.label == true) break;
-                u.label = true;
+            //     Node u = data.node;
+            //     if (u.label == true) break;
+            //     u.label = true;
 
-                Node s = u.ReachedNode;
-                s.nComingPeople += u.nextEdge.numberPeople;
-                s.ComingNodes.Add(u);
+            //     Node s = u.ReachedNode;
+            //     s.nComingPeople += u.nextEdge.numberPeople;
+            //     s.ComingNodes.Add(u);
 
-                Utility.UpdateComingNode(s, target.root);
+            //     Utility.UpdateComingNode(s, target.root);
 
-                foreach (Adjacence v in u.adjacences)
-                    if (v.node.label == true)
-                        Utility.UpdateComingPeople(v.egde);
+            //     foreach (Adjacence v in u.adjacences)
+            //         if (v.node.label == true)
+            //             Utility.UpdateComingPeople(v.egde);
 
-                foreach (Adjacence v in u.adjacences)
-                    if (v.node.label == false)
-                    {
-                        s = Utility. FindCrossNode(v.node, v.edge);
-                        s.nComingPeople += v.edge.numberPeople;
+            //     foreach (Adjacence v in u.adjacences)
+            //         if (v.node.label == false)
+            //         {
+            //             s = Utility. FindCrossNode(v.node, v.edge);
+            //             s.nComingPeople += v.edge.numberPeople;
 
-                        double w1 = Utility.CalculateWeight(u, s, v.edge.numberPeople);
-                        double w2 = Utility.CalculateWeight(s, target.root, s.nComingPeople);
-                        double newW = v.edge.weight + w1 + w2;
+            //             double w1 = Utility.CalculateWeight(u, s, v.edge.numberPeople);
+            //             double w2 = Utility.CalculateWeight(s, target.root, s.nComingPeople);
+            //             double newW = v.edge.weight + w1 + w2;
 
-                        foreach (Adjacence ad in v.node.adjacences)
-                            if (ad.node == u)
-                            {
-                                ad.passingWeight = newW;
-                                ad.reaching = s;
-                            }
+            //             foreach (Adjacence ad in v.node.adjacences)
+            //                 if (ad.node == u)
+            //                 {
+            //                     ad.passingWeight = newW;
+            //                     ad.reaching = s;
+            //                 }
 
-                        if (newW < v.node.weight)
-                        {
-                            v.node.weight = newW;
-                            v.node.next = u;
-                            v.node.ReachedNode = s;
-                            heap.Push(v.node);
-                        }
+            //             if (newW < v.node.weight)
+            //             {
+            //                 v.node.weight = newW;
+            //                 v.node.next = u;
+            //                 v.node.ReachedNode = s;
+            //                 heap.Push(v.node);
+            //             }
 
-                        s.nComingPeople -= v.edge.numberPeople;
-                    }
+            //             s.nComingPeople -= v.edge.numberPeople;
+            //         }
 
-            }
+            // }
 
         }
     }
