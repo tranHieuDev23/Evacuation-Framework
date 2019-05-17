@@ -123,6 +123,8 @@ namespace EvaFrame.Simulator
                     result = p;
                 }
             }
+
+            Console.WriteLine("Shortest distance from an inhabitant to an exit: " + bestDistance);
             return result;
         }
 

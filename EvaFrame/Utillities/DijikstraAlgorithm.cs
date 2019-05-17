@@ -10,20 +10,6 @@ namespace EvaFrame.Utilities
     /// </summary>
     public class DijikstraAlgorithm
     {
-        /// <summary>
-        /// Interface của hàm tính toán trọng số trên cạnh. Trọng số này có thể chỉ dựa trên độ dài vật lý của cạnh (thuật toán Dijikstra cơ bản),
-        /// hoặc sử dụng một công thức phức tạp hơn dựa vào các thông số khác như khả năng thông qua, số lượng người trên cạnh, vân vân.
-        /// </summary>
-        public interface IWeigthFunction
-        {
-            /// <summary>
-            /// Tính toán trọng số trên một cạnh cụ thể.
-            /// </summary>
-            /// <param name="corridor">Cạnh cần tính trọng số</param>
-            /// <returns>Trọng số của cạnh.</returns>
-            double calculateWeight(Corridor corridor);
-        }
-
         private IWeigthFunction weightFunction;
 
         /// <summary>
@@ -117,7 +103,7 @@ namespace EvaFrame.Utilities
                 {
                     Indicator v = c.To;
                     double wv = result[v].DistanceToExit;
-                    double wc = weightFunction.calculateWeight(c);
+                    double wc = weightFunction.CalculateWeight(c);
                     if (wv <= wu + wc)
                         continue;
 
