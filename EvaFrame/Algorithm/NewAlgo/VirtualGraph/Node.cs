@@ -99,6 +99,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         {
             this.correspondingIndicator = indicator;
             this.adjacences = new List<Adjacence>();
+            this.comingNodes = new List<Node>();
         }
     }
 }

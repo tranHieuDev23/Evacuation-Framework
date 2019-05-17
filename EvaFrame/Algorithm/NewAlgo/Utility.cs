@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EvaFrame.Utilities;
 using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
@@ -52,7 +53,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="edge"></param> Đoạn đường đang xét
         /// <param name="numberPeople"></param>Số người đang đi trên con đường
         /// <returns>Giá trị mật độ người trên con đường</returns>
-        private double GetDensity(Edge edge, int numberPeople)
+        public double GetDensity(Edge edge, int numberPeople)
         {
             double density;
             density = numberPeople / (edge.CorrespondingCorridor.Capacity);
@@ -101,11 +102,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
+            if(from == to)
+            {
+                return 0;
+            }
             double weight = 0;
             Edge current = from.nextEdge;
             Edge preEdge;
             do
             {
+                if(current == null)
+                {
+                    throw new Exception("Not exit path");
+                }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
@@ -122,7 +131,11 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
-        public void UpdateComingNode(Node reachedNode, Node root)
+        /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
+        /// 
+        //private MainAlgo mainAlgo = new MainAlgo();
+        //private MainAlgo.Data data = new mainAlgo.Data();
+        public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             foreach (var comingNode in reachedNode.comingNodes)
@@ -145,7 +158,9 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    /*push lại phần tử comingNode vào heap */
+                    //MainAlgo mainAlgo = new MainAlgo();
+                    //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
+                    heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
         }
@@ -189,13 +204,13 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
         /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong 
         /// đồ thị</param>
-        public void UpdateComingPeople(Node node, Edge edge, Node root)
+        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
-            UpdateComingNode(reachedNode, root);
+            UpdateComingNode(reachedNode, root, heap);
         }
     }
 }
