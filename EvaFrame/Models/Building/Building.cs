@@ -112,6 +112,7 @@ namespace EvaFrame.Models.Building
                 double width = Double.Parse(values[3]);
                 double trustiness = Double.Parse(values[4]);
                 from.Neighbors.Add(new Corridor(from, to, false, length, width, 0, trustiness));
+                to.Neighbors.Add(new Corridor(to, from, false, length, width, 0, trustiness));
             }
         }
 
