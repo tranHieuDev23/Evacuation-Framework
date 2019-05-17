@@ -65,16 +65,23 @@ namespace EvaFrame.Models.Building
             }
         }
 
+        private bool isStairWay;
+        /// <value>
+        /// Trả lại <c>true</c> nếu như hành lang này là một cầu thang nối giữa hai Stair Node với nhau.
+        /// </value>
+        public bool IsStairway { get { return isStairWay; } }
+
         /// <summary>
         /// Khởi tạo một hành lang mới.
         /// </summary>
         /// <param name="from"><c>Indicator</c> xuất phát.</param>
         /// <param name="to"><c>Indicator</c> kết thúc.</param>
+        /// <param name="isStairWay">Hành lang này có phải là cầu thang nối giữa các tầng với nhau không.</param>
         /// <param name="length">Độ dài của hành lang.</param>
         /// <param name="width">Độ rộng của hành lang.</param>
         /// <param name="density">Mật độ người đi qua ban đầu. Giá trị mặc định bằng 0 (không có ai đi qua).</param>
         /// <param name="trustiness">Độ tin tưởng của con đường ban đầu. Giá trị mặc định bằng 1 (con đường hoàn toàn không bị ảnh hưởng bởi thảm họa).</param>
-        public Corridor(Indicator from, Indicator to, double length, double width, double density = 0, double trustiness = 1)
+        public Corridor(Indicator from, Indicator to, bool isStairWay, double length, double width, double density = 0, double trustiness = 1)
         {
             this.from = from;
             this.to = to;
@@ -82,12 +89,8 @@ namespace EvaFrame.Models.Building
             this.width = width;
             this.density = density;
             this.trustiness = trustiness;
+            this.isStairWay = isStairWay;
             this.id = from.Id + "->" + to.Id;
         }
-
-        /// <value>
-        /// Trả lại <c>true</c> nếu như hành lang này là một cầu thang nối giữa hai Stair Node với nhau.
-        /// </value>
-        public bool IsStairway { get { return from.IsStairNode && to.IsStairNode; } }
     }
 }
