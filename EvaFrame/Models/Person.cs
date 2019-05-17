@@ -7,9 +7,15 @@ namespace EvaFrame.Models
     /// </summary>
     public class Person
     {
+        private string id;
+        /// <value>
+        /// String định danh của cư dân.
+        /// </value>
+        public string Id { get { return id; } }
+
         private double speedMax;
         /// <value>
-        /// Vận tốc tối đa của cư dân, trong môi trường tối ưu (hành lang có độ tin cậy 1, không có người nào khác đi qua).
+        /// Vận tốc tối đa của cư dân trong môi trường tối ưu (hành lang có độ tin cậy 1, không có người nào khác đi qua).
         /// </value>
         public double SpeedMax { get { return speedMax; } }
 
@@ -49,10 +55,12 @@ namespace EvaFrame.Models
         /// <summary>
         /// Khởi tại một đối tượng cư dân mới.
         /// </summary>
-        /// <param name="speedMax">Vận tốc tối đa của người này trong môi trường tối ưu.</param>
+        /// <param name="id">String định danh của cư dân.</param>
+        /// <param name="speedMax">Vận tốc tối đa của cư dân trong môi trường tối ưu.</param>
         /// <param name="following">Indicator đầu tiên người này nhận chỉ dẫn.</param>
-        public Person(double speedMax, Indicator following)
+        public Person(string id, double speedMax, Indicator following)
         {
+            this.id = id;
             this.speedMax = speedMax;
             this.following = following;
             this.location = null;
@@ -68,7 +76,7 @@ namespace EvaFrame.Models
         {
             double result = corridor.Trustiness * speedMax
                 * ((corridor.Capacity - corridor.Density + 1) / corridor.Capacity);
-            return (result > 0? result : 0);
+            return (result > 0 ? result : 0);
         }
 
         /// <summary>
@@ -95,7 +103,7 @@ namespace EvaFrame.Models
                         return false;
                     // Nhận chỉ dẫn từ Indicator.
                     location = following.Next;
-                    location.Density ++;
+                    location.Density++;
                 }
 
                 double distanceLeft = location.Length * (1 - completedPercentage);
@@ -109,7 +117,7 @@ namespace EvaFrame.Models
                 }
 
                 // Nếu như người này kịp di chuyển khỏi hành lang.
-                location.Density --;
+                location.Density--;
 
                 // Nếu như người này tới được Exit Node.
                 if (location.To.IsExitNode)

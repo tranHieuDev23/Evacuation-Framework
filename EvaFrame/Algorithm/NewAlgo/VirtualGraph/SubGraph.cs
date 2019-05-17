@@ -50,6 +50,8 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             int numberIndicator = floor.Indicators.Count;
             int numberStair = floor.Stairs.Count;
             correspondingFloor = floor;
+            nodes = new List<Node>();
+            stairs = new List<Node>();
 
             /*Khởi tạo các đỉnh trong SubGraph tương ứng với Floor */
             for (int i = 0; i < numberIndicator; i++)

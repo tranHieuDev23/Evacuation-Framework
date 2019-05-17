@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
+using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm;
+using EvaFrame.Utilities;
+using EvaFrame.Utilities.WeightFunctions;
 
 namespace EvaFrame.Simulator
 {
@@ -12,18 +16,28 @@ namespace EvaFrame.Simulator
         private Building target;
         private IAlgorithm algorithm;
         private IHazard hazard;
+        private Dictionary<Indicator, DijikstraAlgorithm.Data> distanceData;
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>Simulator</c> để mô phỏng thuật toán.
+        /// Throw <c>ArgumentException</c> nếu như trong các tham số truyền vào có giá trị null.
         /// </summary>
         /// <param name="target">Tòa nhà mục tiêu.</param>
         /// <param name="algorithm">Thuật toán được mô phỏng.</param>
         /// <param name="hazard">Thảm họa trong mô phỏng.</param>
         public Simulator(Building target, IAlgorithm algorithm, IHazard hazard)
         {
+            if (target == null)
+                throw new ArgumentException("target cannot be null!", "target");
+            if (algorithm == null)
+                throw new ArgumentException("algorithm cannot be null!", "algorithm");
+            if (hazard == null)
+                throw new ArgumentException("hazard cannot be null!", "hazard");
+
             this.target = target;
             this.algorithm = algorithm;
             this.hazard = hazard;
+            this.distanceData = null;
         }
 
         /// <summary>
@@ -40,6 +54,7 @@ namespace EvaFrame.Simulator
         /// </returns>
         public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod)
         {
+            IntializeDistance();
             hazard.Intialize(target);
             algorithm.Initialize(target);
 
@@ -47,7 +62,7 @@ namespace EvaFrame.Simulator
             DateTime lastSituationUpdate = DateTime.MinValue;
             DateTime lastAlgorithmRun = DateTime.MinValue;
             DateTime simulationLast;
-            while(true)
+            while (true)
             {
                 simulationLast = DateTime.Now;
                 if (target.Inhabitants.Count == 0)
@@ -58,23 +73,11 @@ namespace EvaFrame.Simulator
 
                 if (situationWait >= situationUpdatePeriod)
                 {
-                    hazard.Update(situationUpdatePeriod / 1000);
-                    target.MoveInhabitants(situationUpdatePeriod / 1000);
+                    double updatePeriod = situationWait / 1000;
+                    hazard.Update(updatePeriod);
+                    target.MoveInhabitants(updatePeriod);
                     lastSituationUpdate = simulationLast;
-                    Console.WriteLine("Remaining inhabitants: " + target.Inhabitants.Count);
-                    Console.WriteLine("First inhabitant location: " + target.Inhabitants[0].Location);
-                    if (target.Inhabitants[0].Location != null)
-                    {
-                        Console.WriteLine("First inhabitant location length: " + target.Inhabitants[0].Location.Length);
-                        Console.WriteLine("First inhabitant location width: " + target.Inhabitants[0].Location.Width);
-                        Console.WriteLine("First inhabitant location capacity: " + target.Inhabitants[0].Location.Capacity);
-                        Console.WriteLine("First inhabitant location density: " + target.Inhabitants[0].Location.Density);
-                        Console.WriteLine("First inhabitant location trustiness: " + target.Inhabitants[0].Location.Trustiness);
-                    }
-                    Console.WriteLine("First inhabitant completedPercentage: " + target.Inhabitants[0].CompletedPercentage);
-                    Console.WriteLine("First inhabitant SpeedMax: " + target.Inhabitants[0].SpeedMax);
-                    if (target.Inhabitants[0].Location != null)
-                        Console.WriteLine("First inhabitant actualSpeed: " + target.Inhabitants[0].CalculateActualSpeed(target.Inhabitants[0].Location));
+                    PrintStatus(simulationStart, simulationLast);
                 }
 
                 if (algorithmWait >= algorithmUpdatePeriod)
@@ -85,6 +88,64 @@ namespace EvaFrame.Simulator
             }
 
             return simulationLast.Subtract(simulationStart).TotalSeconds;
+        }
+
+        private void IntializeDistance()
+        {
+            DijikstraAlgorithm da = new DijikstraAlgorithm(new LengthOnlyFunction());
+            distanceData = da.Run(target);
+        }
+
+        private void PrintStatus(DateTime simulationStart, DateTime simulationLatest)
+        {
+            Console.WriteLine("-------------------------");
+            Console.WriteLine(String.Format("Time elapsed: {0, 0:F5}s", simulationLatest.Subtract(simulationStart).TotalSeconds));
+            Console.WriteLine(String.Format("Remaining inhabitants: {0, 0:D}", target.Inhabitants.Count));
+            Console.WriteLine("Information about the inhabitant closest to an exit:");
+            PrintInhabitantData(FindInhabitantClosestToExit());
+        }
+
+        private Person FindInhabitantClosestToExit()
+        {
+            Person result = null;
+            double bestDistance = Double.PositiveInfinity;
+
+            foreach (Person p in target.Inhabitants)
+            {
+                double distance;
+                if (p.Location == null)
+                    distance = distanceData[p.Following].DistanceToExit;
+                else
+                    distance = distanceData[p.Location.To].DistanceToExit + p.Location.Length * (1 - p.CompletedPercentage);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    result = p;
+                }
+            }
+
+            Console.WriteLine("Shortest distance from an inhabitant to an exit: " + bestDistance);
+            return result;
+        }
+
+        private void PrintInhabitantData(Person inhabitant)
+        {
+            Console.WriteLine("Inhabitant Id: " + inhabitant.Id);
+            Console.WriteLine("Inhabitant SpeedMax: " + inhabitant.SpeedMax);
+            Console.WriteLine("Inhabitant is taking direction from indicator: " + inhabitant.Following.Id);
+            if (inhabitant.Location == null)
+            {
+                Console.WriteLine("Inhabitant is currently not running on any corridor.");
+                return;
+            }
+            Console.WriteLine("Inhabitant is currently running on corridor: " + inhabitant.Location.Id);
+            Console.WriteLine("Corridor length: " + inhabitant.Location.Length);
+            Console.WriteLine("Corridor width: " + inhabitant.Location.Width);
+            Console.WriteLine("Corridor capacity: " + inhabitant.Location.Capacity);
+            Console.WriteLine("Corridor density: " + inhabitant.Location.Density);
+            Console.WriteLine("Corridor trustiness: " + inhabitant.Location.Trustiness);
+            Console.WriteLine("Inhabitant completedPercentage: " + inhabitant.CompletedPercentage);
+            Console.WriteLine("Inhabitant actualSpeed: " + inhabitant.CalculateActualSpeed(inhabitant.Location));
         }
     }
 }

@@ -102,11 +102,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
+            if(from == to)
+            {
+                return 0;
+            }
             double weight = 0;
             Edge current = from.nextEdge;
             Edge preEdge;
             do
             {
+                if(current == null)
+                {
+                    throw new Exception("Not exit path");
+                }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
@@ -123,6 +131,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
+        /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
         /// 
         //private MainAlgo mainAlgo = new MainAlgo();
         //private MainAlgo.Data data = new mainAlgo.Data(); 
@@ -151,7 +160,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 {
                     //MainAlgo mainAlgo = new MainAlgo();
                     //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
-                    heap.push(new mainAlgo.Data(comingNode, comingNode.weight));
+                    heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
         }
@@ -191,14 +200,17 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// Cập nhật người từ các đỉnh nằm giữa các đỉnh đã được gán nhãn cho các đỉnh 
         /// phía trước trong cây khung Dijkstra
         /// </summary>
+        /// <param name="node">Đỉnh xuất phát</param>
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
-        public void UpdateComingPeople(Node node, Edge edge, Node root)
+        /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong 
+        /// đồ thị</param>
+        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
-            UpdateComingNode(reachedNode, root);
+            UpdateComingNode(reachedNode, root, heap);
         }
     }
 }

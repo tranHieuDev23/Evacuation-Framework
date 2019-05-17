@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.4.11)  14 MAY 2019 05:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) (preloaded format=pdflatex 2019.4.11)  17 MAY 2019 13:40
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/khanh/Desktop/Working/KTLT/Evacuation-Framework/AlgoSummarization/Algorithms.tex
-(/home/khanh/Desktop/Working/KTLT/Evacuation-Framework/AlgoSummarization/Algorithms.tex
+**/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/AlgoSummarization/Report.tex
+(/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/AlgoSummarization/Report.tex
 LaTeX2e <2018-04-01> patch level 5
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
@@ -304,8 +304,8 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \Gm@layouthoffset=\dimen118
 \Gm@layoutvoffset=\dimen119
 \Gm@dimlist=\toks25
-) (/home/khanh/Desktop/Working/KTLT/Evacuation-Framework/AlgoSummarization/Algorithms.aux)
-\openout1 = `Algorithms.aux'.
+) (/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/AlgoSummarization/Report.aux)
+\openout1 = `Report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
 LaTeX Font Info:    ... okay on input line 18.
@@ -361,26 +361,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 20--23
 
  []
 
+
+LaTeX Warning: Command \L invalid in math mode on input line 51.
+
+
+LaTeX Warning: Command \L invalid in math mode on input line 51.
+
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 105.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 106.
  (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 105.
- [2] [3] [4] [5] [6] (/home/khanh/Desktop/Working/KTLT/Evacuation-Framework/AlgoSummarization/Algorithms.aux) ) 
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 106.
+ (/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/AlgoSummarization/Algorithm.tex [2]) [3] [4] [5] [6] (/home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/AlgoSummarization/Report.aux) ) 
 Here is how much of TeX's memory you used:
- 2685 strings out of 492641
- 34200 string characters out of 6131787
- 115678 words of memory out of 5000000
- 6567 multiletter control sequences out of 15000+600000
- 20245 words of font info for 34 fonts, out of 8000000 for 9000
+ 2690 strings out of 492641
+ 34460 string characters out of 6131787
+ 115680 words of memory out of 5000000
+ 6569 multiletter control sequences out of 15000+600000
+ 21226 words of font info for 35 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,5n,22p,372b,307s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,5n,22p,377b,307s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbxti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vncsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti8.pfb>
-Output written on /home/khanh/Desktop/Working/KTLT/Evacuation-Framework/AlgoSummarization/Algorithms.pdf (6 pages, 171478 bytes).
+Output written on /home/kiritsugu/Documents/KiThuatLapTrinh/Evacuation-Framework/AlgoSummarization/Report.pdf (6 pages, 175245 bytes).
 PDF statistics:
  91 PDF objects out of 1000 (max. 8388607)
  65 compressed objects within 1 object stream

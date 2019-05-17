@@ -37,6 +37,10 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         }
         private Node root;
 
+        /// <summary>
+        /// Đỉnh nguồn, đại diện cho phía bên ngoài tòa nhà.
+        /// </summary>
+        /// <value>Giá trị Read Only</value>
         public Node Root 
         {
             get
@@ -51,6 +55,9 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị</param>
         public Graph(Building building)
         {
+            floorGraphs = new List<SubGraph>();
+            allStairs = new List<Node>();
+            root = new Node(new Indicator("root"));
             /*Khởi tạo các subgraph tương ứng với các tầng */
             foreach (var floor in building.Floors)
             {
@@ -77,7 +84,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     }
                 }
             }
-            /*Khởi tạo các node tương ứng với exit trong build và kết nối vào graph */
+            /*Khởi tạo các node tương ứng với exit trong building và kết nối vào graph */
             foreach (var subGraph in floorGraphs)
             {
                 foreach (var node in subGraph.Nodes)
@@ -85,14 +92,14 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     if (node.CorrespondingIndicator.IsExitNode)
                     {
                         Adjacence adjacence1 = new Adjacence();
-                        Corridor cor1 = new Corridor(node.CorrespondingIndicator, null,
+                        Corridor cor1 = new Corridor(node.CorrespondingIndicator, root.CorrespondingIndicator, false,
                                                     0, 1, 0, 1);
                         adjacence1.edge = new Edge(cor1, root);
                         adjacence1.node = root;
                         node.adjacences.Add(adjacence1);
 
                         Adjacence adjacence2 = new Adjacence();
-                        Corridor cor2 = new Corridor(node.CorrespondingIndicator, null,
+                        Corridor cor2 = new Corridor(root.CorrespondingIndicator, node.CorrespondingIndicator, false,
                                                     0, 1, 0, 1);
                         adjacence2.edge = new Edge(cor2, node);
                         adjacence2.node = node;
@@ -132,13 +139,20 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <c> building </c>
         /// </summary>
         public void UpdateResultToBuilding(){
+            int count = 0;
             foreach (var subGraph in floorGraphs)
             {
                 foreach (var node in subGraph.Nodes)
                 {
+                    if(node.nextEdge == null)
+                    {
+                        ++count;
+                        continue;
+                    }
                     node.CorrespondingIndicator.Next = node.nextEdge.CorrespondingCorridor;
                 }
             }
+            Console.WriteLine("{0} {1}", "numberOfExitNode = ", count);
         }
     }
 }
