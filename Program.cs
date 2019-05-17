@@ -9,8 +9,8 @@ class Program
 {
     public static void Main(string[] args)
     {
-        Building building = Building.LoadFromFile("data.bld");
-        Simulator simulator = new Simulator(building, new MainAlgo(), new BasicConstantHazard());
+        Building building = Building.LoadFromFile("test.bld");
+        Simulator simulator = new Simulator(building, new MainAlgo(), new NullHazard());
         double result = simulator.RunSimulator(2000, 10000);
     }
 }

@@ -111,7 +111,8 @@ namespace EvaFrame.Models.Building
                 double length = Double.Parse(values[2]);
                 double width = Double.Parse(values[3]);
                 double trustiness = Double.Parse(values[4]);
-                from.Neighbors.Add(new Corridor(from, to, length, width, 0, trustiness));
+                from.Neighbors.Add(new Corridor(from, to, false, length, width, 0, trustiness));
+                to.Neighbors.Add(new Corridor(to, from, false, length, width, 0, trustiness));
             }
         }
 
@@ -145,8 +146,8 @@ namespace EvaFrame.Models.Building
                 double length = Double.Parse(values[2]);
                 double width = Double.Parse(values[3]);
                 double trustiness = Double.Parse(values[4]);
-                from.Neighbors.Add(new Corridor(from, to, length, width, 0, trustiness));
-                to.Neighbors.Add(new Corridor(to, from, length, width, 0, trustiness));
+                from.Neighbors.Add(new Corridor(from, to, true, length, width, 0, trustiness));
+                to.Neighbors.Add(new Corridor(to, from, true, length, width, 0, trustiness));
             }
         }
 
