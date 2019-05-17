@@ -102,11 +102,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
+            if(from == to)
+            {
+                return 0;
+            }
             double weight = 0;
             Edge current = from.nextEdge;
             Edge preEdge;
             do
             {
+                if(current == null)
+                {
+                    throw new Exception("Not exit path");
+                }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 

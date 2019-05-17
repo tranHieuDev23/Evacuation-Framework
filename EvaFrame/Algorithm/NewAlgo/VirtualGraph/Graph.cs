@@ -55,6 +55,9 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị</param>
         public Graph(Building building)
         {
+            floorGraphs = new List<SubGraph>();
+            allStairs = new List<Node>();
+            root = new Node(null);
             /*Khởi tạo các subgraph tương ứng với các tầng */
             foreach (var floor in building.Floors)
             {
@@ -81,7 +84,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     }
                 }
             }
-            /*Khởi tạo các node tương ứng với exit trong build và kết nối vào graph */
+            /*Khởi tạo các node tương ứng với exit trong building và kết nối vào graph */
             foreach (var subGraph in floorGraphs)
             {
                 foreach (var node in subGraph.Nodes)
@@ -136,13 +139,20 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <c> building </c>
         /// </summary>
         public void UpdateResultToBuilding(){
+            int count = 0;
             foreach (var subGraph in floorGraphs)
             {
                 foreach (var node in subGraph.Nodes)
                 {
+                    if(node.nextEdge == null)
+                    {
+                        ++count;
+                        continue;
+                    }
                     node.CorrespondingIndicator.Next = node.nextEdge.CorrespondingCorridor;
                 }
             }
+            Console.WriteLine("{0} {1}", "numberOfExitNode = ", count);
         }
     }
 }
