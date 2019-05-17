@@ -12,10 +12,22 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         private CrossGraph crossGraph;
 
         public GlobalEvaluation() {}
+        /// <summary>
+        /// Khởi tạo thuật toán Global Evaluation.
+        /// </summary>
+        /// <param name="crossGraph">
+        /// Một đồ thị ảo giữa các Stair Node với nhau và với Exit Node.
+        /// </param>
         public GlobalEvaluation(CrossGraph crossGraph) {
             this.crossGraph = crossGraph;
         }
-
+        
+        /// <summary>
+        /// Chạy thuật toán Global Evaluation.
+        /// </summary>
+        /// <returns>
+        /// Trả trọng số giữa các Stair Node với Exit Node.
+        /// </returns>
         public Dictionary<PairNN, double> Run() {
             Dictionary<PairNN, double> wGlobal = new Dictionary<PairNN, double>();
 
@@ -31,6 +43,15 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             return wGlobal;
         }
 
+        /// <summary>
+        /// Thuật toán Dijkstra với đỉnh xuất phát là 1 Exit Node.
+        /// </summary>
+        /// <param name="exitNode">
+        /// Exit Node xuất phát.
+        /// </param>
+        /// <returns>
+        /// Trọng số đường đi ngắn nhất từ Exit Node đến các Stair Node.
+        /// </returns>
         public Dictionary<PairNN, double> dijkstra(Node exitNode) {
             Dictionary<PairNN, double> weights = new Dictionary<PairNN, double>(new NodeEqualityComparer());
             MinHeap<Data> heap = new MinHeap<Data>();
@@ -46,12 +67,15 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             while(heap.Count > 0) {
                 Node u = heap.Top().node;
                 double wu = heap.Top().weightToExit;
+                heap.Pop();
 
                 if (weights[new PairNN(exitNode, u)] != wu) continue;
 
                 foreach (Edge e in u.Adjencents) {
                     Node v = e.To;
-                    double wv = weights[new PairNN(exitNode, v)];
+                    PairNN ev = new PairNN(exitNode, v);
+                    if (!weights.ContainsKey(ev)) continue;
+                    double wv = weights[ev];
 
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;

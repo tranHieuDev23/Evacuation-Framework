@@ -74,13 +74,15 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         public bool Equals(PairNN p1, PairNN p2) {
             if (p1 == null && p2 == null) return true;
             if (p1 == null || p2 == null) return false;
-            if (p1.First == p2.First && p1.Second == p2.Second) return true;
+            //if (p1.First == p2.First && p1.Second == p2.Second) return true;
+            if (p1.First.CorresspodingIndicator.Equals(p2.First.CorresspodingIndicator) 
+                && p1.Second.CorresspodingIndicator.Equals(p2.Second.CorresspodingIndicator)) return true;
             return false;
         }
 
         public int GetHashCode(PairNN p) {
             if (p.First == null || p.Second == null) return 0;
-            int hCode = p.First.GetHashCode() ^ p.Second.GetHashCode();
+            int hCode = p.First.CorresspodingIndicator.GetHashCode() ^ p.Second.CorresspodingIndicator.GetHashCode();
             return hCode.GetHashCode();    
         }
     }

@@ -8,48 +8,72 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
     public class EvacuationRouteSelector {
         private CrossGraph crossGraph;
-        private Dictionary<PairNN, double> wLocals, wGlobals;
-
+        private Dictionary<PairNN, double> wGlobals;
+        
+        /// <summary>
+        /// Khởi tạo bộ chọn tuyến đường.
+        /// </summary>
         public EvacuationRouteSelector() {
             this.crossGraph = null;
-        }
-        public void initialize( CrossGraph crossGraph,
-                                Dictionary<PairNN, double> wLocals,
-                                Dictionary<PairNN, double> wGlobals) {
-            this.crossGraph = crossGraph;
-            this.wLocals = wLocals;
-            this.wGlobals = wGlobals;
+            this.wGlobals = new Dictionary<PairNN, double>(new NodeEqualityComparer());
         }
 
-        public void selectionPath(Building building) {
-            foreach (Floor floor in building.Floors) {
-                foreach (Indicator indicator in floor.Indicators) {
+        /// <summary>
+        /// Khởi tạo bộ chọn tuyến đường.
+        /// </summary>
+        /// <param name="crossGraph">
+        /// Đồ thị giữa các Stair Node với nhau và với Exit Node.
+        /// </param>
+        /// <param name="wGlobals">
+        /// Trọng số giữa Exit Node tới các Stair Node tương ứng với Cross Graph.
+        /// </param>
+        public void initialize( CrossGraph crossGraph,
+                                Dictionary<PairNN, double> wGlobals) {
+            this.crossGraph = crossGraph;
+            this.wGlobals = wGlobals;
+        }
+        
+        /// <summary>
+        /// Chọn cạnh tiếp theo mà indicator tương ứng sẽ chỉ tới.
+        /// </summary>
+        /// <param name="building">
+        /// Thông số của toà nhà.
+        /// </param>
+        public void selectionPath() {
+            Building building = crossGraph.Target;
+
+            for (int i = 0; i < building.Floors.Count; ++i) {
+                Floor floor = building.Floors[i];
+                foreach (Indicator indicator in floor.Indicators) 
+                if (!indicator.IsExitNode) {
                     Node u = new Node(indicator);
 
                     double minPath = Double.PositiveInfinity;
-                    if (floor.Equals(building.Floors[0])) {
-                        foreach (Indicator exit in building.Exits) {
-                            Node exitNode = new Node(exit);
-                            PairNN uToExitNode = new PairNN(u, exitNode);
-                            if (minPath > wLocals[uToExitNode]) {
-                                minPath = wLocals[uToExitNode];
-                                u.Next = u.NextOptions.Find(option => option.StairNode == exitNode).Next;
+                    if (i == 0) {
+                        foreach (NodeOption option in u.NextOptions) {
+                            double weightToS = option.WeightToS;
+                            Node stairNode = option.StairNode;
+                            if (stairNode.IsStairNode) continue;
+
+                            if (minPath > weightToS) {
+                                minPath = weightToS;
+                                u.Next = option.Next;
                             }
                         }
                     }
                     else {
-                        foreach(Indicator exit in building.Exits) {
-                            Node exitNode = new Node(exit);
-
-                            foreach (Indicator stair in floor.Stairs) {
-                                Node stairNode = new Node(stair);
-                                PairNN uToStairNode = new PairNN(u, stairNode);
+                        foreach (NodeOption option in u.NextOptions) {
+                            foreach (Indicator exit in building.Exits) {
+                                Node exitNode = new Node(exit);
+                                double weightToS = option.WeightToS;
+                                Node stairNode = option.StairNode;
                                 PairNN stairNodeToExitNode = new PairNN(stairNode, exitNode);
 
-                                if (minPath > wLocals[uToStairNode] + wGlobals[stairNodeToExitNode]) {
-                                    minPath = wLocals[uToStairNode] + wGlobals[stairNodeToExitNode];
-                                    u.Next = u.NextOptions.Find(option => option.StairNode == stairNode).Next;
+                                if (minPath > weightToS + wGlobals[stairNodeToExitNode]) {
+                                    minPath = weightToS + wGlobals[stairNodeToExitNode];
+                                    u.Next = option.Next;
                                 }
+
                             }
                         }
                     }

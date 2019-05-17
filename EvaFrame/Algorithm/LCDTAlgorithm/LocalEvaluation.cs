@@ -12,19 +12,28 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         private SubGraph subGraph;
         
         public LocalEvaluation() { this.subGraph = null; }
+        /// <summary>
+        /// Khởi tạo thuật toán Local Evaluation.
+        /// </summary>
+        /// <param name="subGraph">
+        /// Một đồ thị con tương ứng với một tầng.
+        /// </param>
         public LocalEvaluation(SubGraph subGraph) {
             this.subGraph = subGraph;
         }
 
         
         /// <summary>
-        ///  
+        /// Chạy thuật toán Local Evaluation.
         /// </summary>
+        /// <returns>
+        /// Trả về trọng số giữa các Stair Node trong cùng tầng.
+        /// </returns>
         public Dictionary<PairNN, double> Run() {
             Dictionary<PairNN, double> wLocal = new Dictionary<PairNN, double>();
 
             foreach (Node u in subGraph.Nodes) 
-            if (u.IsStairNode) {
+            if (u.IsStairNode || u.IsExitNode) {
                 Dictionary<Node, double> tempWeights = runDijkstra(u);
                 
                 foreach (Node v in subGraph.Nodes) {
@@ -33,6 +42,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                     v.NextOptions.Add(new NodeOption(next, weightToS, u));
 
                     if ((v.IsStairNode == true || v.IsExitNode == true) && v.Equals(u) == false) {
+                        //if (u.IsExitNode) Console.WriteLine("abc");
                         wLocal[new PairNN(v, u)] = weightToS;
                     }
                 }
