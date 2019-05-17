@@ -68,14 +68,6 @@ namespace EvaFrame.Algorithm.NewAlgo
 
         void IAlgorithm.Run()
         {
-            int count = 0;
-            foreach (var adj in target.Root.adjacences)
-            {
-                if (adj.node.CorrespondingIndicator.IsExitNode)
-                {
-                    Console.WriteLine("{0} {1} {2}", "exit", ++count, adj.edge.CorrespondingCorridor.Length);
-                }
-            }
             Utility utility = new Utility();
             //Các cấu trúc dữ liệu cần cho thuật toán
             MinHeap<Data> heap = new MinHeap<Data>();

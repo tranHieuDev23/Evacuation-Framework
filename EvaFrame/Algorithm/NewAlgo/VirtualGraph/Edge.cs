@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
+using EvaFrame.Utilities;
+using EvaFrame.Utilities.WeightFunctions;
 
 namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
 {
@@ -31,7 +33,15 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <summary>
         /// 
         /// </summary>
-        public double weight;
+        public double weight
+        {
+            get
+            {
+                return weightFunction.CalculateWeight(correspondingCorridor);
+            }
+        }
+
+        private IWeigthFunction weightFunction;
 
         /// <summary>
         /// 
@@ -41,6 +51,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             correspondingCorridor = cor;
             numberPeople = Convert.ToInt32(cor.Density);
             to = nod;
+            weightFunction = new LcdtFunction();
         }
 
         public void Update()
