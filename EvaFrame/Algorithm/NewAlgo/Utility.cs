@@ -11,8 +11,8 @@ namespace EvaFrame.Algorithm.NewAlgo
     /// </summary>
     public class Utility
     {
-        private const double V_TB = 5;
-        private const double TIME = 10;
+        private const double V_TB = 3;
+        private const double TIME = 25;
 
         /// <summary>
         /// Setup all data in order to re-execute Algorithm
@@ -82,10 +82,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 sumWeight = sumWeight - GetWeight(next, numberPeople);
                 reach = next.To;
                 next = reach.nextEdge;
-                if (next == null)
-                {
-                    break;
-                }
+                if(next == null) break;
             }
             return reach;
         }
@@ -113,6 +110,8 @@ namespace EvaFrame.Algorithm.NewAlgo
             {
                 if(current == null)
                 {
+                    Console.WriteLine(from.CorrespondingIndicator.Id + " from");
+                    Console.WriteLine(to.CorrespondingIndicator.Id + " to");
                     throw new Exception("Not exit path");
                 }
                 preEdge = current;
@@ -158,6 +157,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
+                    Console.WriteLine("2");
                     //MainAlgo mainAlgo = new MainAlgo();
                     //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
                     heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
@@ -207,7 +207,9 @@ namespace EvaFrame.Algorithm.NewAlgo
         public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
+            Console.WriteLine(node.CorrespondingIndicator.Id);
             Node reachedNode = FindCrossNode(node, edge);
+            if (reachedNode == root) Console.WriteLine("true");
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
             UpdateComingNode(reachedNode, root, heap);

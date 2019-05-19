@@ -93,14 +93,14 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     {
                         Adjacence adjacence1 = new Adjacence();
                         Corridor cor1 = new Corridor(node.CorrespondingIndicator, root.CorrespondingIndicator, false,
-                                                    0, 1, 0, 1);
+                                                    100, 100, 0, 1);
                         adjacence1.edge = new Edge(cor1, root);
                         adjacence1.node = root;
                         node.adjacences.Add(adjacence1);
 
                         Adjacence adjacence2 = new Adjacence();
                         Corridor cor2 = new Corridor(root.CorrespondingIndicator, node.CorrespondingIndicator, false,
-                                                    0, 1, 0, 1);
+                                                    100, 100, 0, 1);
                         adjacence2.edge = new Edge(cor2, node);
                         adjacence2.node = node;
                         root.adjacences.Add(adjacence2);
@@ -144,7 +144,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             {
                 foreach (var node in subGraph.Nodes)
                 {
-                    if(node.nextEdge == null)
+                    if(node.next == root)
                     {
                         ++count;
                         continue;
