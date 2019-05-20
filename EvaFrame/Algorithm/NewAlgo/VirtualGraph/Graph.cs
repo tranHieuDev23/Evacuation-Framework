@@ -153,7 +153,6 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     node.CorrespondingIndicator.Next = node.nextEdge.CorrespondingCorridor;
                 }
             }
-            // Console.WriteLine("{0} {1}", "numberOfExitNode = ", count);
         }
     }
 }

@@ -17,6 +17,10 @@ namespace EvaFrame.Algorithm.NewAlgo
             this.target = new Graph(target);
         }
 
+        /// <summary>
+        /// Đội tượng được đặt vào heap, gồm có đỉnh và trọng số quãng đường
+        /// tốt nhất từ đỉnh đó tới root
+        /// </summary>
         public class Data : IComparable, ICloneable
         {
             public Node node;
@@ -73,7 +77,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             MinHeap<Data> heap = new MinHeap<Data>();
                 
             Setup();
-            // heap.Push(new Data(target.Root, target.Root.weight));
+            /*Đưa các exitnode vào heap */
             foreach (var exit in target.Root.adjacences)
             {
                 exit.node.nextEdge = exit.node.adjacences.Find(adj => adj.node == target.Root).edge;
@@ -105,15 +109,25 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 u.label = true;
 
+                /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
                 s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
                 s.comingNodes.Add(u);
                 utility.UpdateComingNode(s, target.Root, heap);
-                foreach (Adjacence v in u.adjacences)
+
+                /*---------------------------------------------------------------------- */
+
+                foreach (Adjacence v in u.adjacences) 
                     {
+                        /*Cập nhật lượng người ở giữa 2 đỉnh được gán nhãn cho đỉnh tới được 
+                        trong tương lại */
+
                         if (v.node.label == true && v.node != u.next)
                         utility.UpdateComingPeople(u, v.edge, target.Root, heap);
                     }
+                
+                /*Tính toán trọng số con đường các đỉnh kề đi qua đỉnh mới được gán nhãn
+                và cập nhật lại con đường tốt nhất */
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
@@ -146,7 +160,9 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         s.nComingPeople -= v.edge.numberPeople;
                     }
+                /*-------------------------------------------------------------------------------------- */
             }
+
             target.UpdateResultToBuilding();
         }
     }
