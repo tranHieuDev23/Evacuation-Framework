@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MyApp.MainWindow"
+        Title="MyApp">
+    <StackPanel Orientation = "Vertical">
+        <TextBlock Text="{Binding timeElapsed}"></TextBlock>
+        <TextBlock Text="{Binding remainingCount}"></TextBlock>
+        <TextBlock>Information about the inhabitant closest to an exit:</TextBlock>
+        <TextBlock Text="{Binding inhabitantId}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantSpeedMax}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantFollowing}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocation}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationLength}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationWidth}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationCapacity}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationDensity}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationTrustiness}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationCompletedPercentage}"></TextBlock>
+        <TextBlock Text="{Binding inhabitantLocationActualSpeed}"></TextBlock>
+    </StackPanel>
+</Window>

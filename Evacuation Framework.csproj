@@ -8,4 +8,9 @@
     <DocumentationFile>bin\YourApi.XML</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.8.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.8.0" />
+  </ItemGroup>
+
 </Project>
