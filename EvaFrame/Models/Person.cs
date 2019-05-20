@@ -1,3 +1,4 @@
+using System;
 using EvaFrame.Models.Building;
 
 namespace EvaFrame.Models
@@ -49,7 +50,12 @@ namespace EvaFrame.Models
         public double CompletedPercentage
         {
             get { return completedPercentage; }
-            set { completedPercentage = value; }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException("value", "CompletedPercentage must be in the range of [0, 1].");
+                completedPercentage = value;
+            }
         }
 
         /// <summary>
