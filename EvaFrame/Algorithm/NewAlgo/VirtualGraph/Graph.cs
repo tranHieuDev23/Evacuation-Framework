@@ -80,6 +80,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                         Adjacence adjacence = new Adjacence();
                         adjacence.edge = new Edge(corridor, nextStair);
                         adjacence.node = nextStair;
+                        
                         stair.adjacences.Add(adjacence);
                     }
                 }

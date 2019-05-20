@@ -76,6 +76,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                 
                 foreach (var corridor in node.CorrespondingIndicator.Neighbors)
                 {
+                    if(corridor.IsStairway == true) continue;
                     Adjacence adjacence = new Adjacence();
                     Node nod = nodes.Find(x => x.CorrespondingIndicator == corridor.To);
                     Edge edg = new Edge(corridor, nod);

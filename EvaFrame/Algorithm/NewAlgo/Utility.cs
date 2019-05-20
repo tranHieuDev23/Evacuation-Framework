@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Utilities;
+using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
@@ -11,8 +12,8 @@ namespace EvaFrame.Algorithm.NewAlgo
     /// </summary>
     public class Utility
     {
-        private const double V_TB = 3;
-        private const double TIME = 25;
+        private const double V_TB = 4;
+        private const double TIME = 30;
 
         /// <summary>
         /// Setup all data in order to re-execute Algorithm
@@ -28,9 +29,10 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
         /// <param name="density">mật độ người đi trên đoạn đường</param>
         /// <returns>Chỉ số ảnh hưởng</returns>
-        private double ContextFunction(double trustness, double density)
+        private double ContextFunction(Edge edge, int numberPeople)
         {
-            return 1 /(trustness * (1.0001 - density));
+            Corridor corridor = edge.CorrespondingCorridor;
+            return corridor.Length / (corridor.Trustiness * (Math.Max(corridor.Capacity - numberPeople, 0) + 1));
         }
 
         /// <summary>
@@ -41,10 +43,8 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Giá trị trọng số của đoạn đường</returns>
         private double GetWeight(Edge edge, int numberPeople)
         {
-            double density = GetDensity(edge, numberPeople);
             return edge.CorrespondingCorridor.Length
-                 * ContextFunction(edge.CorrespondingCorridor.Trustiness, density);
-
+                 * ContextFunction(edge, numberPeople);
         }
 
         /// <summary>

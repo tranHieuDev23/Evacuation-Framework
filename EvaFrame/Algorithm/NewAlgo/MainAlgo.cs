@@ -88,7 +88,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                     if(adj.edge.CorrespondingCorridor.IsStairway)
                     {
                         Console.WriteLine(stair.CorrespondingIndicator.Id + " stair");
-                        Console.WriteLine(adj.node.CorrespondingIndicator + " to");
+                        Console.WriteLine(adj.node.CorrespondingIndicator.Id + " to");
                     }
                 }
             }
@@ -139,12 +139,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 utility.UpdateComingNode(s, target.Root, heap);
                 foreach (Adjacence v in u.adjacences)
                     {
-                        Console.WriteLine(v.edge.CorrespondingCorridor.Id);
-                        if (v.node == null)
-                        {
-                            Console.WriteLine("null");
-                        }
-                        else Console.WriteLine(v.node.CorrespondingIndicator.Id + ".");
                         if (v.node.label == true && v.node != u.next)
                         utility.UpdateComingPeople(u, v.edge, target.Root, heap);
                     }
@@ -153,9 +147,8 @@ namespace EvaFrame.Algorithm.NewAlgo
                     {
                         Console.WriteLine("neighbor id " + v.node.CorrespondingIndicator.Id);
                         Edge toU = v.node.adjacences.Find(adj => adj.node == u).edge; // Tìm cạnh mà đi từ đỉnh v tới u
+                        
                         s = utility.FindCrossNode(v.node, toU);
-                        Console.WriteLine("toU " + toU.To.CorrespondingIndicator.Id);
-                        Console.WriteLine(s.CorrespondingIndicator.Id);
                         s.nComingPeople += toU.numberPeople;
                         double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
                         double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
