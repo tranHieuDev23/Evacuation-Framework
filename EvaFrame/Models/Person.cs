@@ -1,3 +1,4 @@
+using System;
 using EvaFrame.Models.Building;
 
 namespace EvaFrame.Models
@@ -49,7 +50,12 @@ namespace EvaFrame.Models
         public double CompletedPercentage
         {
             get { return completedPercentage; }
-            set { completedPercentage = value; }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException("value", "CompletedPercentage must be in the range of [0, 1].");
+                completedPercentage = value;
+            }
         }
 
         /// <summary>
@@ -92,6 +98,9 @@ namespace EvaFrame.Models
             double remainingTime = updatePeriod;
             while (true)
             {
+                // Nếu như người này đang đứng ở Exit Node.
+                if (following.IsExitNode)
+                    return true;
                 // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>.
                 if (location == null)
                 {
