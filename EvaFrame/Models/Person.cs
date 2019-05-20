@@ -92,6 +92,9 @@ namespace EvaFrame.Models
             double remainingTime = updatePeriod;
             while (true)
             {
+                // Nếu như người này đang đứng ở Exit Node.
+                if (following.IsExitNode)
+                    return true;
                 // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>.
                 if (location == null)
                 {
