@@ -85,7 +85,6 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     }
                 }
             }
-<<<<<<< HEAD
             /*Khởi tạo các node tương ứng với exit trong building và kết nối vào graph */
             foreach (var subGraph in floorGraphs)
             {
@@ -95,45 +94,20 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     {
                         Adjacence adjacence1 = new Adjacence();
                         Corridor cor1 = new Corridor(node.CorrespondingIndicator, root.CorrespondingIndicator, false,
-                                                    100, 100, 0, 1);
+                                                    1000, 1000, 0, 1);
                         adjacence1.edge = new Edge(cor1, root);
                         adjacence1.node = root;
                         node.adjacences.Add(adjacence1);
 
                         Adjacence adjacence2 = new Adjacence();
                         Corridor cor2 = new Corridor(root.CorrespondingIndicator, node.CorrespondingIndicator, false,
-                                                    100, 100, 0, 1);
+                                                    1000, 1000, 0, 1);
                         adjacence2.edge = new Edge(cor2, node);
                         adjacence2.node = node;
                         root.adjacences.Add(adjacence2);
                     }       
                 }
             }
-=======
-            /*Khởi tạo các node tương ứng với exit trong build và kết nối vào graph */
-            // foreach (var subGraph in floorGraphs)
-            // {
-            //     foreach (var node in subGraph.Nodes)
-            //     {
-            //         if (node.CorrespondingIndicator.IsExitNode)
-            //         {
-            //             Adjacence adjacence1 = new Adjacence();
-            //             Corridor cor1 = new Corridor(node.CorrespondingIndicator, null,
-            //                                         0, 1, 0, 1);
-            //             adjacence1.edge = new Edge(cor1, root);
-            //             adjacence1.node = root;
-            //             node.adjacences.Add(adjacence1);
-
-            //             Adjacence adjacence2 = new Adjacence();
-            //             Corridor cor2 = new Corridor(node.CorrespondingIndicator, null,
-            //                                         0, 1, 0, 1);
-            //             adjacence2.edge = new Edge(cor2, node);
-            //             adjacence2.node = node;
-            //             root.adjacences.Add(adjacence2);
-            //         }       
-            //     }
-            // }
->>>>>>> master
         }
 
         /// <summary>
@@ -179,7 +153,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     node.CorrespondingIndicator.Next = node.nextEdge.CorrespondingCorridor;
                 }
             }
-            Console.WriteLine("{0} {1}", "numberOfExitNode = ", count);
+            // Console.WriteLine("{0} {1}", "numberOfExitNode = ", count);
         }
     }
 }
