@@ -112,7 +112,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 {
                     Console.WriteLine(from.CorrespondingIndicator.Id + " from");
                     Console.WriteLine(to.CorrespondingIndicator.Id + " to");
-                    throw new Exception("Not exit path");
+                    return 0;
                 }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);

@@ -73,7 +73,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             {
                 foreach (var corridor in stair.CorrespondingIndicator.Neighbors)
                 {
-                    if(corridor.To.IsStairNode)
+                    if(corridor.IsStairway)
                     {
                         Node nextStair = allStairs.Find(nod => nod.CorrespondingIndicator 
                                                             == corridor.To);
