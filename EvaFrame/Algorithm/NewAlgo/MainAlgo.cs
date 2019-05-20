@@ -150,7 +150,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         if (newW < v.node.weight)
                         {
-                            Console.WriteLine(v.node.CorrespondingIndicator.Id);
+                            // Console.WriteLine(v.node.CorrespondingIndicator.Id);
                             v.node.weight = newW;
                             v.node.next = u;
                             v.node.nextEdge = toU;

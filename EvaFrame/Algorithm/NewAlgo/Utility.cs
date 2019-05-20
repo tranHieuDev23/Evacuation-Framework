@@ -99,6 +99,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
+            /*Cần sử lý */
             if(from == to)
             {
                 return 0;
@@ -110,8 +111,6 @@ namespace EvaFrame.Algorithm.NewAlgo
             {
                 if(current == null)
                 {
-                    Console.WriteLine(from.CorrespondingIndicator.Id + " from");
-                    Console.WriteLine(to.CorrespondingIndicator.Id + " to");
                     return 0;
                 }
                 preEdge = current;
@@ -157,9 +156,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    Console.WriteLine("2");
-                    //MainAlgo mainAlgo = new MainAlgo();
-                    //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
                     heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
@@ -207,9 +203,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
-            Console.WriteLine(node.CorrespondingIndicator.Id);
             Node reachedNode = FindCrossNode(node, edge);
-            if (reachedNode == root) Console.WriteLine("true");
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
             UpdateComingNode(reachedNode, root, heap);
