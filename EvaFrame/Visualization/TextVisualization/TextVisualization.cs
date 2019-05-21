@@ -22,10 +22,10 @@ namespace EvaFrame.Visualization.TextVisualization
             this.distanceData = new DijikstraAlgorithm(new LengthOnlyFunction()).Run(target);
         }
 
-        void IVisualization.Update(DateTime simulationStart, DateTime simulationLatest)
+        void IVisualization.Update(double timeElapsed)
         {   
             Console.WriteLine("-------------------------");
-            Console.WriteLine(String.Format("Time elapsed: {0, 0:F5}s", simulationLatest.Subtract(simulationStart).TotalSeconds));
+            Console.WriteLine(String.Format("Time elapsed: {0, 0:F5}s", timeElapsed));
             Console.WriteLine(String.Format("Remaining inhabitants: {0, 0:D}", target.Inhabitants.Count));
             Console.WriteLine("Information about the inhabitant closest to an exit:");
             PrintInhabitantData(FindInhabitantClosestToExit());

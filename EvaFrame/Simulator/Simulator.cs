@@ -83,15 +83,10 @@ namespace EvaFrame.Simulator
                     double updatePeriod = situationWait / 1000;
                     hazard.Update(updatePeriod);
                     target.MoveInhabitants(updatePeriod);
-                    if (visualizationThread != null)
-                    {
-                        if (visualizationThread.IsAlive)
-                            visualizationThread.Abort();
-                    }
-                    visualizationThread = new Thread(() => visualization.Update(simulationStart, simulationLast));
+                    visualizationThread = new Thread(() => visualization.Update(simulationLast.Subtract(simulationStart).TotalSeconds));
+                    visualizationThread.IsBackground = true;
                     visualizationThread.Start();
                     lastSituationUpdate = simulationLast;
-                    
                 }
 
                 if (algorithmWait >= algorithmUpdatePeriod)
@@ -102,6 +97,14 @@ namespace EvaFrame.Simulator
             }
 
             return simulationLast.Subtract(simulationStart).TotalSeconds;
+        }
+
+        public Thread RunSimulatorAsync(long situationUpdatePeriod, long algorithmUpdatePeriod)
+        {
+            Thread simulationThread = new Thread(() => RunSimulator(situationUpdatePeriod, algorithmUpdatePeriod));
+            simulationThread.IsBackground = true;
+            simulationThread.Start();
+            return simulationThread;
         }
     }
 }
