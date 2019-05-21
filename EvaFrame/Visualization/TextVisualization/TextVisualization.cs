@@ -9,7 +9,7 @@ using EvaFrame.Visualization;
 namespace EvaFrame.Visualization.TextVisualization
 {
     /// <summary>
-    /// 
+    /// Mô tả toà nhà trên command line.
     /// </summary>
     public class TextVisualization : IVisualization
     {

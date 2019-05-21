@@ -5,15 +5,23 @@ using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 using EvaFrame.Utilities.WeightFunctions;
 using EvaFrame.Visualization;
+using Avalonia.Controls;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
+    /// <summary>
+    /// Mô tả tòa nhà bằng giao diện đồ họa đa nền tảng, hỗ trợ bởi thư viên Avalonia.
+    /// </summary>
     public class WindowVisualization: IVisualization
     {
         private Building target;
         private Dictionary<Indicator, DijikstraAlgorithm.Data> distanceData;
         private MainWindow mainWindow = new MainWindow();
-        public MainWindow MainWindow {get => mainWindow;}
+
+        /// <value>
+        /// Cửa sổ làm việc chính của mô tả. Giá trị này được trả về để sử dụng trong hàm <c>Application.Run()</c>.
+        /// </value>
+        public Window MainWindow {get => mainWindow;}
 
         void IVisualization.Initialize(Building target)
         {

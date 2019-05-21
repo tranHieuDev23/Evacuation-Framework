@@ -7,10 +7,18 @@ using ReactiveUI;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
+    /// <summary>
+    /// Cửa sổ chính trong mô phỏng đồ họa của chương trình. 
+    /// Tại đây, các thông tin cơ bản như số lượng người còn lại trong tòa nhà, hoặc thông tin về người 
+    /// đang ở gần lối thoát nhất sẽ được hiển thị.
+    /// </summary>
     public class MainWindow : Window
     {
         private ViewModel viewModel;
-
+        
+        /// <summary>
+        /// Khởi tạo một đối tượng cửa sổ mới.
+        /// </summary>
         public MainWindow()
         {
             this.viewModel = new ViewModel();
@@ -18,6 +26,12 @@ namespace EvaFrame.Visualization.WindowVisualization
             AvaloniaXamlLoader.Load(this);
         }
 
+        /// <summary>
+        /// Cập nhật nội dung của cửa sổ.
+        /// </summary>
+        /// <param name="timeElapsed">Thời gian kể từ lúc bắt đầu mô phỏng thuật toán, tính theo đơn vị s.</param>
+        /// <param name="remainingCount">Số người còn lại trong tòa nhà mục tiêu.</param>
+        /// <param name="displayedPerson">Cư dân được chọn để hiển thị (người ở gần lối ra nhất).</param>
         public void UpdateContent(double timeElapsed, int remainingCount, Person displayedPerson)
         {
             viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
