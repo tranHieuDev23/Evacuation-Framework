@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="EvaFrame.Visualization.WindowVisualization.MainWindow"
-        Title="EvaFrame">
+        Title="EvaFrame" Width="400" Height="210" Padding="8, 4, 8, 4">
     <StackPanel Orientation="Vertical">
         <TextBlock Text="{Binding TimeElapsed}"/>
         <TextBlock Text="{Binding RemainingCount}"/>
