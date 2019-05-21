@@ -7,6 +7,9 @@ using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
 { 
+    /// <summary>
+    /// Class thực hiện thuật toán cải tiến của nhóm
+    /// </summary>
     public class MainAlgo : IAlgorithm
     {
         private const double PositiveInfinity = 1000000000;
@@ -23,9 +26,20 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         public class Data : IComparable, ICloneable
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public Node node;
-            public double weightToRoot;
 
+            /// <summary>
+            /// Trọng số quãng đường ngắn nhất tới root từ đỉnh này
+            /// </summary>
+            public double weightToRoot;
+            /// <summary>
+            /// Khởi tạo đối tượng với đỉnh và trọng số được truyền vào
+            /// </summary>
+            /// <param name="node"></param>
+            /// <param name="weightToRoot"></param>
             public Data(Node node, double weightToRoot)
             {
                 this.node = node;
