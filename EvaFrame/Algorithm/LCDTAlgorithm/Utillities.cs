@@ -1,11 +1,12 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using EvaFrame.Utilities;
 using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
-    class Data: IComparable, ICloneable {
+    public class Data: IComparable, ICloneable {
         public Node node;
         public double weightToExit;
 
@@ -26,28 +27,25 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         object ICloneable.Clone() { return new Data(node, weightToExit); }
     }
 
-    public class Pair<T, U> {
-        public Pair() {
+    public class DataI: IComparable, ICloneable {
+        public Indicator node;
+        public double weightToExit;
+
+        public DataI(Indicator node, double weightToExit)
+        {
+            this.node = node;
+            this.weightToExit = weightToExit;
         }
 
-        public Pair(T first, U second) {
-            this.First = first;
-            this.Second = second;
+        int IComparable.CompareTo(object obj)
+        {
+            if (obj.GetType() != typeof(DataI))
+                throw new ArgumentException("obj is not the same type as this instance.");
+            DataI data = obj as DataI;
+            return weightToExit.CompareTo(data.weightToExit);
         }
 
-        public T First { get; set; }
-        public U Second { get; set; }
-    };
-
-    public class PairII {
-        public PairII() {}
-        public PairII(Indicator first, Indicator second) {
-            this.First = first;
-            this.Second = second;
-        }
-        
-        public Indicator First{get; set;}
-        public Indicator Second{get; set;}
+        object ICloneable.Clone() { return new DataI(node, weightToExit); }
     }
 
     public class PairNN {
@@ -87,12 +85,34 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         }
     }
 
-    public static class CaculatinExtensionMethod {
+    /* public static class CaculatinExtensionMethod {
+        public static double calcWeight(this Corridor cor) {
+            double w = cor.Length / (cor.Trustiness * (cor.Capacity - cor.Density + 1));
+            return w;
+        }
+    }*/
+
+    public static class ExtensionMethod {
+
         public static double calcWeight(this Corridor cor) {
             double w = cor.Length / (cor.Trustiness * (cor.Capacity - cor.Density + 1));
             return w;
         }
 
+        public static double CacheWeight(this Corridor cor) {
+            return cor.Length / cor.Width;
+        }
+
+        public static int getFloorNumber(this Indicator indicator) {
+            string[] arr = indicator.Id.Split('@');
+
+            return System.Convert.ToInt32(arr[1]);
+        }
+
+        public static Corridor CorClone(this Corridor item) {
+            Corridor newItem = new Corridor(item.From, item.To, item.IsStairway, item.Length, item.Width, item.Density, item.Trustiness);
+            return newItem;
+        }
 
     }
     

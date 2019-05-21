@@ -29,15 +29,20 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// Trả trọng số giữa các Stair Node với Exit Node.
         /// </returns>
         public Dictionary<PairNN, double> Run() {
-            Dictionary<PairNN, double> wGlobal = new Dictionary<PairNN, double>();
+            Dictionary<PairNN, double> wGlobal = new Dictionary<PairNN, double>(new NodeEqualityComparer());
 
             foreach (Node exitNode in crossGraph.Nodes) 
             if (exitNode.IsExitNode == true) {
+                //Console.WriteLine("Id : {0}", exitNode.CorresspodingIndicator.Id);
                 Dictionary<PairNN, double> tempWeights = dijkstra(exitNode);
+                
 
                 foreach (KeyValuePair<PairNN, double> item in tempWeights) {
                     wGlobal[item.Key] = item.Value;
                 }
+
+                //Node stairNode = crossGraph.Nodes.Find( node => node.IsStairNode == true );
+                //bool checkGlobalEvaluation = tempWeights.ContainsKey(new PairNN(stairNode, exitNode));
             }
 
             return wGlobal;
@@ -69,12 +74,11 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                 double wu = heap.Top().weightToExit;
                 heap.Pop();
 
-                if (weights[new PairNN(exitNode, u)] != wu) continue;
+                if (weights[new PairNN(u, exitNode)] != wu) continue;
 
                 foreach (Edge e in u.Adjencents) {
                     Node v = e.To;
                     PairNN ev = new PairNN(exitNode, v);
-                    if (!weights.ContainsKey(ev)) continue;
                     double wv = weights[ev];
 
                     if (wv > wu + e.Weight) {

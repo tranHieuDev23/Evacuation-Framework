@@ -41,7 +41,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                     Edge next = v.Next;
                     v.NextOptions.Add(new NodeOption(next, weightToS, u));
 
-                    if ((v.IsStairNode == true || v.IsExitNode == true) && v.Equals(u) == false) {
+                    if (v.IsStairNode == true && v.Equals(u) == false) {
                         //if (u.IsExitNode) Console.WriteLine("abc");
                         wLocal[new PairNN(v, u)] = weightToS;
                     }

@@ -17,6 +17,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public Edge(Node from, Node to, double weight, Corridor cor = null) {
             if (to == null) 
                 throw new ArgumentNullException("To is Null");
+            if (from == null) 
+                throw new ArgumentNullException("From is Null");
             this.from = from;
             this.to = to;
             this.weight = weight;

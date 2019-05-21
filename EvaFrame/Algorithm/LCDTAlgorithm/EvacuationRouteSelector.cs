@@ -7,14 +7,14 @@ using EvaFrame.Models.Building;
 namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
     public class EvacuationRouteSelector {
-        private CrossGraph crossGraph;
+        private Graph graph;
         private Dictionary<PairNN, double> wGlobals;
         
         /// <summary>
         /// Khởi tạo bộ chọn tuyến đường.
         /// </summary>
         public EvacuationRouteSelector() {
-            this.crossGraph = null;
+            this.graph = null;
             this.wGlobals = new Dictionary<PairNN, double>(new NodeEqualityComparer());
         }
 
@@ -27,10 +27,12 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// <param name="wGlobals">
         /// Trọng số giữa Exit Node tới các Stair Node tương ứng với Cross Graph.
         /// </param>
-        public void initialize( CrossGraph crossGraph,
+        public void initialize( Graph graph,
                                 Dictionary<PairNN, double> wGlobals) {
-            this.crossGraph = crossGraph;
-            this.wGlobals = wGlobals;
+            this.graph = graph;
+            foreach (KeyValuePair<PairNN, double> item in wGlobals) {
+                this.wGlobals[item.Key] = item.Value;
+            }
         }
         
         /// <summary>
@@ -40,13 +42,13 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// Thông số của toà nhà.
         /// </param>
         public void selectionPath() {
-            Building building = crossGraph.Target;
+            Building building = graph.CrossGraph.Target;
 
-            for (int i = 0; i < building.Floors.Count; ++i) {
-                Floor floor = building.Floors[i];
-                foreach (Indicator indicator in floor.Indicators) 
-                if (!indicator.IsExitNode) {
-                    Node u = new Node(indicator);
+            for (int i = 0; i < graph.SubGraphs.Count; ++i) {
+                SubGraph subGraph = graph.SubGraphs[i];
+                foreach (Node u in subGraph.Nodes) 
+                if (!u.IsExitNode) {
+                    //Node u = new Node(indicator);
 
                     double minPath = Double.PositiveInfinity;
                     if (i == 0) {
@@ -63,11 +65,13 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     }
                     else {
                         foreach (NodeOption option in u.NextOptions) {
-                            foreach (Indicator exit in building.Exits) {
-                                Node exitNode = new Node(exit);
+                            foreach (Node exitNode in graph.ExitNodes) {
+                                //Node exitNode = new Node(exit);
                                 double weightToS = option.WeightToS;
                                 Node stairNode = option.StairNode;
                                 PairNN stairNodeToExitNode = new PairNN(stairNode, exitNode);
+                                
+                                bool check = wGlobals.ContainsKey(stairNodeToExitNode);
 
                                 if (minPath > weightToS + wGlobals[stairNodeToExitNode]) {
                                     minPath = weightToS + wGlobals[stairNodeToExitNode];

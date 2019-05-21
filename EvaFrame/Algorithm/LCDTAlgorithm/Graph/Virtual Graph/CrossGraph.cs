@@ -41,20 +41,33 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             this.nodes = new List<Node>();
         }
 
+        /* public int getFloorNumber(string id) {
+            string[] arr = id.Split('@');
+
+            return System.Convert.ToInt32(arr[1]);
+        }*/
+
         /// <summary>
         /// Xây dựng đồ thị.
         /// </summary>
         public void buildGraph() {
             foreach (Floor floor in target.Floors) {
-                foreach (Indicator stairIndicator in floor.Stairs) {
-                    foreach (Corridor cor in stairIndicator.Neighbors)
-                    if (cor.IsStairway) {
-                        Node from = new Node(cor.From);
-                        Node to = new Node(cor.To);
-                        edges.Add(new Edge(from, to, cor.calcWeight(), cor));
+                foreach (Indicator indicator in floor.Indicators) {
+                    foreach (Corridor cor in indicator.Neighbors)
+                    if (cor.From.IsStairNode == true && cor.To.IsStairNode == true) {
+                        Node from = nodes.Find( node => node.CorresspodingIndicator == cor.From);
+                        Node to = nodes.Find( node => node.CorresspodingIndicator == cor.To);
+                        Edge edge = new Edge(from, to, cor.calcWeight(), cor);
                         
-                        addNode(from);
-                        addNode(to);
+                        int fromFloor = from.CorresspodingIndicator.getFloorNumber();
+                        int toFloor = to.CorresspodingIndicator.getFloorNumber();
+                        //System.Console.WriteLine("From floor = {0}, To Floor = {1}",fromFloor, toFloor);
+                        if (fromFloor > toFloor) {
+                            from.Next = edge;
+                        }
+                        edges.Add(edge);
+                        from.Adjencents.Add(edge);
+                        to.Adjencents.Add(edge);
                     }
                 }   
             }
@@ -69,10 +82,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public void updateGraph(Dictionary<PairNN, double> weightInLocal) {
  
             foreach (KeyValuePair<PairNN, double> item in weightInLocal) {
-                edges.Add(new Edge(item.Key.First, item.Key.Second, item.Value));
+                Node from = nodes.Find( node => node.CorresspodingIndicator == item.Key.First.CorresspodingIndicator );
+                if (from == null) from = new Node( item.Key.First.CorresspodingIndicator );
+                Node to = nodes.Find( node => node.CorresspodingIndicator == item.Key.Second.CorresspodingIndicator );
+                if (to == null) to = new Node( item.Key.Second.CorresspodingIndicator );
+                Edge edge = new Edge(from, to, item.Value);
 
-                addNode(item.Key.First);
-                addNode(item.Key.Second);
+                edges.Add(edge);
+                addNode(from);
+                addNode(to);
+                from.Adjencents.Add(edge);
+                to.Adjencents.Add(edge);
             }
 
         }
