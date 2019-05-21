@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
@@ -18,6 +19,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         void IAlgorithm.Initialize(Building target)
         {
             this.target = new Graph(target);
+            int time = 10000;
         }
 
         /// <summary>
@@ -178,6 +180,35 @@ namespace EvaFrame.Algorithm.NewAlgo
             }
 
             target.UpdateResultToBuilding();
+        }
+        
+        public void CheckCondition()
+        {
+            Utility utility = new Utility();
+            Queue<Node> queue = new Queue<Node>();
+            foreach (var subGraph in target.FloorGraphs)
+            {
+                foreach (var node in subGraph.Nodes)
+                {
+                    node.label = false;
+                    if(node.CorrespondingIndicator.IsExitNode)
+                    {
+                        queue.Enqueue(node);
+                    }
+                }
+            }
+
+            while (queue.Count != 0)
+            {
+                Node node = queue.Dequeue();
+                utility.TackleIncidence(node, target.Root);
+                foreach (var adj in node.adjacences)
+                {
+                    if(adj.node.label) continue;
+                    queue.Enqueue(adj.node);
+                    adj.node.label = true;
+                }
+            }
         }
     }
 }

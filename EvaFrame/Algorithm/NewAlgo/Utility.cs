@@ -217,7 +217,8 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// Hàm xử lý trong trường hợp các đỉnh đẳng trước đột nhiên mật độ người tăng cao hoặc 
         /// chỉ số <c>trustiness</c> của con đường bị giảm mạnh.
         /// </summary>
-        /// <param name="checkNode"></param>
+        /// <param name="checkNode">Đỉnh cần chuyển hướng</param>
+        /// <param name="root">Đỉnh nguồn</param>
         public void TackleIncidence(Node checkNode, Node root)
         {
             Edge changeDirectionTo = checkNode.nextEdge;
