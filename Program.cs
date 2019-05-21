@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Avalonia;
 using Avalonia.Logging.Serilog;
 using EvaFrame.Models.Building;
@@ -21,8 +22,8 @@ class Program
     {
         Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
-        Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), new WindowVisualization());
-        Thread thr = simulator.RunSimulatorAsync(200, 10000);
+        Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
+        simulator.RunSimulatorAsync(200, 10000);
         app.Run(visualization.MainWindow);
     }
 }

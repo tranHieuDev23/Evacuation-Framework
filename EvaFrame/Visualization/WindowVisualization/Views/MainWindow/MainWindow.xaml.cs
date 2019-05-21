@@ -1,4 +1,6 @@
+using System;
 using System.Threading;
+using EvaFrame.Models;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using ReactiveUI;
@@ -7,42 +9,87 @@ namespace EvaFrame.Visualization.WindowVisualization
 {
     public class MainWindow : Window
     {
-        private MainWindowViewModel viewModel;
+        private ViewModel viewModel;
 
         public MainWindow()
         {
-            this.viewModel = new MainWindowViewModel();
+            this.viewModel = new ViewModel();
             this.DataContext = this.viewModel;
             AvaloniaXamlLoader.Load(this);
-
-            Thread drawThread = new Thread(() =>
-            {
-                while (true)
-                    OnUpdate();
-            });
-            drawThread.IsBackground = true;
-            drawThread.Start();
         }
 
-        private void OnUpdate()
+        public void UpdateContent(double timeElapsed, int remainingCount, Person displayedPerson)
         {
-
-        }
-    }
-
-    public class MainWindowViewModel : ReactiveObject
-    {
-        private string content = "Hello My Friends!";
-
-        public string Content
-        {
-            get => content;
-            set
+            viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
+            viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
+            viewModel.RemainingCount = String.Format("Remaining inhabitants: {0, 0:D}", remainingCount);
+            viewModel.ClosestId = "Inhabitant Id: " + displayedPerson.Id;
+            viewModel.ClosestSpeedMax = "Inhabitant SpeedMax: " + displayedPerson.SpeedMax;
+            viewModel.ClosestFollowing = "Inhabitant is taking direction from indicator: " + displayedPerson.Following.Id;
+            if (displayedPerson.Location == null)
             {
-                this.RaisePropertyChanging();
-                content = value;
-                this.RaisePropertyChanged();
+                viewModel.ClosestLocation = "Inhabitant is currently not running on any corridor.";
+                viewModel.ClosestLocationLength =
+                viewModel.ClosestLocationWidth =
+                viewModel.ClosestLocationCapacity =
+                viewModel.ClosestLocationDensity =
+                viewModel.ClosestLocationTrustiness =
+                viewModel.ClosestCompletedPercentage =
+                viewModel.ClosestActualSpeed = "";
             }
+            else
+            {
+                viewModel.ClosestLocation = "Inhabitant is currently running on corridor: " + displayedPerson.Location.Id;
+                viewModel.ClosestLocationLength = "Corridor length: " + displayedPerson.Location.Length;
+                viewModel.ClosestLocationWidth = "Corridor width: " + displayedPerson.Location.Width;
+                viewModel.ClosestLocationCapacity = "Corridor capacity: " + displayedPerson.Location.Capacity;
+                viewModel.ClosestLocationDensity = "Corridor density: " + displayedPerson.Location.Density;
+                viewModel.ClosestLocationTrustiness = "Corridor trustiness: " + displayedPerson.Location.Trustiness;
+                viewModel.ClosestCompletedPercentage = "Inhabitant completedPercentage: " + displayedPerson.CompletedPercentage;
+                viewModel.ClosestActualSpeed = "Inhabitant actualSpeed: " + displayedPerson.CalculateActualSpeed(displayedPerson.Location);
+            }
+        }
+
+        private class ViewModel : ReactiveObject
+        {
+            private string timeElapsed;
+            public string TimeElapsed { get => timeElapsed; set => this.RaiseAndSetIfChanged(ref timeElapsed, value); }
+
+            private string remainingCount;
+            public string RemainingCount { get => remainingCount; set => this.RaiseAndSetIfChanged(ref remainingCount, value); }
+
+            private string closestId;
+            public string ClosestId { get => closestId; set => this.RaiseAndSetIfChanged(ref closestId, value); }
+
+            private string closestSpeedMax;
+            public string ClosestSpeedMax { get => closestSpeedMax; set => this.RaiseAndSetIfChanged(ref closestSpeedMax, value); }
+
+            private string closestFollowing;
+            public string ClosestFollowing { get => closestFollowing; set => this.RaiseAndSetIfChanged(ref closestFollowing, value); }
+
+            private string closestLocation;
+            public string ClosestLocation { get => closestLocation; set => this.RaiseAndSetIfChanged(ref closestLocation, value); }
+
+            private string closestLocationLength;
+            public string ClosestLocationLength { get => closestLocationLength; set => this.RaiseAndSetIfChanged(ref closestLocationLength, value); }
+
+            private string closestLocationWidth;
+            public string ClosestLocationWidth { get => closestLocationWidth; set => this.RaiseAndSetIfChanged(ref closestLocationWidth, value); }
+
+            private string closestLocationCapacity;
+            public string ClosestLocationCapacity { get => closestLocationCapacity; set => this.RaiseAndSetIfChanged(ref closestLocationCapacity, value); }
+
+            private string closestLocationDensity;
+            public string ClosestLocationDensity { get => closestLocationDensity; set => this.RaiseAndSetIfChanged(ref closestLocationDensity, value); }
+
+            private string closestLocationTrustiness;
+            public string ClosestLocationTrustiness { get => closestLocationTrustiness; set => this.RaiseAndSetIfChanged(ref closestLocationTrustiness, value); }
+
+            private string closestCompletedPercentage;
+            public string ClosestCompletedPercentage { get => closestCompletedPercentage; set => this.RaiseAndSetIfChanged(ref closestCompletedPercentage, value); }
+
+            private string closestActualSpeed;
+            public string ClosestActualSpeed { get => closestActualSpeed; set => this.RaiseAndSetIfChanged(ref closestActualSpeed, value); }
         }
     }
 }

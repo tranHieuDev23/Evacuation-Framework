@@ -83,9 +83,11 @@ namespace EvaFrame.Simulator
                     double updatePeriod = situationWait / 1000;
                     hazard.Update(updatePeriod);
                     target.MoveInhabitants(updatePeriod);
-                    visualizationThread = new Thread(() => visualization.Update(simulationLast.Subtract(simulationStart).TotalSeconds));
-                    visualizationThread.IsBackground = true;
-                    visualizationThread.Start();
+                    ThreadPool.QueueUserWorkItem(
+                        new WaitCallback(
+                            (callback) => visualization.Update(simulationLast.Subtract(simulationStart).TotalSeconds)
+                        )
+                    );
                     lastSituationUpdate = simulationLast;
                 }
 

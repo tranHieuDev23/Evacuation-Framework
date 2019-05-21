@@ -5,7 +5,20 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="EvaFrame.Visualization.WindowVisualization.MainWindow"
         Title="EvaFrame">
-    <StackPanel>
-        <TextBlock Text="{Binding Content}"/>
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{Binding TimeElapsed}"/>
+        <TextBlock Text="{Binding RemainingCount}"/>
+        <TextBlock>Informations about the inhabitant closest to an exit:</TextBlock>
+        <TextBlock Text="{Binding ClosestId}"/>
+        <TextBlock Text="{Binding ClosestSpeedMax}"/>
+        <TextBlock Text="{Binding ClosestFollowing}"/>
+        <TextBlock Text="{Binding ClosestLocation}"/>
+        <TextBlock Text="{Binding ClosestLocationLength}"/>
+        <TextBlock Text="{Binding ClosestLocationWidth}"/>
+        <TextBlock Text="{Binding ClosestLocationCapacity}"/>
+        <TextBlock Text="{Binding ClosestLocationDensity}"/>
+        <TextBlock Text="{Binding ClosestLocationTrustiness}"/>
+        <TextBlock Text="{Binding ClosestCompletedPercentage}"/>
+        <TextBlock Text="{Binding ClosestActualSpeed}"/>
     </StackPanel>
 </Window>
