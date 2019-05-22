@@ -42,10 +42,10 @@ namespace EvaFrame.Visualization.WindowVisualization
 
         public void UpdateContent(double timeElapsed, int remainingCount, Person displayedPerson)
         {
-            generalTab.UpdateContent(timeElapsed, remainingCount, displayedPerson);
             foreach (FloorTab tab in floorTabs)
                 tab.ClearInhabitantIcons();
             mutex.WaitOne();
+            generalTab.UpdateContent(timeElapsed, remainingCount, displayedPerson);
             foreach (Person p in target.Inhabitants)
             {
                 if (p.Location != null)
