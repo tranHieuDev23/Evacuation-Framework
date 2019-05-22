@@ -7,12 +7,7 @@ using ReactiveUI;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
-    /// <summary>
-    /// Cửa sổ chính trong mô phỏng đồ họa của chương trình. 
-    /// Tại đây, các thông tin cơ bản như số lượng người còn lại trong tòa nhà, hoặc thông tin về người 
-    /// đang ở gần lối thoát nhất sẽ được hiển thị.
-    /// </summary>
-    public class MainWindow : Window
+    class MainWindow : Window
     {
         private DynamicTabControl tabControl;
         private GeneralTab generalTab;

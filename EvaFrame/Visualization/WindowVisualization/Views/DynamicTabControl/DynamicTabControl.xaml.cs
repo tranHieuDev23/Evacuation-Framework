@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
-    public class DynamicTabControl : UserControl
+    class DynamicTabControl : UserControl
     {
         public ObservableCollection<TabItem> Items { get; }
 

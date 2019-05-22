@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
-    public class GeneralTab : UserControl
+    class GeneralTab : UserControl
     {
         private ViewModel viewModel;
         

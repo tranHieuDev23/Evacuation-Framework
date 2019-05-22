@@ -1,20 +1,14 @@
-using System;
 using System.Collections.Generic;
 using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Markup.Xaml;
-using Avalonia.Skia;
-using Avalonia.Platform;
 using Avalonia.Media.Imaging;
-using Avalonia.Rendering;
-using SkiaSharp;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
-    public class FloorTab : UserControl
+    class FloorTab : UserControl
     {
         private Pen inhabitantPen = new Pen(Brushes.Red);
         private Brush inhabitantBrush = new SolidColorBrush(Colors.Red);
@@ -22,7 +16,6 @@ namespace EvaFrame.Visualization.WindowVisualization
         private FloorTabHelper helper;
         private Bitmap backgroundBitmap;
         private List<Point> inhabitantLocations;
-        private System.Threading.Mutex mutex;
 
         public FloorTab(Floor target)
         {
@@ -33,7 +26,6 @@ namespace EvaFrame.Visualization.WindowVisualization
             this.helper = new FloorTabHelper();
             this.backgroundBitmap = this.helper.GetBackgroundBitmap(target, (int) Width, (int) Height);
             this.inhabitantLocations = new List<Point>();
-            this.mutex = new System.Threading.Mutex();
         }
 
         public void ClearInhabitantIcons() {inhabitantLocations.Clear();}

@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm;
-using EvaFrame.Utilities;
-using EvaFrame.Utilities.WeightFunctions;
 using EvaFrame.Visualization;
 
 namespace EvaFrame.Simulator
@@ -19,7 +16,6 @@ namespace EvaFrame.Simulator
         private IAlgorithm algorithm;
         private IHazard hazard;
         private IVisualization visualization;
-        private Thread visualizationThread;
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>Simulator</c> để mô phỏng thuật toán.
@@ -44,7 +40,6 @@ namespace EvaFrame.Simulator
             this.algorithm = algorithm;
             this.hazard = hazard;
             this.visualization = visualization;
-            this.visualizationThread = null;
         }
 
         /// <summary>

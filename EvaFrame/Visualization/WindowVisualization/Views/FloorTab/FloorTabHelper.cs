@@ -1,15 +1,9 @@
-using System;
-using System.Collections.Generic;
-using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Markup.Xaml;
 using Avalonia.Skia;
 using Avalonia.Platform;
 using Avalonia.Media.Imaging;
-using Avalonia.Rendering;
 using SkiaSharp;
 
 namespace EvaFrame.Visualization.WindowVisualization
@@ -20,7 +14,6 @@ namespace EvaFrame.Visualization.WindowVisualization
         private SKPaint stairPaint;
         private SKPaint exitPaint;
         private SKPaint corridorPaint;
-        private SKPaint inhabitantPaint;
 
         public FloorTabHelper()
         {
@@ -28,7 +21,6 @@ namespace EvaFrame.Visualization.WindowVisualization
             SetPaintColor(ref stairPaint, 255, 255, 0);
             SetPaintColor(ref exitPaint, 0, 255, 0);
             SetPaintColor(ref corridorPaint, 0, 255, 255);
-            SetPaintColor(ref inhabitantPaint, 255, 0, 255);
         }
 
         public Bitmap GetBackgroundBitmap(Floor target, int width, int height)
