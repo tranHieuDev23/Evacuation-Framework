@@ -82,7 +82,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 sumWeight = sumWeight - GetWeight(next, numberPeople);
                 reach = next.To;
                 next = reach.nextEdge;
-                if(next == null) break;
+                if(next == null || next.CorrespondingCorridor == null) break;
             }
             return reach;
         }
@@ -111,7 +111,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             Edge preEdge;
             do
             {
-                if(current == null)
+                if(current == null || current.CorrespondingCorridor == null)
                 {
                     break;
                 }

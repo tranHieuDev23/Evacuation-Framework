@@ -125,9 +125,12 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
-                s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
-                s.comingNodes.Add(u);
-                utility.UpdateComingNode(s, target.Root, heap);
+                if(s != target.Root)
+                {
+                    s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
+                    s.comingNodes.Add(u);
+                    utility.UpdateComingNode(s, target.Root, heap);
+                }
 
                 /*---------------------------------------------------------------------- */
 
