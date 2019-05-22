@@ -81,6 +81,9 @@ namespace EvaFrame.Models.Building
             if (floorId < 0)
                 throw new ArgumentOutOfRangeException("floorId", "floorId cannot be negative!");
             this.id = id;
+            this.x = x;
+            this.y = y;
+            this.floorId = floorId;
             this.neighbors = new List<Corridor>();
             this.next = null;
         }

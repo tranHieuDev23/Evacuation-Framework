@@ -96,8 +96,8 @@ namespace EvaFrame.Models.Building
             {
                 string[] data = coordinateData[i - 1].Split(';');
                 string id = i.ToString() + '@' + floorId.ToString();
-                int x = Int16.Parse(data[0]);
-                int y = Int16.Parse(data[1]);
+                int x = Int32.Parse(data[0]);
+                int y = Int32.Parse(data[1]);
                 indicatorList.Add(new Indicator(id, x, y, floorId));
             }
             return indicatorList;

@@ -42,8 +42,6 @@ namespace EvaFrame.Visualization.WindowVisualization
         public void UpdateContent(double timeElapsed, int remainingCount, Person displayedPerson)
         {
             generalTab.UpdateContent(timeElapsed, remainingCount, displayedPerson);
-            foreach (FloorTab tab in floorTabs)
-                tab.ClearInhabitantIcon();
         }
     }
 }
