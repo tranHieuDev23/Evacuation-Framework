@@ -111,31 +111,6 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         }
 
         /// <summary>
-        /// Phương thức <c> FetchInforFromBuilding() </c> nhận thông tin cập 
-        /// nhật các thông số của tòa nhà tại thời điểm gọi.
-        /// </summary>
-        public void FetchInforFromBuilding(){
-            foreach (var subGraph in floorGraphs)
-            {
-                foreach (var node in subGraph.Nodes)
-                {
-                    foreach (var adj in node.adjacences)
-                    {
-                        adj.edge.Update();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Phương thức <c> TackleInformation() </c> xử lí thông tin nhận được
-        /// từ building thành các trọng số phù hợp với yêu cầu của thuật toán.
-        /// </summary>
-        public void TackleInformation(){
-
-        }
-
-        /// <summary>
         /// Trả lại thông tin về hướng chỉ của các <c> Indicator </c> cho
         /// <c> building </c>
         /// </summary>
