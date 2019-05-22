@@ -2,7 +2,6 @@ using System;
 using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using ReactiveUI;
 
 namespace EvaFrame.Visualization.WindowVisualization
@@ -20,7 +19,10 @@ namespace EvaFrame.Visualization.WindowVisualization
 
         public MainWindow()
         {
-            AvaloniaXamlLoader.Load(this);
+            this.Title = "EvaFrame";
+            this.Width = 1280;
+            this.Height = 720;
+
             this.tabControl = new DynamicTabControl();
             this.generalTab = new GeneralTab();
             this.tabControl.AddTab(generalTab, "General");
