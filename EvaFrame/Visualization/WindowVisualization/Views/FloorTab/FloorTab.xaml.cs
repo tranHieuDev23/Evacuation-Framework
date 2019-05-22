@@ -16,8 +16,8 @@ namespace EvaFrame.Visualization.WindowVisualization
 {
     public class FloorTab : UserControl
     {
-        private Pen inhabitantPen = new Pen(Brushes.IndianRed);
-        private Brush inhabitantBrush = new SolidColorBrush(Colors.IndianRed);
+        private Pen inhabitantPen = new Pen(Brushes.Red);
+        private Brush inhabitantBrush = new SolidColorBrush(Colors.Red);
 
         private FloorTabHelper helper;
         private Bitmap backgroundBitmap;
