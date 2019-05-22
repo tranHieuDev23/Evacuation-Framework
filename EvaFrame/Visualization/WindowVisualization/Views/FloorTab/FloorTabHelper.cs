@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using Avalonia;
@@ -68,6 +69,16 @@ namespace EvaFrame.Visualization.WindowVisualization
                 }
             }
             return bitmap;
+        }
+
+        public Geometry GetInhabitantIcon(Point position)
+        {
+            Size iconSize = new Size(10, 10);
+            Point center = new Point(
+                position.X - iconSize.Width / 2, 
+                position.Y - iconSize.Height / 2
+            );
+            return new EllipseGeometry(new Rect(center, iconSize));
         }
 
         private void SetPaintColor(ref SKPaint paint, byte r, byte g, byte b)
