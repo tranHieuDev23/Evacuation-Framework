@@ -29,7 +29,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                     visited[indicator] = false;
                 }
             
-                List<CachePath> tempCachePaths = new List<CachePath>();
 
                 if (isFirstFloor == true)
                     foreach (Indicator exitNode in floor.Indicators)
@@ -42,6 +41,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                     CacheNode cacheNode = new CacheNode(stairNode);
                     cacheNodes.Add(cacheNode);
                 }
+
+                List<CachePath> tempCachePaths = new List<CachePath>();
 
                 if (isFirstFloor == true) {
                     foreach (Indicator exitNode in floor.Indicators)

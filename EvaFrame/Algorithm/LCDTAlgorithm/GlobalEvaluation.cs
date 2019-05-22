@@ -7,11 +7,15 @@ using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm {
-
+    /// <summary>
+    /// Global Evaluation tìm trọng số giữa các exit node và stair node.
+    /// </summary>
     public class GlobalEvaluation {
         private CrossGraph crossGraph;
-
-        public GlobalEvaluation() {}
+        /// <summary>
+        /// Khởi tạo Global Evaluation.
+        /// </summary>
+        public GlobalEvaluation() {this.crossGraph = null;}
         /// <summary>
         /// Khởi tạo thuật toán Global Evaluation.
         /// </summary>
@@ -59,7 +63,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// </returns>
         public Dictionary<PairNN, double> dijkstra(Node exitNode) {
             Dictionary<PairNN, double> weights = new Dictionary<PairNN, double>(new NodeEqualityComparer());
-            MinHeap<Data> heap = new MinHeap<Data>();
+            MinHeap<DataN> heap = new MinHeap<DataN>();
 
             foreach (Node u in crossGraph.Nodes) {
                 weights[new PairNN(u, exitNode)] = double.PositiveInfinity;
@@ -67,7 +71,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             }
 
             weights[new PairNN(exitNode, exitNode)] = 0;
-            heap.Push(new Data(exitNode, 0));
+            heap.Push(new DataN(exitNode, 0));
 
             while(heap.Count > 0) {
                 Node u = heap.Top().node;
@@ -85,7 +89,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                         wv = wu + e.Weight;
                         weights[new PairNN(v, exitNode)] = wv;
                         v.Next = v.Adjencents.Find(edge => edge.To == u);
-                        heap.Push(new Data(v, wv));
+                        heap.Push(new DataN(v, wv));
                     }
                 }
             }

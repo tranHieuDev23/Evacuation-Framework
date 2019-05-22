@@ -5,7 +5,9 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm {
-
+    /// <summary>
+    /// Đưa ra hướng đi an toàn và nhanh nhất có thể cho các Indicator.
+    /// </summary>
     public class EvacuationRouteSelector {
         private Graph graph;
         private Dictionary<PairNN, double> wGlobals;
@@ -21,7 +23,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// <summary>
         /// Khởi tạo bộ chọn tuyến đường.
         /// </summary>
-        /// <param name="crossGraph">
+        /// <param name="graph">
         /// Đồ thị giữa các Stair Node với nhau và với Exit Node.
         /// </param>
         /// <param name="wGlobals">
@@ -38,9 +40,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// <summary>
         /// Chọn cạnh tiếp theo mà indicator tương ứng sẽ chỉ tới.
         /// </summary>
-        /// <param name="building">
-        /// Thông số của toà nhà.
-        /// </param>
         public void selectionPath() {
             Building building = graph.CrossGraph.Target;
 

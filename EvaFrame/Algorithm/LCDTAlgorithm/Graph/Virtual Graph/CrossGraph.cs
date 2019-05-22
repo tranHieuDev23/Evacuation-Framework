@@ -5,6 +5,9 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm {
+    /// <summary>
+    /// Đồ thị giữa các exit Node và Stair Node.
+    /// </summary>
     public class CrossGraph {
         
         private Building target;
@@ -27,8 +30,14 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         private void addNode(Node node) {
             if (nodes.Contains(node) == false) nodes.Add(node);
         }
-
-        public CrossGraph() {}
+        /// <summary>
+        /// Khởi tạo đồ thị.
+        /// </summary>
+        public CrossGraph() {
+            this.target = null;
+            this.edges = null;
+            this.nodes = null;
+        }
         /// <summary>
         /// Khởi tạo Cross Graph.
         /// </summary>
@@ -40,12 +49,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             this.edges = new List<Edge>();
             this.nodes = new List<Node>();
         }
-
-        /* public int getFloorNumber(string id) {
-            string[] arr = id.Split('@');
-
-            return System.Convert.ToInt32(arr[1]);
-        }*/
 
         /// <summary>
         /// Xây dựng đồ thị.

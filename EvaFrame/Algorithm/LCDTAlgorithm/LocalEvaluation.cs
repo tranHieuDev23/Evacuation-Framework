@@ -7,10 +7,15 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm{
 
-    
+    /// <summary>
+    /// Loca Evaluation tìm trọng số giữa các stair node trong một tầng.
+    /// </summary>
     public class LocalEvaluation {
         private SubGraph subGraph;
         
+        /// <summary>
+        /// Khởi tạo thuật toán Local Evaluation.
+        /// </summary>
         public LocalEvaluation() { this.subGraph = null; }
         /// <summary>
         /// Khởi tạo thuật toán Local Evaluation.
@@ -61,7 +66,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         ///     Trọng số giữa Stair Node xuất phát đến các Node các trong đồ thị. 
         /// </returns>
         public Dictionary<Node, double> runDijkstra(Node start) {
-            MinHeap<Data> heap = new MinHeap<Data>();
+            MinHeap<DataN> heap = new MinHeap<DataN>();
             NodeEqualityComparer nodeCompare = new NodeEqualityComparer();
             Dictionary<Node, double>  weights = new Dictionary<Node, double>();
 
@@ -71,7 +76,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
             }
             
             weights[start] = 0;
-            heap.Push(new Data(start, 0));
+            heap.Push(new DataN(start, 0));
 
             while(heap.Count > 0) {
                 Node u = heap.Top().node;
@@ -86,7 +91,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                     double wv = weights[v];
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;
-                        heap.Push(new Data(v, wv));
+                        heap.Push(new DataN(v, wv));
                         v.Next = v.Adjencents.Find(edge => edge.To == u);
 
                         weights[v] = wv;
