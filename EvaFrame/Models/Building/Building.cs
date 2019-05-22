@@ -91,9 +91,15 @@ namespace EvaFrame.Models.Building
             int numInd = Int32.Parse(sr.ReadLine());
             if (numInd == 0)
                 return indicatorList;
-            sr.ReadLine(); // TODO: This line contains the coordinates of the Indicators, and can be used in graphic representation
+            string[] coordinateData = sr.ReadLine().Split(','); 
             for (int i = 1; i <= numInd; i++)
-                indicatorList.Add(new Indicator(i.ToString() + '@' + floorId.ToString()));
+            {
+                string[] data = coordinateData[i - 1].Split(';');
+                string id = i.ToString() + '@' + floorId.ToString();
+                int x = Int16.Parse(data[0]);
+                int y = Int16.Parse(data[1]);
+                indicatorList.Add(new Indicator(id, x, y, floorId));
+            }
             return indicatorList;
         }
 

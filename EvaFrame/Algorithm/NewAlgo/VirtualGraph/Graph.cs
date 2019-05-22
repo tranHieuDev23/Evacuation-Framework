@@ -57,7 +57,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         {
             floorGraphs = new List<SubGraph>();
             allStairs = new List<Node>();
-            root = new Node(new Indicator("root"));
+            root = null;
             /*Khởi tạo các subgraph tương ứng với các tầng */
             foreach (var floor in building.Floors)
             {

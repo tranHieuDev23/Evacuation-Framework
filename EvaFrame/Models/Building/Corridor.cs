@@ -8,15 +8,27 @@ namespace EvaFrame.Models.Building
     public class Corridor
     {
         private string id;
-        /// <value>
         /// <value>String định danh của <c>Corridor</c>, có dạng [định danh của <c>Indicator</c> đi]->[định danh của <c>Indicator</c> tới].</value>
-        /// </value>
         public string Id { get { return id; } }
 
+        private int floorId;
+        /// <value>
+        /// Chỉ số của tầng mà <c>Corridor</c> này đang ở trên. 
+        /// Nếu <c>IsStairWay</c> bằng <c>true</c>, giá trị này không có ý nghĩa gì cả. 
+        /// Trong trường hợp ngược lại, giá trị này là số nguyên trong khoảng [1, số tầng].
+        /// </value>
+        public int FloorId { get { return floorId; } }
+
+        private bool isStairWay;
+        /// <value>
+        /// Trả lại <c>true</c> nếu như hành lang này là một cầu thang nối giữa hai Stair Node với nhau.
+        /// </value>
+        public bool IsStairway { get { return isStairWay; } }
 
         private Indicator from, to;
         /// <value><c>Indicator</c> xuất phát của hành lang. Giá trị read-only.</value>
         public Indicator From { get { return from; } }
+
         /// <value><c>Indicator</c> kết thúc của hành lang. Giá trị read-only.</value>
         public Indicator To { get { return to; } }
 
@@ -65,12 +77,6 @@ namespace EvaFrame.Models.Building
             }
         }
 
-        private bool isStairWay;
-        /// <value>
-        /// Trả lại <c>true</c> nếu như hành lang này là một cầu thang nối giữa hai Stair Node với nhau.
-        /// </value>
-        public bool IsStairway { get { return isStairWay; } }
-
         /// <summary>
         /// Khởi tạo một hành lang mới.
         /// </summary>
@@ -83,14 +89,16 @@ namespace EvaFrame.Models.Building
         /// <param name="trustiness">Độ tin tưởng của con đường ban đầu. Giá trị mặc định bằng 1 (con đường hoàn toàn không bị ảnh hưởng bởi thảm họa).</param>
         public Corridor(Indicator from, Indicator to, bool isStairWay, double length, double width, double density = 0, double trustiness = 1)
         {
+            this.id = from.Id + "->" + to.Id;
+            if (isStairWay)
+                this.floorId = from.FloorId;
+            this.isStairWay = isStairWay;
             this.from = from;
             this.to = to;
             this.length = length;
             this.width = width;
             this.density = density;
             this.trustiness = trustiness;
-            this.isStairWay = isStairWay;
-            this.id = from.Id + "->" + to.Id;
         }
     }
 }
