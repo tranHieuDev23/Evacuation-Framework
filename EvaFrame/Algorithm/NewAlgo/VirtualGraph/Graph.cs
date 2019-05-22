@@ -57,7 +57,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         {
             floorGraphs = new List<SubGraph>();
             allStairs = new List<Node>();
-            root = new Node(new Indicator("root"));
+            root = new Node(null);
             /*Khởi tạo các subgraph tương ứng với các tầng */
             foreach (var floor in building.Floors)
             {
@@ -93,15 +93,13 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                     if (node.CorrespondingIndicator.IsExitNode)
                     {
                         Adjacence adjacence1 = new Adjacence();
-                        Corridor cor1 = new Corridor(node.CorrespondingIndicator, root.CorrespondingIndicator, false,
-                                                    1000, 100, 0, 1);
+                        Corridor cor1 = null;
                         adjacence1.edge = new Edge(cor1, root);
                         adjacence1.node = root;
                         node.adjacences.Add(adjacence1);
 
                         Adjacence adjacence2 = new Adjacence();
-                        Corridor cor2 = new Corridor(root.CorrespondingIndicator, node.CorrespondingIndicator, false,
-                                                    1000, 100, 0, 1);
+                        Corridor cor2 = null;
                         adjacence2.edge = new Edge(cor2, node);
                         adjacence2.node = node;
                         root.adjacences.Add(adjacence2);
