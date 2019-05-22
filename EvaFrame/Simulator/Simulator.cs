@@ -61,10 +61,41 @@ namespace EvaFrame.Simulator
         /// </returns>
         public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod)
         {
+            SimulationInitialize();
+            return SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod);
+        }
+
+        /// <summary>
+        /// Khởi tạo một luồng mới và chạy mô phỏng thuật toán trên luồng này cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
+        /// Hàm non-blocking, có thể sử dụng trong một số trường hợp như khi áp dụng giao diện đồ họa của thư viện.
+        /// </summary>
+        /// <param name="situationUpdatePeriod">
+        /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị ms).
+        /// </param>
+        /// <param name="algorithmUpdatePeriod">
+        /// Thời gian giữa hai lần chạy thuật toán liên tiếp (đơn vị ms).
+        /// </param>
+        /// <returns>
+        /// Đối tượng luồng đang chạy mô phỏng thuật toán.
+        /// </returns>
+        public Thread RunSimulatorAsync(long situationUpdatePeriod, long algorithmUpdatePeriod)
+        {
+            SimulationInitialize();
+            Thread simulationThread = new Thread(() => SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod));
+            simulationThread.IsBackground = true;
+            simulationThread.Start();
+            return simulationThread;
+        }
+
+        private void SimulationInitialize()
+        {
             hazard.Intialize(target);
             algorithm.Initialize(target);
             visualization.Initialize(target);
+        }
 
+        private double SimulationLoop(long situationUpdatePeriod, long algorithmUpdatePeriod)
+        {
             DateTime simulationStart = DateTime.Now;
             DateTime lastSituationUpdate = DateTime.MinValue;
             DateTime lastAlgorithmRun = DateTime.MinValue;
@@ -97,29 +128,7 @@ namespace EvaFrame.Simulator
                     lastAlgorithmRun = simulationLast;
                 }
             }
-
             return simulationLast.Subtract(simulationStart).TotalSeconds;
-        }
-
-        /// <summary>
-        /// Khởi tạo một luồng mới và chạy mô phỏng thuật toán trên luồng này cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
-        /// Hàm non-blocking, có thể sử dụng trong một số trường hợp như khi áp dụng giao diện đồ họa của thư viện.
-        /// </summary>
-        /// <param name="situationUpdatePeriod">
-        /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị ms).
-        /// </param>
-        /// <param name="algorithmUpdatePeriod">
-        /// Thời gian giữa hai lần chạy thuật toán liên tiếp (đơn vị ms).
-        /// </param>
-        /// <returns>
-        /// Đối tượng luồng đang chạy mô phỏng thuật toán.
-        /// </returns>
-        public Thread RunSimulatorAsync(long situationUpdatePeriod, long algorithmUpdatePeriod)
-        {
-            Thread simulationThread = new Thread(() => RunSimulator(situationUpdatePeriod, algorithmUpdatePeriod));
-            simulationThread.IsBackground = true;
-            simulationThread.Start();
-            return simulationThread;
         }
     }
 }

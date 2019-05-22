@@ -27,6 +27,7 @@ namespace EvaFrame.Visualization.WindowVisualization
         {
             this.target = target;
             this.distanceData = new DijikstraAlgorithm(new LengthOnlyFunction()).Run(target);
+            this.mainWindow.Initialize(target);
         }
 
         void IVisualization.Update(double timeElapsed)
