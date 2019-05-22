@@ -115,8 +115,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 Node u = data.node;
                 double wu = data.weightToRoot;
 
-                // Console.WriteLine("label: " + u.CorrespondingIndicator.Id);
-
                 if (u.label == true) 
                     continue;
 
@@ -147,7 +145,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
-                        // Console.WriteLine("neighbor id " + v.node.CorrespondingIndicator.Id);
                         Edge toU = v.node.adjacences.Find(adj => adj.node == u).edge; // Tìm cạnh mà đi từ đỉnh v tới u
                         
                         s = utility.FindCrossNode(v.node, toU);
@@ -155,7 +152,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                         double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
                         double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
-                        // Console.WriteLine("id" + v.node.CorrespondingIndicator.Id + "=" + newW);
 
                         foreach (Adjacence ad in v.node.adjacences)
                             if (ad.node == u)
@@ -166,7 +162,6 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         if (newW < v.node.weight)
                         {
-                            // Console.WriteLine(v.node.CorrespondingIndicator.Id);
                             v.node.weight = newW;
                             v.node.next = u;
                             v.node.nextEdge = toU;

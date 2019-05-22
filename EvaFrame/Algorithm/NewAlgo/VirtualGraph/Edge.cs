@@ -52,10 +52,5 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             numberPeople = Convert.ToInt32(cor.Density);
             to = nod;
         }
-
-        public void Update()
-        {
-            
-        }
     }
 }
