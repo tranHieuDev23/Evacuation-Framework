@@ -43,7 +43,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                 }
             
 
-                if (isFirstFloor == true)
+                /* if (isFirstFloor == true)
                     foreach (Indicator exitNode in floor.Indicators)
                     if (exitNode.IsExitNode) {
                         CacheNode cacheNode = new CacheNode(exitNode);
@@ -137,7 +137,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                             u = uNew;
                         }
                     }
-                }
+                }*/
         }
 
         private void distanceDijkstra(Indicator exitNode) {
@@ -160,7 +160,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                 if (dis[u] != du) continue;
 
                 foreach (Corridor e in u.Neighbors) {
-                    Indicator v = e.To;
+                    Indicator v = e.To(u);
                     if (dis.ContainsKey(v) == false) continue;
                     double dv = dis[v];
 
@@ -168,7 +168,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                         dv = du + e.Length;
                         dis[v] = dv;
                         heap.Push(new DataI(v, dv));
-                        v.Next = v.Neighbors.Find( cor => cor.To == u);
+                        v.Next = e;
                     }
                 }
             }
@@ -196,8 +196,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
             }
 
             foreach (Corridor e in src.Neighbors)
-            if (correspondingFloor.Indicators.Contains(e.To)) {
-                Indicator v = e.To;
+            if (correspondingFloor.Indicators.Contains(e.To(src))) {
+                Indicator v = e.To(src);
                 if (!visited[v]) {
                     listLocalCor.Add(e);
                     weight += e.Length;

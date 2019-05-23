@@ -150,7 +150,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         /// <param name="cor"> Corridor cần tính trọng số.</param>
         /// <returns></returns>
         public static double calcWeight(this Corridor cor) {
-            if (cor.Density >= cor.Capacity) return Double.PositiveInfinity;
+            //if (cor.Density >= cor.Capacity) return Double.PositiveInfinity;
             double w = cor.Length / (cor.Trustiness * (cor.Capacity - cor.Density + 1));
             return w;
         }
@@ -187,7 +187,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         /// <param name="item"> Corridor cần Clone.</param>
         /// <returns></returns>
         public static Corridor CorClone(this Corridor item) {
-            Corridor newItem = new Corridor(item.From, item.To, item.IsStairway, item.Length, item.Width, item.Density, item.Trustiness);
+            Corridor newItem = new Corridor(item.I1, item.I2, item.IsStairway, item.Length, item.Width, item.Density, item.Trustiness);
             return newItem;
         }
 

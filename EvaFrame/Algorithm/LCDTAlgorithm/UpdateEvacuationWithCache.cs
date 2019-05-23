@@ -45,14 +45,14 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     if (node1 == null || node2 == null) 
                         throw new NullReferenceException("Invalid Indicator");
                     List<CachePath> listPath = subCacheGraph.FindKPath(k, node1, node2, lenghtThreshold);
-                    Update(listPath, subCacheGraph.CorrespondingFloor);
+                    Update(listPath, subCacheGraph.CorrespondingFloor, node1.CorrespondingIndicator);
                 }
 
             }
 
         }
 
-        private void Update(List<CachePath> listPath, Floor floor) {
+        private void Update(List<CachePath> listPath, Floor floor, Indicator src) {
             for (int i = 0; i < listPath.Count; ++i) {
                 CachePath path = listPath[i];
                 double density = 0;
@@ -82,7 +82,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     else path = listPath[i+1];
                     if (path.getCachePathWeight() < path.getPhysicalWeight()) {
                         foreach (Corridor cor in path.Corridors) {
-                            cor.From.Next = cor;
+                            src.Next = cor;
+                            src = cor.To(src);
                         }
                     }
                 }

@@ -57,9 +57,9 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             foreach (Floor floor in target.Floors) {
                 foreach (Indicator indicator in floor.Indicators) {
                     foreach (Corridor cor in indicator.Neighbors)
-                    if (cor.From.IsStairNode == true && cor.To.IsStairNode == true) {
-                        Node from = nodes.Find( node => node.CorresspodingIndicator == cor.From);
-                        Node to = nodes.Find( node => node.CorresspodingIndicator == cor.To);
+                    if (cor.I1.IsStairNode == true && cor.I2.IsStairNode == true) {
+                        Node from = nodes.Find( node => node.CorresspodingIndicator == indicator);
+                        Node to = nodes.Find( node => node.CorresspodingIndicator == cor.To(indicator));
                         Edge edge = new Edge(from, to, cor.calcWeight(), cor);
                         
                         int fromFloor = from.CorresspodingIndicator.getFloorNumber();
