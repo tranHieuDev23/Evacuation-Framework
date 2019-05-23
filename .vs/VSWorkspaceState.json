@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\EvaFrame",
+    "\\EvaFrame\\Algorithm",
+    "\\EvaFrame\\Algorithm\\NewAlgo",
+    "\\EvaFrame\\Models",
+    "\\EvaFrame\\Simulator",
+    "\\EvaFrame\\Simulator\\Hazards",
+    "\\EvaFrame\\Visualization",
+    "\\EvaFrame\\Visualization\\TextVisualization",
+    "\\EvaFrame\\Visualization\\WindowVisualization"
   ],
-  "SelectedNode": "\\Evacuation Framework.csproj",
+  "SelectedNode": "\\Evacuation Framework.sln",
   "PreviewInSolutionExplorer": false
 }
