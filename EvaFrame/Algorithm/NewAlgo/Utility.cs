@@ -15,14 +15,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         private const double TIME = 50;
 
         /// <summary>
-        /// Setup all data in order to re-execute Algorithm
-        /// </summary>
-        public void Setup()
-        {
-            
-        }
-
-        /// <summary>
         /// Hàm tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường
         /// </summary>
         /// <param name="trustness">chỉ số trustness của đoạn đường</param> 

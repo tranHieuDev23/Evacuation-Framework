@@ -1,16 +1,30 @@
-﻿using EvaFrame.Simulator;
+﻿using System;
+using System.Threading;
+using Avalonia;
+using Avalonia.Logging.Serilog;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.PlainDijikstra;
-using EvaFrame.Simulator.Hazards;
 using EvaFrame.Algorithm.NewAlgo;
-using System;
+using EvaFrame.Simulator;
+using EvaFrame.Simulator.Hazards;
+using EvaFrame.Visualization.WindowVisualization;
 
 class Program
 {
     public static void Main(string[] args)
     {
-        Building building = Building.LoadFromFile("test.bld");
-        Simulator simulator = new Simulator(building, new MainAlgo(), new NullHazard());
-        double result = simulator.RunSimulator(2000, 10000);
+        AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .LogToDebug()
+            .Start(AppMain, null);
+    }
+
+    private static void AppMain(Application app, string[] args)
+    {
+        Building target = Building.LoadFromFile("data.bld");
+        WindowVisualization visualization = new WindowVisualization();
+        Simulator simulator = new Simulator(target, new MainAlgo(), new BasicConstantHazard(), visualization);
+        simulator.RunSimulatorAsync(200, 10000);
+        app.Run(visualization.MainWindow);
     }
 }
