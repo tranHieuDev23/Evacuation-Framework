@@ -19,7 +19,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         void IAlgorithm.Initialize(Building target)
         {
             this.target = new Graph(target);
-            int time = 10000;
         }
 
         /// <summary>
@@ -125,6 +124,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
+
                 if(s != target.Root) 
                 {
                     s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
@@ -152,7 +152,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                         
                         s = utility.FindCrossNode(v.node, toU);
                         s.nComingPeople += toU.numberPeople;
-                        double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
+                        double w1 = utility.CalculateCongestionWeight(u, s, toU.numberPeople);
                         double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
 
@@ -180,6 +180,9 @@ namespace EvaFrame.Algorithm.NewAlgo
             target.UpdateResultToBuilding();
         }
         
+        /// <summary>
+        /// Hàm dùng để cập nhật thường xuyên xử lý tình hướng hỏa hoạn thay đổi nhanh bất thường.
+        /// </summary>
         public void CheckCondition()
         {
             Utility utility = new Utility();
