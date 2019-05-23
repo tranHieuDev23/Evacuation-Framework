@@ -9,7 +9,7 @@ namespace EvaFrame.Visualization.WindowVisualization
     class GeneralTab : UserControl
     {
         private ViewModel viewModel;
-        
+
         public GeneralTab()
         {
             this.viewModel = new ViewModel();
@@ -28,12 +28,12 @@ namespace EvaFrame.Visualization.WindowVisualization
             viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
             viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
             viewModel.RemainingCount = String.Format("Remaining inhabitants: {0, 0:D}", remainingCount);
-            viewModel.ClosestId = "Inhabitant Id: " + displayedPerson.Id;
-            viewModel.ClosestSpeedMax = "Inhabitant SpeedMax: " + displayedPerson.SpeedMax;
-            viewModel.ClosestFollowing = "Inhabitant is taking direction from indicator: " + displayedPerson.Following.Id;
-            if (displayedPerson.Location == null)
+            if (displayedPerson == null)
             {
-                viewModel.ClosestLocation = "Inhabitant is currently not running on any corridor.";
+                viewModel.ClosestId =
+                viewModel.ClosestSpeedMax =
+                viewModel.ClosestFollowing =
+                viewModel.ClosestLocation =
                 viewModel.ClosestLocationLength =
                 viewModel.ClosestLocationWidth =
                 viewModel.ClosestLocationCapacity =
@@ -44,14 +44,31 @@ namespace EvaFrame.Visualization.WindowVisualization
             }
             else
             {
-                viewModel.ClosestLocation = "Inhabitant is currently running on corridor: " + displayedPerson.Location.Id;
-                viewModel.ClosestLocationLength = "Corridor length: " + displayedPerson.Location.Length;
-                viewModel.ClosestLocationWidth = "Corridor width: " + displayedPerson.Location.Width;
-                viewModel.ClosestLocationCapacity = "Corridor capacity: " + displayedPerson.Location.Capacity;
-                viewModel.ClosestLocationDensity = "Corridor density: " + displayedPerson.Location.Density;
-                viewModel.ClosestLocationTrustiness = "Corridor trustiness: " + displayedPerson.Location.Trustiness;
-                viewModel.ClosestCompletedPercentage = "Inhabitant completedPercentage: " + displayedPerson.CompletedPercentage;
-                viewModel.ClosestActualSpeed = "Inhabitant actualSpeed: " + displayedPerson.CalculateActualSpeed(displayedPerson.Location);
+                viewModel.ClosestId = "Inhabitant Id: " + displayedPerson.Id;
+                viewModel.ClosestSpeedMax = "Inhabitant SpeedMax: " + displayedPerson.SpeedMax;
+                viewModel.ClosestFollowing = "Inhabitant is taking direction from indicator: " + displayedPerson.Following.Id;
+                if (displayedPerson.Location == null)
+                {
+                    viewModel.ClosestLocation = "Inhabitant is currently not running on any corridor.";
+                    viewModel.ClosestLocationLength =
+                    viewModel.ClosestLocationWidth =
+                    viewModel.ClosestLocationCapacity =
+                    viewModel.ClosestLocationDensity =
+                    viewModel.ClosestLocationTrustiness =
+                    viewModel.ClosestCompletedPercentage =
+                    viewModel.ClosestActualSpeed = "";
+                }
+                else
+                {
+                    viewModel.ClosestLocation = "Inhabitant is currently running on corridor: " + displayedPerson.Location.Id;
+                    viewModel.ClosestLocationLength = "Corridor length: " + displayedPerson.Location.Length;
+                    viewModel.ClosestLocationWidth = "Corridor width: " + displayedPerson.Location.Width;
+                    viewModel.ClosestLocationCapacity = "Corridor capacity: " + displayedPerson.Location.Capacity;
+                    viewModel.ClosestLocationDensity = "Corridor density: " + displayedPerson.Location.Density;
+                    viewModel.ClosestLocationTrustiness = "Corridor trustiness: " + displayedPerson.Location.Trustiness;
+                    viewModel.ClosestCompletedPercentage = "Inhabitant completedPercentage: " + displayedPerson.CompletedPercentage;
+                    viewModel.ClosestActualSpeed = "Inhabitant actualSpeed: " + displayedPerson.CalculateActualSpeed(displayedPerson.Location);
+                }
             }
         }
 

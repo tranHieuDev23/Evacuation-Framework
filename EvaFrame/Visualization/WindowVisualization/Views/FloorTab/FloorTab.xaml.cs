@@ -47,8 +47,8 @@ namespace EvaFrame.Visualization.WindowVisualization
                 inhabitantLocations.Add(new SKPoint(person.Following.X, person.Following.Y));
                 return;
             }
-            Indicator from = person.Location.From;
-            Indicator to = person.Location.To;
+            Indicator from = person.Following;
+            Indicator to = person.Location.To(from);
             double iconX = from.X + (to.X - from.X) * person.CompletedPercentage;
             double iconY = from.Y + (to.Y - from.Y) * person.CompletedPercentage;
             inhabitantLocations.Add(new SKPoint((float)iconX, (float)iconY));
@@ -91,18 +91,18 @@ namespace EvaFrame.Visualization.WindowVisualization
 
                 SKSurface surface = SKSurface.Create(info, lockedBitmap.Address, lockedBitmap.RowBytes);
 
-                foreach (Indicator ind in target.Indicators)
-                    foreach (Corridor cor in ind.Neighbors)
-                        if (!cor.IsStairway)
-                        {
-                            SKPoint p1 = new SKPoint(cor.From.X, cor.From.Y);
-                            SKPoint p2 = new SKPoint(cor.To.X, cor.To.Y);
-                            byte red = (byte)(255 * (1.0 - cor.Trustiness));
-                            byte green = (byte)(255 * cor.Trustiness);
-                            corridorPaint.Color = new SKColor(red, green, 0, 255);
-                            corridorPaint.Shader = SKShader.CreateColor(corridorPaint.Color);
-                            surface.Canvas.DrawLine(p1, p2, corridorPaint);
-                        }
+
+                foreach (Corridor cor in target.Corridors)
+                    if (!cor.IsStairway)
+                    {
+                        SKPoint p1 = new SKPoint(cor.I1.X, cor.I1.Y);
+                        SKPoint p2 = new SKPoint(cor.I2.X, cor.I2.Y);
+                        byte red = (byte)(255 * (1.0 - cor.Trustiness));
+                        byte green = (byte)(255 * cor.Trustiness);
+                        corridorPaint.Color = new SKColor(red, green, 0, 255);
+                        corridorPaint.Shader = SKShader.CreateColor(corridorPaint.Color);
+                        surface.Canvas.DrawLine(p1, p2, corridorPaint);
+                    }
 
                 foreach (Indicator ind in target.Indicators)
                 {
