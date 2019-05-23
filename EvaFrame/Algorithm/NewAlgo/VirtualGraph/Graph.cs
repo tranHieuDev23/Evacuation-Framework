@@ -28,7 +28,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// Danh sách chứa tất cả các đỉnh stair trong tòa nhà.
         /// </summary>
         /// <value></value>
-        public ReadOnlyCollection<Node> AllStairs 
+        public ReadOnlyCollection<Node> AllStairs
         {
             get
             {
@@ -41,7 +41,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// Đỉnh nguồn, đại diện cho phía bên ngoài tòa nhà.
         /// </summary>
         /// <value>Giá trị Read Only</value>
-        public Node Root 
+        public Node Root
         {
             get
             {
@@ -73,14 +73,14 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             {
                 foreach (var corridor in stair.CorrespondingIndicator.Neighbors)
                 {
-                    if(corridor.IsStairway)
+                    if (corridor.IsStairway)
                     {
-                        Node nextStair = allStairs.Find(nod => nod.CorrespondingIndicator 
-                                                            == corridor.To);
+                        Indicator indicatorTo = corridor.To(stair.CorrespondingIndicator);
+                        Node nextStair = allStairs.Find(nod => nod.CorrespondingIndicator == indicatorTo);
                         Adjacence adjacence = new Adjacence();
                         adjacence.edge = new Edge(corridor, nextStair);
                         adjacence.node = nextStair;
-                        
+
                         stair.adjacences.Add(adjacence);
                     }
                 }
@@ -103,7 +103,11 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                         adjacence2.edge = new Edge(cor2, node);
                         adjacence2.node = node;
                         root.adjacences.Add(adjacence2);
+<<<<<<< HEAD
                     }       
+=======
+                    }
+>>>>>>> 9bbec69fd7792afaf8346962ca5d85c2143121fa
                 }
             }
         }
@@ -112,13 +116,14 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// Trả lại thông tin về hướng chỉ của các <c> Indicator </c> cho
         /// <c> building </c>
         /// </summary>
-        public void UpdateResultToBuilding(){
+        public void UpdateResultToBuilding()
+        {
             int count = 0;
             foreach (var subGraph in floorGraphs)
             {
                 foreach (var node in subGraph.Nodes)
                 {
-                    if(node.next == root)
+                    if (node.next == root)
                     {
                         ++count;
                         continue;

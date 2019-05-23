@@ -125,7 +125,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
-                if(s != target.Root)
+                if(s != target.Root) 
                 {
                     s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
                     s.comingNodes.Add(u);

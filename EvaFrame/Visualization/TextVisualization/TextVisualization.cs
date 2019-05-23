@@ -42,7 +42,7 @@ namespace EvaFrame.Visualization.TextVisualization
                 if (p.Location == null)
                     distance = distanceData[p.Following].DistanceToExit;
                 else
-                    distance = distanceData[p.Location.To].DistanceToExit + p.Location.Length * (1 - p.CompletedPercentage);
+                    distance = distanceData[p.Location.To(p.Following)].DistanceToExit + p.Location.Length * (1 - p.CompletedPercentage);
                 if (distance < bestDistance)
                 {
                     bestDistance = distance;
