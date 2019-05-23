@@ -120,7 +120,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
-                                * ContextFunction(current.CorrespondingCorridor.Trustiness, numberPeople);
+                                * ContextFunction(current.CorrespondingCorridor.Trustiness, density);
                 current = current.To.nextEdge;
             } while (preEdge.To != to);
             return weight;
@@ -153,7 +153,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 }
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
-                                * ContextFunction(current.CorrespondingCorridor.Trustiness, numberPeople);
+                                * ContextFunction(current.CorrespondingCorridor.Trustiness, density);
                 current = current.To.nextEdge;
             } while (preEdge.To != to);
             return weight;
