@@ -11,8 +11,8 @@ namespace EvaFrame.Algorithm.NewAlgo
     /// </summary>
     public class Utility
     {
-        private const double V_TB = 5;
-        private const double TIME = 10;
+        private const double V_TB = 4;
+        private const double TIME = 50;
 
         /// <summary>
         /// Setup all data in order to re-execute Algorithm
@@ -82,10 +82,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 sumWeight = sumWeight - GetWeight(next, numberPeople);
                 reach = next.To;
                 next = reach.nextEdge;
-                if (next == null)
-                {
-                    break;
-                }
+                if(next == null || next.CorrespondingCorridor == null) break;
             }
             return reach;
         }
@@ -102,11 +99,22 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
+            /*Xử lý trường hợp đoạn đường có độ dài = 0 và trường hợp đỉnh from đứng trước to */
+            if(from == to || from.label == false)
+            {
+                return 0;
+            }
+            /*------------------------------------------------------------------------------- */
+
             double weight = 0;
             Edge current = from.nextEdge;
             Edge preEdge;
             do
             {
+                if(current == null || current.CorrespondingCorridor == null)
+                {
+                    break;
+                }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
@@ -123,6 +131,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
+        /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
         /// 
         //private MainAlgo mainAlgo = new MainAlgo();
         //private MainAlgo.Data data = new mainAlgo.Data(); 
@@ -149,9 +158,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    //MainAlgo mainAlgo = new MainAlgo();
-                    //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
-                    heap.push(new mainAlgo.Data(comingNode, comingNode.weight));
+                    heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
         }
@@ -191,14 +198,43 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// Cập nhật người từ các đỉnh nằm giữa các đỉnh đã được gán nhãn cho các đỉnh 
         /// phía trước trong cây khung Dijkstra
         /// </summary>
+        /// <param name="node">Đỉnh xuất phát</param>
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
-        public void UpdateComingPeople(Node node, Edge edge, Node root)
+        /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong 
+        /// đồ thị</param>
+        /// <param name="heap">Heap hiện tại đang được thực hiện tương ứng với thuật toán</param>
+        
+        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
-            UpdateComingNode(reachedNode, root);
+            UpdateComingNode(reachedNode, root, heap);
+        }
+
+        /// <summary>
+        /// Hàm xử lý trong trường hợp các đỉnh đẳng trước đột nhiên mật độ người tăng cao hoặc 
+        /// chỉ số <c>trustiness</c> của con đường bị giảm mạnh.
+        /// </summary>
+        /// <param name="checkNode">Đỉnh cần chuyển hướng</param>
+        /// <param name="root">Đỉnh nguồn</param>
+        public void TackleIncidence(Node checkNode, Node root)
+        {
+            Edge changeDirectionTo = checkNode.nextEdge;
+            double changedWeight = 100000000;
+            foreach (var adj in checkNode.adjacences)
+            {
+                int numberComing = (int) adj.node.nComingPeople
+                                 + checkNode.nComingPeople;
+                double weight = CalculateWeight(adj.node, root, numberComing) 
+                              + GetWeight(adj.edge, checkNode.nComingPeople);
+                if (weight < changedWeight){
+                    changeDirectionTo = adj.edge;
+                    changedWeight = weight;
+                }
+            }
+            checkNode.next = changeDirectionTo.To;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// Danh sách các <c>node</c> tương ứng với các <c>stair</c> của <c>floor</c>
         /// </summary>
         /// <value>Chỉ dùng cho mục đích liên kết giữa các tầng khác nhau</value>
-        public ReadOnlyCollection<Node> Stairs 
+        public ReadOnlyCollection<Node> Stairs
         {
             get
             {
@@ -50,6 +50,8 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             int numberIndicator = floor.Indicators.Count;
             int numberStair = floor.Stairs.Count;
             correspondingFloor = floor;
+            nodes = new List<Node>();
+            stairs = new List<Node>();
 
             /*Khởi tạo các đỉnh trong SubGraph tương ứng với Floor */
             for (int i = 0; i < numberIndicator; i++)
@@ -71,11 +73,13 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         {
             foreach (var node in nodes)
             {
-                
                 foreach (var corridor in node.CorrespondingIndicator.Neighbors)
                 {
+                    if (corridor.IsStairway == true)
+                        continue;
+                    Indicator indicatorTo = corridor.To(node.CorrespondingIndicator);
                     Adjacence adjacence = new Adjacence();
-                    Node nod = nodes.Find(x => x.CorrespondingIndicator == corridor.To);
+                    Node nod = nodes.Find(x => x.CorrespondingIndicator == indicatorTo);
                     Edge edg = new Edge(corridor, nod);
                     adjacence.node = nod;
                     adjacence.edge = edg;

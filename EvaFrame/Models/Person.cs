@@ -1,3 +1,4 @@
+using System;
 using EvaFrame.Models.Building;
 
 namespace EvaFrame.Models
@@ -7,9 +8,15 @@ namespace EvaFrame.Models
     /// </summary>
     public class Person
     {
+        private string id;
+        /// <value>
+        /// String định danh của cư dân.
+        /// </value>
+        public string Id { get { return id; } }
+
         private double speedMax;
         /// <value>
-        /// Vận tốc tối đa của cư dân, trong môi trường tối ưu (hành lang có độ tin cậy 1, không có người nào khác đi qua).
+        /// Vận tốc tối đa của cư dân trong môi trường tối ưu (hành lang có độ tin cậy 1, không có người nào khác đi qua).
         /// </value>
         public double SpeedMax { get { return speedMax; } }
 
@@ -43,16 +50,23 @@ namespace EvaFrame.Models
         public double CompletedPercentage
         {
             get { return completedPercentage; }
-            set { completedPercentage = value; }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new ArgumentOutOfRangeException("value", "CompletedPercentage must be in the range of [0, 1].");
+                completedPercentage = value;
+            }
         }
 
         /// <summary>
         /// Khởi tại một đối tượng cư dân mới.
         /// </summary>
-        /// <param name="speedMax">Vận tốc tối đa của người này trong môi trường tối ưu.</param>
+        /// <param name="id">String định danh của cư dân.</param>
+        /// <param name="speedMax">Vận tốc tối đa của cư dân trong môi trường tối ưu.</param>
         /// <param name="following">Indicator đầu tiên người này nhận chỉ dẫn.</param>
-        public Person(double speedMax, Indicator following)
+        public Person(string id, double speedMax, Indicator following)
         {
+            this.id = id;
             this.speedMax = speedMax;
             this.following = following;
             this.location = null;
@@ -68,9 +82,10 @@ namespace EvaFrame.Models
         {
             double result = corridor.Trustiness * speedMax
                 * ((corridor.Capacity - corridor.Density + 1) / corridor.Capacity);
-            return (result > 0? result : 0);
+            return (result > 0 ? result : 0);
         }
 
+        private Corridor oldLocation = null;
         /// <summary>
         /// Cập nhật sự di chuyển của người này trong tòa nhà sau một khoảng thời gian. Trả về <c>true</c>
         /// nếu như người này di chuyển tới được một Exit Node trong khoảng thời gian đã cho.
@@ -82,8 +97,17 @@ namespace EvaFrame.Models
         public bool Evacuate(double updatePeriod)
         {
             double remainingTime = updatePeriod;
+
             while (true)
             {
+                // Nếu như người này đang đứng ở Exit Node.
+                if (following.IsExitNode)
+                {
+                    if (oldLocation != null)
+                        oldLocation.Density --;
+                    return true;
+                }
+
                 // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>.
                 if (location == null)
                 {
@@ -95,7 +119,11 @@ namespace EvaFrame.Models
                         return false;
                     // Nhận chỉ dẫn từ Indicator.
                     location = following.Next;
-                    location.Density ++;
+                    location.Density++;
+                    // Nếu như người này di chuyển từ <c>Corridor</c> cũ sang 
+                    // <c>Corridor</c> mới, giảm mật độ người trên <c>Corridor</c> cũ.
+                    if (oldLocation != null)
+                        oldLocation.Density--;
                 }
 
                 double distanceLeft = location.Length * (1 - completedPercentage);
@@ -109,15 +137,9 @@ namespace EvaFrame.Models
                 }
 
                 // Nếu như người này kịp di chuyển khỏi hành lang.
-                location.Density --;
-
-                // Nếu như người này tới được Exit Node.
-                if (location.To.IsExitNode)
-                    return true;
-
-                // Nếu như người này vẫn chưa ra tới Exit Node.
+                oldLocation = location;
                 remainingTime -= distanceLeft / speed;
-                following = location.To;
+                following = location.To(following);
                 location = null;
                 completedPercentage = 0;
             }
