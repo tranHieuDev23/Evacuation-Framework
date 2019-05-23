@@ -127,14 +127,8 @@ namespace EvaFrame.Models
 
                 // Nếu như người này kịp di chuyển khỏi hành lang.
                 location.Density--;
-
-                // Nếu như người này tới được Exit Node.
-                if (location.To.IsExitNode)
-                    return true;
-
-                // Nếu như người này vẫn chưa ra tới Exit Node.
                 remainingTime -= distanceLeft / speed;
-                following = location.To;
+                following = location.To(following);
                 location = null;
                 completedPercentage = 0;
             }
