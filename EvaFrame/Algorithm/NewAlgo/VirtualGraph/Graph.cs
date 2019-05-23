@@ -103,11 +103,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
                         adjacence2.edge = new Edge(cor2, node);
                         adjacence2.node = node;
                         root.adjacences.Add(adjacence2);
-<<<<<<< HEAD
-                    }       
-=======
                     }
->>>>>>> 9bbec69fd7792afaf8346962ca5d85c2143121fa
                 }
             }
         }
