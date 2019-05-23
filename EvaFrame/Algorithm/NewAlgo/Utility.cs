@@ -12,7 +12,7 @@ namespace EvaFrame.Algorithm.NewAlgo
     public class Utility
     {
         private const double V_TB = 4;
-        private const double TIME = 50;
+        private const double TIME = 100;
 
         /// <summary>
         /// Hàm tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường
@@ -36,7 +36,6 @@ namespace EvaFrame.Algorithm.NewAlgo
             double density = GetDensity(edge, numberPeople);
             return edge.CorrespondingCorridor.Length
                  * ContextFunction(edge.CorrespondingCorridor.Trustiness, density);
-
         }
 
         /// <summary>
@@ -71,7 +70,12 @@ namespace EvaFrame.Algorithm.NewAlgo
             Edge next = passing;
             while (sumWeight - GetWeight(next, numberPeople) > 0)
             {
-                sumWeight = sumWeight - GetWeight(next, numberPeople);
+                double nextWeight = GetWeight(next, numberPeople);
+                if (nextWeight > sumWeight)
+                {
+                    numberPeople += next.numberPeople;
+                }
+                sumWeight = sumWeight - nextWeight;
                 reach = next.To;
                 next = reach.nextEdge;
                 if(next == null || next.CorrespondingCorridor == null) break;
@@ -98,6 +102,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             }
             /*------------------------------------------------------------------------------- */
 
+            double sumWeight = TIME * V_TB;
             double weight = 0;
             Edge current = from.nextEdge;
             Edge preEdge;
@@ -106,6 +111,11 @@ namespace EvaFrame.Algorithm.NewAlgo
                 if(current == null || current.CorrespondingCorridor == null)
                 {
                     break;
+                }
+                double currentWeight = GetWeight(current, numberPeople);
+                if (currentWeight > sumWeight + weight) 
+                {
+                    numberPeople += current.numberPeople;
                 }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);

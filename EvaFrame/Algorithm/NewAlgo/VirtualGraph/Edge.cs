@@ -29,7 +29,13 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         /// <summary>
         /// Số người hiện tại đang ở cạnh
         /// </summary>
-        public int numberPeople;
+        public int numberPeople
+        {
+            get
+            {
+                return (int) correspondingCorridor.Density;
+            }
+        }
 
         /// <summary>
         /// Trọng số của cạnh
@@ -52,7 +58,6 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         public Edge(Corridor cor, Node nod)
         {
             correspondingCorridor = cor;
-            if(cor != null) numberPeople = Convert.ToInt32(cor.Density);
             to = nod;
         }
     }
