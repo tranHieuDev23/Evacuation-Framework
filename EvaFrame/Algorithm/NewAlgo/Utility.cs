@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Utilities;
-using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
@@ -13,7 +12,7 @@ namespace EvaFrame.Algorithm.NewAlgo
     public class Utility
     {
         private const double V_TB = 4;
-        private const double TIME = 30;
+        private const double TIME = 50;
 
         /// <summary>
         /// Setup all data in order to re-execute Algorithm
@@ -29,10 +28,9 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
         /// <param name="density">mật độ người đi trên đoạn đường</param>
         /// <returns>Chỉ số ảnh hưởng</returns>
-        private double ContextFunction(Edge edge, int numberPeople)
+        private double ContextFunction(double trustness, double density)
         {
-            Corridor corridor = edge.CorrespondingCorridor;
-            return corridor.Length / (corridor.Trustiness * (Math.Max(corridor.Capacity - numberPeople, 0) + 1));
+            return 1 /(trustness * (1.0001 - density));
         }
 
         /// <summary>
@@ -43,8 +41,10 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <returns>Giá trị trọng số của đoạn đường</returns>
         private double GetWeight(Edge edge, int numberPeople)
         {
+            double density = GetDensity(edge, numberPeople);
             return edge.CorrespondingCorridor.Length
-                 * ContextFunction(edge, numberPeople);
+                 * ContextFunction(edge.CorrespondingCorridor.Trustiness, density);
+
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 sumWeight = sumWeight - GetWeight(next, numberPeople);
                 reach = next.To;
                 next = reach.nextEdge;
-                if(next == null) break;
+                if(next == null || next.CorrespondingCorridor == null) break;
             }
             return reach;
         }
@@ -99,16 +99,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         public double CalculateWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */
-            if(from == to)
+            /*Xử lý trường hợp đoạn đường có độ dài = 0 và trường hợp đỉnh from đứng trước to */
+            if(from == to || from.label == false)
             {
                 return 0;
             }
+            /*------------------------------------------------------------------------------- */
+
             double weight = 0;
             Edge current = from.nextEdge;
             Edge preEdge;
             do
             {
-                if(current == null)
+                if(current == null || current.CorrespondingCorridor == null)
                 {
                     break;
                 }
@@ -193,14 +196,39 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="edge">Cạnh nằm giữa hai đỉnh đã được gán nhãn</param>
         /// <param name="root">Đỉnh đích nguồn tìm đường ngắn nhất tới các đỉnh khác trong 
         /// đồ thị</param>
+        /// <param name="heap">Heap hiện tại đang được thực hiện tương ứng với thuật toán</param>
+        
         public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);
-            if (reachedNode == root) Console.WriteLine("true");
             reachedNode.nComingPeople = reachedNode.nComingPeople 
                                 + (int) edge.CorrespondingCorridor.Density;
             UpdateComingNode(reachedNode, root, heap);
+        }
+
+        /// <summary>
+        /// Hàm xử lý trong trường hợp các đỉnh đẳng trước đột nhiên mật độ người tăng cao hoặc 
+        /// chỉ số <c>trustiness</c> của con đường bị giảm mạnh.
+        /// </summary>
+        /// <param name="checkNode">Đỉnh cần chuyển hướng</param>
+        /// <param name="root">Đỉnh nguồn</param>
+        public void TackleIncidence(Node checkNode, Node root)
+        {
+            Edge changeDirectionTo = checkNode.nextEdge;
+            double changedWeight = 100000000;
+            foreach (var adj in checkNode.adjacences)
+            {
+                int numberComing = (int) adj.node.nComingPeople
+                                 + checkNode.nComingPeople;
+                double weight = CalculateWeight(adj.node, root, numberComing) 
+                              + GetWeight(adj.edge, checkNode.nComingPeople);
+                if (weight < changedWeight){
+                    changeDirectionTo = adj.edge;
+                    changedWeight = weight;
+                }
+            }
+            checkNode.next = changeDirectionTo.To;
         }
     }
 }
