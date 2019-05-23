@@ -38,9 +38,7 @@ namespace EvaFrame.Utilities
         {
             double IWeigthFunction.CalculateWeight(Corridor corridor)
             {
-                if (corridor.Density >= corridor.Capacity)
-                    return double.PositiveInfinity;
-                return corridor.Length / (corridor.Trustiness * (corridor.Capacity - corridor.Density));
+                return corridor.Length / (corridor.Trustiness * (Math.Max(corridor.Capacity - corridor.Density, 0) + 1));
             }
         }
     }
