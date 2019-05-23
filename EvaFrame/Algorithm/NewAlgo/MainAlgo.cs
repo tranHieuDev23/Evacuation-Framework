@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
@@ -7,6 +8,9 @@ using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 
 namespace EvaFrame.Algorithm.NewAlgo
 { 
+    /// <summary>
+    /// Class thực hiện thuật toán cải tiến của nhóm
+    /// </summary>
     public class MainAlgo : IAlgorithm
     {
         private const double PositiveInfinity = 1000000000;
@@ -15,6 +19,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         void IAlgorithm.Initialize(Building target)
         {
             this.target = new Graph(target);
+            int time = 10000;
         }
 
         /// <summary>
@@ -23,9 +28,20 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// </summary>
         public class Data : IComparable, ICloneable
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public Node node;
-            public double weightToRoot;
 
+            /// <summary>
+            /// Trọng số quãng đường ngắn nhất tới root từ đỉnh này
+            /// </summary>
+            public double weightToRoot;
+            /// <summary>
+            /// Khởi tạo đối tượng với đỉnh và trọng số được truyền vào
+            /// </summary>
+            /// <param name="node"></param>
+            /// <param name="weightToRoot"></param>
             public Data(Node node, double weightToRoot)
             {
                 this.node = node;
@@ -99,8 +115,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 Node u = data.node;
                 double wu = data.weightToRoot;
 
-                // Console.WriteLine("label: " + u.CorrespondingIndicator.Id);
-
                 if (u.label == true) 
                     continue;
 
@@ -111,9 +125,12 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
-                s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
-                s.comingNodes.Add(u);
-                utility.UpdateComingNode(s, target.Root, heap);
+                if(s != target.Root)
+                {
+                    s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
+                    s.comingNodes.Add(u);
+                    utility.UpdateComingNode(s, target.Root, heap);
+                }
 
                 /*---------------------------------------------------------------------- */
 
@@ -131,7 +148,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
-                        // Console.WriteLine("neighbor id " + v.node.CorrespondingIndicator.Id);
                         Edge toU = v.node.adjacences.Find(adj => adj.node == u).edge; // Tìm cạnh mà đi từ đỉnh v tới u
                         
                         s = utility.FindCrossNode(v.node, toU);
@@ -139,7 +155,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                         double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
                         double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
-                        // Console.WriteLine("id" + v.node.CorrespondingIndicator.Id + "=" + newW);
 
                         foreach (Adjacence ad in v.node.adjacences)
                             if (ad.node == u)
@@ -150,7 +165,6 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         if (newW < v.node.weight)
                         {
-                            // Console.WriteLine(v.node.CorrespondingIndicator.Id);
                             v.node.weight = newW;
                             v.node.next = u;
                             v.node.nextEdge = toU;
@@ -164,6 +178,35 @@ namespace EvaFrame.Algorithm.NewAlgo
             }
 
             target.UpdateResultToBuilding();
+        }
+        
+        public void CheckCondition()
+        {
+            Utility utility = new Utility();
+            Queue<Node> queue = new Queue<Node>();
+            foreach (var subGraph in target.FloorGraphs)
+            {
+                foreach (var node in subGraph.Nodes)
+                {
+                    node.label = false;
+                    if(node.CorrespondingIndicator.IsExitNode)
+                    {
+                        queue.Enqueue(node);
+                    }
+                }
+            }
+
+            while (queue.Count != 0)
+            {
+                Node node = queue.Dequeue();
+                utility.TackleIncidence(node, target.Root);
+                foreach (var adj in node.adjacences)
+                {
+                    if(adj.node.label) continue;
+                    queue.Enqueue(adj.node);
+                    adj.node.label = true;
+                }
+            }
         }
     }
 }
