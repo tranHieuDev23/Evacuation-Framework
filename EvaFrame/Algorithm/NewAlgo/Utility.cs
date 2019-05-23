@@ -126,6 +126,14 @@ namespace EvaFrame.Algorithm.NewAlgo
             return weight;
         }
 
+        /// <summary>
+        /// Tính toán trọng số cho đoạn đường mà đỉnh <c>from</c> đến được <c>to</c>
+        /// trong thời gian hằng số định trước
+        /// </summary>
+        /// <param name="from">Đỉnh đầu đoạn đường</param>
+        /// <param name="to">Đỉnh tới</param>
+        /// <param name="numberPeople">Số người trên đoạn đường có đỉnh là <c>from</c> tới <c>to</c></param>
+        /// <returns></returns>
         public double CalculateCongestionWeight(Node from, Node to, int numberPeople)
         {
             /*Implement code in here */

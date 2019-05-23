@@ -19,7 +19,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         void IAlgorithm.Initialize(Building target)
         {
             this.target = new Graph(target);
-            int time = 10000;
         }
 
         /// <summary>
