@@ -27,7 +27,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         void IAlgorithm.Run() {
             Dictionary<PairNN, double> wLocals = new Dictionary<PairNN, double>(new NodeEqualityComparer());
             CrossGraph crossGraph = new CrossGraph(target);
-            //crossGraph.buildGraph();
 
             for (int i = 0; i < target.Floors.Count; ++i) {
                 SubGraph subGraph;
@@ -35,11 +34,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                 else subGraph = new SubGraph(target.Floors[i]);
                 LocalEvaluation local = new LocalEvaluation(subGraph);
                 Dictionary<PairNN, double> weightInFloor = local.Run();
-
-                /* foreach( Node node in subGraph.Nodes)
-                if (node.IsExitNode) {
-                    Console.WriteLine("Floor {0} have exit node Id: {1}", i, node.CorresspodingIndicator.Id);
-                }*/
 
                 crossGraph.updateGraph(weightInFloor);
                 foreach(KeyValuePair<PairNN, double> item in weightInFloor) {
@@ -91,10 +85,15 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
             EvacuationRouteSelector selector = new EvacuationRouteSelector();
             selector.initialize(graph, wGlobals);
-            selector.selectionPath();
+            //selector.selectionPath();
 
-            //UpdateEvacuationWithCache updater = new UpdateEvacuationWithCache(target, 3, 60);
-            //updater.Run(50);
+            UpdateEvacuationWithCache updateRoute = new UpdateEvacuationWithCache(target, 3, 1000);
+            List<int> srcInds = new List<int>() {16, 16, 16, 33, 33, 50, 50, 75, 87, 138, 115, 138};
+            List<int> dstInds = new List<int>() {33, 50, 75, 75, 101, 64, 115, 169, 101, 101, 169, 169};
+            selector.selectionPath();
+            updateRoute.Run(50, srcInds, dstInds);
+            selector.selectionPath();
+            crossGraph.buildGraph();
             Console.WriteLine("Algorithm Done!");
 
 

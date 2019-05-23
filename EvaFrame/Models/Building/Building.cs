@@ -91,9 +91,15 @@ namespace EvaFrame.Models.Building
             int numInd = Int32.Parse(sr.ReadLine());
             if (numInd == 0)
                 return indicatorList;
-            sr.ReadLine(); // TODO: This line contains the coordinates of the Indicators, and can be used in graphic representation
+            string[] coordinateData = sr.ReadLine().Split(','); 
             for (int i = 1; i <= numInd; i++)
-                indicatorList.Add(new Indicator(i.ToString() + '@' + floorId.ToString()));
+            {
+                string[] data = coordinateData[i - 1].Split(';');
+                string id = i.ToString() + '@' + floorId.ToString();
+                int x = Int32.Parse(data[0]);
+                int y = Int32.Parse(data[1]);
+                indicatorList.Add(new Indicator(id, x, y, floorId));
+            }
             return indicatorList;
         }
 
@@ -170,7 +176,7 @@ namespace EvaFrame.Models.Building
             {
                 string[] peopleData = sr.ReadLine().Split(';');
                 Indicator following = IdToIndicator(target, peopleData[0]);
-                double speedMax = Double.Parse(peopleData[1]) * 20;
+                double speedMax = Double.Parse(peopleData[1]) * 5;
                 target.inhabitants.Add(new Person("P-" + i.ToString(), speedMax, following));
             }
         }

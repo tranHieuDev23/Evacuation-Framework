@@ -12,7 +12,9 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
         public List<Corridor> Corridors { get { return corridors; } }
 
         public CachePath(List<Corridor> list) {
-            this.corridors = list;
+            this.corridors = new List<Corridor>();
+            foreach (Corridor cor in list)
+                this.corridors.Add(cor);
         }
 
         public CachePath Clone() {
@@ -29,7 +31,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
         }
 
         public double CosineScore(CachePath otherPath) {
-            double w1 = 0, w2 = 0, w3 = 0;
+            double wshared = 0, w2 = 0, w3 = 0;
             foreach (Corridor cor in corridors) {
                 double w = cor.CacheWeight();
                 w2 += w*w;
@@ -40,10 +42,10 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                 w3 += w*w;
 
                 if (corridors.Contains(cor)) {
-                    w1 += w*w;
+                    wshared += w*w;
                 }
             }
-            return w1 / Math.Sqrt(w2 * w3);
+            return wshared / Math.Sqrt(w2 * w3);
         }
 
         public double CoefficientDeviation(CachePath otherPath) {
@@ -51,6 +53,46 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
             double w2 = otherPath.getLength();
 
             return (w2 - w1) / w1;
+        }
+
+        public double getCachePathWeight() {
+            double res = 0.0;
+            
+            foreach (Corridor cor in corridors) {
+                double trustness = cor.Trustiness;
+                if (trustness < Init.Alpha)
+                    trustness = 0.00001f;
+
+                res += 1.0*(cor.Length * cor.Capacity) / (trustness * (cor.Capacity -  cor.Density + 1));
+            }
+
+            return res;
+        }
+
+        public double getPhysicalWeight() {
+            double res = 0;
+            foreach (Corridor cor in corridors) {
+                res += cor.Length * cor.Capacity;
+            }
+            return res;
+        }
+
+        public bool isCongested() {
+            bool isCongested = false;
+            int count = 0, numOfSegment = corridors.Count;
+
+            foreach (Corridor cor in corridors) {
+                if (cor.Density > Init.Beta * cor.Capacity) {
+                    ++count;
+                }
+                
+                if (count > numOfSegment/3) {
+                    isCongested = true;
+                    break;
+                }
+            }
+            
+            return isCongested;
         }
     }
 }

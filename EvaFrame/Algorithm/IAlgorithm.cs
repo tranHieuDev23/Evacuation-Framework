@@ -17,7 +17,7 @@ namespace EvaFrame.Algorithm
 
         /// <summary>
         /// Chạy một lần thuật toán trên tòa nhà đã khởi tạo. Hàm này được gọi sau khi đã gọi hàm 
-        /// Initialize().
+        /// <c>Initialize()</c>.
         /// </summary>
         void Run();
     }

@@ -1,0 +1,25 @@
+<UserControl 
+    xmlns="https://github.com/avaloniaui" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" 
+    x:Class="EvaFrame.Visualization.WindowVisualization.GeneralTab"
+    Padding="8, 4, 8, 4">
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{Binding TimeElapsed}"/>
+        <TextBlock Text="{Binding RemainingCount}"/>
+        <TextBlock>Informations about the inhabitant closest to an exit:</TextBlock>
+        <TextBlock Text="{Binding ClosestId}"/>
+        <TextBlock Text="{Binding ClosestSpeedMax}"/>
+        <TextBlock Text="{Binding ClosestFollowing}"/>
+        <TextBlock Text="{Binding ClosestLocation}"/>
+        <TextBlock Text="{Binding ClosestLocationLength}"/>
+        <TextBlock Text="{Binding ClosestLocationWidth}"/>
+        <TextBlock Text="{Binding ClosestLocationCapacity}"/>
+        <TextBlock Text="{Binding ClosestLocationDensity}"/>
+        <TextBlock Text="{Binding ClosestLocationTrustiness}"/>
+        <TextBlock Text="{Binding ClosestCompletedPercentage}"/>
+        <TextBlock Text="{Binding ClosestActualSpeed}"/>
+    </StackPanel>
+</UserControl>

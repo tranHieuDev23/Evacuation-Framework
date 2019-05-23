@@ -13,7 +13,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
         public Floor CorrespondingFloor { get { return correspondingFloor; } }
         
         private List<CacheNode> cacheNodes;
-        public ReadOnlyCollection<CacheNode> CacheNodes { get { return cacheNodes.AsReadOnly(); } }
+        public List<CacheNode> CacheNodes { get { return cacheNodes; } }
 
         private Dictionary<Indicator, bool> visited;
 
@@ -21,6 +21,19 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
             this.correspondingFloor = null;
             this.cacheNodes = new List<CacheNode>();
             this.visited = new Dictionary<Indicator, bool>();
+        }
+
+        public void setCachePathFromStoppedNodes(List<string> stoppedNodes) {
+            this.cacheNodes = new List<CacheNode>();
+            foreach (string stId in stoppedNodes) {
+                int id = System.Convert.ToInt32(stId);
+                foreach (Indicator indicator in correspondingFloor.Indicators) {
+                    if (indicator.getIdNumber() == id) {
+                        CacheNode newNode = new CacheNode(indicator);
+                        cacheNodes.Add(newNode);
+                    }
+                }
+            }
         }
 
         public void initialize(Floor floor, double threshold, bool isFirstFloor = false) {
@@ -166,11 +179,13 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                                             double weight, double threshold){
             visited[src] = true;
             List<CachePath> tempPaths = new List<CachePath>();
+            //System.Console.WriteLine("src Id = {0}", src.getIdNumber());
 
             if (src.Equals(dst) == true) {
+                //System.Console.WriteLine("dst Id = {0}", dst.getIdNumber());
                 List<Corridor> tmp = new List<Corridor>();
                 foreach (Corridor cor in listLocalCor) {
-                    tmp.Add(cor.CorClone());
+                    tmp.Add(cor);
                 }
 
                 CachePath cachePath = new CachePath(tmp);
@@ -214,10 +229,12 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                 }
             }
 
+            //System.Console.WriteLine("Node {0} to Node {1} have {2} path", 
+            //src.CorrespondingIndicator.Id, dst.CorrespondingIndicator.Id, allCachePath.Count);
+
             List<CachePath> listKPath = new List<CachePath>();
             if (allCachePath.Count < k) {
-                //System.Console.WriteLine("Node {0} to Node {1} have {2} path", 
-                //src.CorrespondingIndicator.Id, dst.CorrespondingIndicator.Id, allCachePath.Count);
+                
                 return allCachePath;
             }
 
@@ -228,7 +245,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
             for (int i = k; i < allCachePath.Count; ++i) {
                 for (int j = k-1; j > 0; --j) {
                     List<CachePath> tempKPath = new List<CachePath>();
-                    for (int t = 0; t < k; ++t) tempKPath.Add(listKPath[i]);
+                    for (int t = 0; t < k; ++t) tempKPath.Add(listKPath[t]);
 
                     tempKPath.Remove(listKPath[j]);
                     tempKPath.Add(allCachePath[i]);

@@ -150,6 +150,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         /// <param name="cor"> Corridor cần tính trọng số.</param>
         /// <returns></returns>
         public static double calcWeight(this Corridor cor) {
+            if (cor.Density >= cor.Capacity) return Double.PositiveInfinity;
             double w = cor.Length / (cor.Trustiness * (cor.Capacity - cor.Density + 1));
             return w;
         }
@@ -172,6 +173,12 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
             string[] arr = indicator.Id.Split('@');
 
             return System.Convert.ToInt32(arr[1]);
+        }
+
+        public static int getIdNumber(this Indicator indicator) {
+            string[] arr = indicator.Id.Split('@');
+
+            return System.Convert.ToInt32(arr[0]);
         }
 
         /// <summary>
