@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Logging.Serilog;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.PlainDijikstra;
+using EvaFrame.Algorithm.NewAlgo;
 using EvaFrame.Simulator;
 using EvaFrame.Simulator.Hazards;
 using EvaFrame.Visualization.WindowVisualization;
@@ -22,8 +23,8 @@ class Program
     {
         Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
-        Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
-        simulator.RunSimulatorAsync(200, 10000);
+        Simulator simulator = new Simulator(target, new MainAlgo(), new BasicConstantHazard(), visualization);
+        simulator.RunSimulatorAsync(200, 20000);
         app.Run(visualization.MainWindow);
     }
 }
