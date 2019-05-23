@@ -69,7 +69,7 @@ namespace EvaFrame.Simulator
                     break;
 
                 double situationWait = simulationLast.Subtract(lastSituationUpdate).TotalMilliseconds;
-                double algorithmWait = simulationLast.Subtract(lastSituationUpdate).TotalMilliseconds;
+                double algorithmWait = simulationLast.Subtract(lastAlgorithmRun).TotalMilliseconds;
 
                 if (situationWait >= situationUpdatePeriod)
                 {

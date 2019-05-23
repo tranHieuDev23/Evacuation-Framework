@@ -7,14 +7,47 @@
     của mối node tới exitNode- lối ra của tòa nhà. Ta đưa ra hàm tính 
     trọng số của một cạnh như sau: 
     \begin{equation}
-<<<<<<< HEAD
-        F(edge, density) =   
-=======
-        F(edge, density) =  
->>>>>>> master
+        W(edge) = L * F(edge.trustiness, edge.density) = \frac{L}{T * (1.01 - D)}
     \end{equation}
-
-    Dưới đây là các đặc tính của lớp Node và Edge. \\ 
+    Xét với một nhóm người A trên một cạnh \emph{e} đang đi trên đoạn đường path từ
+    đó về tới exit node.
+    Với ý tưởng chia đoạn đường từ đỉnh \emph{e} đến exit node thành hai đoạn, path1 và
+    path2, trong đó: 
+    \begin{itemize}
+        \item path1: là đoạn đường gồm các đỉnh mà nhóm người A đi được trong thời gian 
+        $\tau$. Xét S là đỉnh cuối cùng trong path1, tức là S là đỉnh xa nhất mà nhóm 
+        người A đi được trong thời gian $\tau$ trên path. Ta xét rằng khi nhóm người A
+        đi đến các đoạn đường P tiếp theo trên path1 thì những những người trước đó ở P
+        đã di chuyển sang con đường khác. Như vậy thì các yêu tố ảnh hưởng tới thời gian 
+        di chuyển của những người A trên path1 chỉ là các yếu tố vật lý, độ tin cậy và
+        số lượng người trong nhóm A di chuyển trên đường. Do đó ta sẽ tính trọng số của 
+        đoạn đường path1 tương ứng với số lượng người A, chứ không phải là số lượng người 
+        trên cạnh của từng đoạn đường tại thời điểm tính toán.
+        \item path2: là đoạn đường bắt đầu từ đỉnh S tới exit node trên con đường path.
+        Khi nhóm người A di chuyển trên path1, thì những nhóm người khác ở các đỉnh xung 
+        quanh cũng đang di chuyển. Như vậy khi nhóm người A tới được S thì cũng sẽ có các
+        nhóm người khác tới được đỉnh S cùng thời điểm với nhóm người A. Như vậy từ đỉnh S,
+        cũng với lập luận rằng những người ở đoạn đường phía sau đoạn chứa nhóm người A
+        sẽ di chuyển đến các đoạn tiếp theo khi A tới được đó, như vậy thì
+        lượng người trên các đoạn đường tiếp theo dọc theo path mà vào các thời điểm 
+        nhóm người A đi qua thì sẽ có lượng người trên đó bằng số lượng người tới được 
+        đỉnh S trong thời gian $\tau$. Do đó ta sẽ tính trọng số của đoạn đường path2 
+        cho lượng người A theo công thức trước đó với số lượng người trên mỗi đoạn là 
+        lượng người đến được S trong thời gian $\tau$.
+    \end{itemize}
+    Một điều quan trọng trong cách tính trọng số trên là làm làm sao biết được cáo bao 
+    nhiêu người tại đỉnh S sau $\tau$ giây tiếp theo.  \\ 
+    Trong thuật toán dijkstra, các đỉnh được gán nhãn sau là các đỉnh có trọng số đường đi 
+    ngắn nhất tới đỉnh nguồn lớn hơn với các đỉnh được gán nhãn trước đó. Với công thức 
+    tính trọng số đoạn đường mà đặc trưng được cho thời gian để con người đi hết đoạn đường
+    đó thì những đỉnh nào được gán nhãn trước tức là những người ở gần đó sẽ tới exit 
+    nhanh hơn, hay có nghĩa là việc họ di chuyển sẽ không ảnh hưởng tới những người 
+    ở dằng sau khá xa họ. Và trong thuật toán này, khi một đỉnh đã tìm được đường đi 
+    ngắn nhất cho nó, thì nó sẽ thông báo cho các đỉnh khác mà vẫn đang tìm đường biết
+    được quãng đường của nó, để các đỉnh khác có thể tính toán lượng người cùng di chuyển 
+    trong tương lai.
+    \newpage
+    
     \textbf{Node}: 
     \begin{itemize}
         \item \textit{next}: đỉnh được lựa chọn là hướng đi đến.
@@ -41,7 +74,20 @@
         \item \textit{density}: mật độ.
         \item \textit{weight}: trọng số của cạnh.
     \end{itemize}
-    \begin{algorithm}
+    Trong thuật toán 1, từ dòng 7-10 thể hiện rằng khi đỉnh u được gán nhãn, thì nó 
+    sẽ cập nhật cho đỉnh S biết rằng nó sẽ tới được đó trong $\tau$ giây nữa. Sau khi 
+    cập nhật thông tin cho đỉnh S thì đỉnh S có nhiệm vụ báo lại cho những đỉnh đằng 
+    trước mà đang muốn đến S biết các thông tin để có thể tính toán lại trọng số khi 
+    mà chọn con đường đi qua S( dòng 10). \\ 
+    Như ta đã biết thì trong thuật toán dijkstra thì trọng số của các đỉnh sau khi 
+    được gán nhãn chỉ phụ thuộc vào đường đi của nó tới nguồn trên cây khung dijkstra.
+    Như vậy những người ở những con đường không nằm trên cây khung dijkstra sẽ không
+    được xét đến. Nhưng họ vẫn sẽ di chuyển, và sẽ làm thay đổi mật độ người ở những
+    đoạn đường họ tới được. Vì vậy, ngay sau khi gán nhãn cho một đỉnh, ta phải 
+    duyệt những cạnh nằm giữa đỉnh đó và các đỉnh xung quanh đã gán nhãn, cập nhật 
+    lượng người cho các đỉnh phía trước, bởi vì trong thuật toán dijkstra những cạnh 
+    này sẽ không được duyệt tới sau này nữa( Dòng 11-12).
+    \begin{algorithm}[H]
     \caption{Algorithm caption}
     \label{alg:algorithm-label}
     \textbf{Input:} Đồ thị có trọng số ứng với các Indicator và Node\\
@@ -87,8 +133,17 @@
     \EndProcedure
     \end{algorithmic}
     \end{algorithm}
+    Khi một đỉnh u được gán nhãn, ta sẽ tính toán trọng số đường đi rồi đưa chúng 
+    vào heap. Chú ý là một đỉnh \textbf{x} bất kì có k đỉnh kề với nó thì nó có thể 
+    chọn đi qua k đường ngắn nhất của các đỉnh kề đề về tới nguồn. Ta sẽ lưu lại k 
+    giá trị trọng số của k đường này. Ta sẽ làm như vậy do khi một đỉnh tìm được đường 
+    "ngắn nhất" cho nó thì sẽ cập nhật lường người cho đỉnh S tới được sau $\tau$ giây, 
+    như vậy lượng người tại S trong tương lai sẽ tăng lên. Chính vì vậy mà trọng số con 
+    đường của các đỉnh tới được S trong tương lai sẽ thay đổi. Ta phải cập nhật lại cho 
+    những đỉnh đó, và như vậy trọng số sẽ thay đổi, nên sẽ phải so sánh tìm lại con 
+    đường tốt nhất trong những thằng kề nó.
 
-    \begin{algorithm}
+    \begin{algorithm}[H]
         \caption{UpdateComingPeople}
         \textbf{Input}:Edge edge, Node node \\ 
         Cạnh nằm giữa hai đỉnh đã được gán nhãn và chưa được cập nhật. \\
@@ -103,56 +158,12 @@
             \EndProcedure
         \end{algorithmic}
     \end{algorithm}
-    
-    \begin{algorithm}
-        \caption{FindCrossNode}
-        \textbf{Input}: \textit{Node} node, \textit{Edge} edge\\
-        \textbf{Output}: Trả lại đỉnh xa nhất trên đường đi ngắn nhất của u mà v 
-        đi tới được trong thời gian t.
-        \begin{algorithmic}
-            \Procedure{My Procedure}{}
-            \em
-            \State sumWeight $\gets$ $v_{tb}*t$ 
-            \State nPeople $\gets$ edge.nPeople
-            \State from $\gets$ node
-            \While{sumWeight > 0}
-            \State sumWeight $\gets$ sumWeight - \textbf{GetWeight}(edge, nPeople)
-            \State from $\gets$ edge.to
-            \State edge $\gets$ from.nextEdge
-            \If{from = root} break
-            \EndIf
-            \EndWhile 
-            \textbf{end while} \\
-            \Return from
-            \EndProcedure
-        \end{algorithmic}
-    \end{algorithm}
-
-    \begin{algorithm}
-        \caption{CalculateWeight}
-        \textbf{Input}: \textit{Node} u, \textit{Node} s, int nPeople \\
-        \textbf{Output}: Trả lại trọng số của quãng đường đi từ u tới s với 
-        nPeople người đi.
-        \begin{algorithmic}
-            \Procedure{My Procedure}{}
-            \em
-            \State weight $\gets$ 0
-            \While{u \textbf{!=} s}
-            \State edge $\gets$ u.nextEdge
-            \State u $\gets$ u.next
-            \State density $\gets$ \textbf{GetDensity}(edge, nPeople)
-            \State weight $\gets$ weight + L * \textbf{F}(edge.Trustness, density)
-            \EndWhile
-            \Return weight
-            \EndProcedure
-        \end{algorithmic}
-    \end{algorithm}
 
     \begin{algorithm}
         \caption{UpdateComingNode}
         \textbf{Input}: \textit{Node} s \\ 
-        \textbf{Output}: Cập nhật lại trọng số của các Node mà sẽ tới được s
-        trong thời gian t những vẫn chưa được gán nhãn.
+        \textbf{Output}: Cập nhật lại trọng số của các node chưa được gán nhãn mà sẽ tới
+        được s sau thời gian $\tau$.
         \begin{algorithmic}
             \Procedure{My Procedure}{}
             \For{u \textbf{in} s.tComingNodes \textbf{and} u.label = false}
@@ -176,6 +187,54 @@
             \EndIf
             \textbf{end if}
             \EndFor
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+    \newpage
+
+    Trong thuật toán 4, do s và u được gán nhãn nên con đường đi từ u đến s là 
+    đoạn đường trên cây khung dijkstra.
+    \begin{algorithm}
+        \caption{FindCrossNode}
+        \textbf{Input}: \textit{Node} node, \textit{Edge} edge\\
+        \textbf{Output}: Trả lại đỉnh xa nhất trên đường đi ngắn nhất của u mà v 
+        đi tới được trong thời gian t. 
+        \begin{algorithmic}
+            \Procedure{My Procedure}{}
+            \em
+            \State sumWeight $\gets$ $v_{tb}*t$ 
+            \State nPeople $\gets$ edge.nPeople
+            \State from $\gets$ node
+            \While{sumWeight > 0}
+            \State sumWeight $\gets$ sumWeight - \textbf{GetWeight}(edge, nPeople)
+            \State from $\gets$ edge.to
+            \State edge $\gets$ from.nextEdge
+            \If{from = root} break
+            \EndIf
+            \EndWhile 
+            \textbf{end while} \\
+            \Return from
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+
+
+    \begin{algorithm}
+        \caption{CalculateWeight}
+        \textbf{Input}: \textit{Node} u, \textit{Node} s, int nPeople \\
+        \textbf{Output}: Trả lại trọng số của quãng đường đi từ u tới s với 
+        nPeople người đi.
+        \begin{algorithmic}
+            \Procedure{My Procedure}{}
+            \em
+            \State weight $\gets$ 0
+            \While{u \textbf{!=} s}
+            \State edge $\gets$ u.nextEdge
+            \State u $\gets$ u.next
+            \State density $\gets$ \textbf{GetDensity}(edge, nPeople)
+            \State weight $\gets$ weight + L * \textbf{F}(edge.Trustness, density)
+            \EndWhile
+            \Return weight
             \EndProcedure
         \end{algorithmic}
     \end{algorithm}

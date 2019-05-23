@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
@@ -8,45 +9,40 @@ using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
 namespace EvaFrame.Algorithm.NewAlgo
 { 
     /// <summary>
-    /// Thuật toán tìm đường thoát hiểm trong các tòa nhà lớn theo phương pháp mới, 
-    /// áp dụng lên mô hình tòa nhà thông minh để tìm đường đi tối ưu nhất.
+    /// Class thực hiện thuật toán cải tiến của nhóm
     /// </summary>
     public class MainAlgo : IAlgorithm
     {
         private const double PositiveInfinity = 1000000000;
         private Graph target;
-        private bool done;
 
-        /// <summary>
-        /// Khởi tạo đối tượng thuật toán ban đầu, chưa được gắn với tòa nhà mục tiêu cụ thể nào.
-        /// </summary>
-        public MainAlgo() { target = null; done = false; }
-
-        /// <summary>
-        /// Nhận đầu vào thuật toán là một building và trả về đồ thị dùng cho thuật toán mới
-        /// </summary>
-        /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị</param>
-        void IAlgorithm.Initialize(Building building)
+        void IAlgorithm.Initialize(Building target)
         {
-            this.target = new Graph(building);
-            this.done = false;
+            this.target = new Graph(target);
+            int time = 10000;
         }
 
         /// <summary>
-        /// Định nghĩa kiểu Data cho heap để sử dụng trong Dijkstra
+        /// Đội tượng được đặt vào heap, gồm có đỉnh và trọng số quãng đường
+        /// tốt nhất từ đỉnh đó tới root
         /// </summary>
         public class Data : IComparable, ICloneable
         {
-            ///<value> </value>
+            /// <summary>
+            /// 
+            /// </summary>
             public Node node;
 
-            ///<value> khoảng cách từ <c>node</c> tới đỉnh root</value>
-            public double weightToRoot;
-
             /// <summary>
-            /// Khởi tạo một đối tượng <c>Data</c> mới.
+            /// Trọng số quãng đường ngắn nhất tới root từ đỉnh này
             /// </summary>
-            public Data(Node node, double weightToRoot) 
+            public double weightToRoot;
+            /// <summary>
+            /// Khởi tạo đối tượng với đỉnh và trọng số được truyền vào
+            /// </summary>
+            /// <param name="node"></param>
+            /// <param name="weightToRoot"></param>
+            public Data(Node node, double weightToRoot)
             {
                 this.node = node;
                 this.weightToRoot = weightToRoot;
@@ -76,7 +72,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                     node.next = null;
                     node.nextEdge = null;
                     node.reachedNode = null;
-                    node.comingNodes = null;
+                    node.comingNodes.Clear();
                     node.nComingPeople = 0;
                     node.weight = PositiveInfinity;
                     foreach (var adjacence in node.adjacences)
@@ -92,61 +88,74 @@ namespace EvaFrame.Algorithm.NewAlgo
 
         void IAlgorithm.Run()
         {
-            if (target == null || done)
-                return;
-            done = true;
-
             Utility utility = new Utility();
             //Các cấu trúc dữ liệu cần cho thuật toán
             MinHeap<Data> heap = new MinHeap<Data>();
                 
             Setup();
-            heap.Push(new Data(target.Root, target.Root.weight));
-            /*foreach (var exit in target.Root.adjacences)
+            /*Đưa các exitnode vào heap */
+            foreach (var exit in target.Root.adjacences)
             {
                 exit.node.nextEdge = exit.node.adjacences.Find(adj => adj.node == target.Root).edge;
                 exit.node.next = target.Root;
                 exit.node.reachedNode = target.Root;
                 exit.node.weight = 0;
+                Adjacence adjacence = exit.node.adjacences.Find(adj => adj.node == target.Root);
+                adjacence.passingWeight = 0;
+                adjacence.reaching = target.Root;
+                target.Root.label = true;
                 heap.Push(new Data(exit.node, 0));
-            }*/
-            
+            }
+                        
             while (heap.Count > 0)
             {
                 Data data = heap.Top();
                 heap.Pop();
-
+            
                 Node u = data.node;
                 double wu = data.weightToRoot;
-                //Console.WriteLine(u.nextEdge.CorrespondingCorridor.Length);
-                Console.WriteLine(u);
+
+                // Console.WriteLine("label: " + u.CorrespondingIndicator.Id);
 
                 if (u.label == true) 
-                    break;
+                    continue;
 
                 if(u.weight != wu) 
                     continue;
 
                 u.label = true;
 
+                /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
-                s.nComingPeople += u.nextEdge.numberPeople;
+                s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
                 s.comingNodes.Add(u);
-
                 utility.UpdateComingNode(s, target.Root, heap);
 
-                foreach (Adjacence v in u.adjacences)
-                    if (v.node.label == true)
-                        utility.UpdateComingPeople(u, v.edge, target.Root, heap);
+                /*---------------------------------------------------------------------- */
 
+                foreach (Adjacence v in u.adjacences) 
+                    {
+                        /*Cập nhật lượng người ở giữa 2 đỉnh được gán nhãn cho đỉnh tới được 
+                        trong tương lại */
+
+                        if (v.node.label == true && v.node != u.next)
+                        utility.UpdateComingPeople(u, v.edge, target.Root, heap);
+                    }
+                
+                /*Tính toán trọng số con đường các đỉnh kề đi qua đỉnh mới được gán nhãn
+                và cập nhật lại con đường tốt nhất */
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
-                        s = utility. FindCrossNode(v.node, v.edge);
-                        s.nComingPeople += v.edge.numberPeople;
-                        double w1 = utility.CalculateWeight(u, s, v.edge.numberPeople);
+                        // Console.WriteLine("neighbor id " + v.node.CorrespondingIndicator.Id);
+                        Edge toU = v.node.adjacences.Find(adj => adj.node == u).edge; // Tìm cạnh mà đi từ đỉnh v tới u
+                        
+                        s = utility.FindCrossNode(v.node, toU);
+                        s.nComingPeople += toU.numberPeople;
+                        double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
                         double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
+                        // Console.WriteLine("id" + v.node.CorrespondingIndicator.Id + "=" + newW);
 
                         foreach (Adjacence ad in v.node.adjacences)
                             if (ad.node == u)
@@ -157,17 +166,49 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         if (newW < v.node.weight)
                         {
-                            v.node.nextEdge = v.node.adjacences.Find(adj => adj.node == u).edge;
+                            // Console.WriteLine(v.node.CorrespondingIndicator.Id);
                             v.node.weight = newW;
                             v.node.next = u;
+                            v.node.nextEdge = toU;
                             v.node.reachedNode = s;
                             heap.Push(new Data(v.node, v.node.weight));
                         }
 
                         s.nComingPeople -= v.edge.numberPeople;
                     }
+                /*-------------------------------------------------------------------------------------- */
             }
+
             target.UpdateResultToBuilding();
+        }
+        
+        public void CheckCondition()
+        {
+            Utility utility = new Utility();
+            Queue<Node> queue = new Queue<Node>();
+            foreach (var subGraph in target.FloorGraphs)
+            {
+                foreach (var node in subGraph.Nodes)
+                {
+                    node.label = false;
+                    if(node.CorrespondingIndicator.IsExitNode)
+                    {
+                        queue.Enqueue(node);
+                    }
+                }
+            }
+
+            while (queue.Count != 0)
+            {
+                Node node = queue.Dequeue();
+                utility.TackleIncidence(node, target.Root);
+                foreach (var adj in node.adjacences)
+                {
+                    if(adj.node.label) continue;
+                    queue.Enqueue(adj.node);
+                    adj.node.label = true;
+                }
+            }
         }
     }
 }

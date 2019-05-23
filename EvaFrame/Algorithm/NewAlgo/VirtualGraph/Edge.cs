@@ -41,7 +41,7 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             }
         }
 
-        private IWeigthFunction weightFunction;
+        private static IWeigthFunction weightFunction = new LcdtFunction();
 
         /// <summary>
         /// 
@@ -51,7 +51,6 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             correspondingCorridor = cor;
             numberPeople = Convert.ToInt32(cor.Density);
             to = nod;
-            weightFunction = new LcdtFunction();
         }
 
         /// <summary>
