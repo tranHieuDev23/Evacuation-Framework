@@ -79,10 +79,10 @@ namespace EvaFrame.Models.Building
         private static void LoadFloor(StreamReader sr, Building target, int floorId)
         {
             List<Indicator> indicatorList = LoadIndicatorsInFloor(sr, floorId);
-            LoadCorridorsInFloor(sr, indicatorList);
+            List<Corridor> corridorList = LoadCorridorsInFloor(sr, indicatorList);
             List<Indicator> stairList = LoadStairNodesInFloor(sr, indicatorList);
             LoadStairCorridorsInFloor(sr, target, indicatorList);
-            target.floors.Add(new Floor(indicatorList, stairList));
+            target.floors.Add(new Floor(indicatorList, stairList, corridorList));
         }
 
         private static List<Indicator> LoadIndicatorsInFloor(StreamReader sr, int floorId)
@@ -103,23 +103,30 @@ namespace EvaFrame.Models.Building
             return indicatorList;
         }
 
-        private static void LoadCorridorsInFloor(StreamReader sr, List<Indicator> indicatorList)
+        private static List<Corridor> LoadCorridorsInFloor(StreamReader sr, List<Indicator> indicatorList)
         {
+            List<Corridor> result = new List<Corridor>();
             int numCor = Int32.Parse(sr.ReadLine());
             if (numCor == 0)
-                return;
+                return result;
+
             string[] corridorData = sr.ReadLine().Split(',');
             foreach (string data in corridorData)
             {
                 string[] values = data.Split(';');
-                Indicator from = IdToIndicator(indicatorList, values[0]);
-                Indicator to = IdToIndicator(indicatorList, values[1]);
+                Indicator I1 = IdToIndicator(indicatorList, values[0]);
+                Indicator I2 = IdToIndicator(indicatorList, values[1]);
                 double length = Double.Parse(values[2]);
                 double width = Double.Parse(values[3]);
                 double trustiness = Double.Parse(values[4]);
-                from.Neighbors.Add(new Corridor(from, to, false, length, width, 0, trustiness));
-                to.Neighbors.Add(new Corridor(to, from, false, length, width, 0, trustiness));
+
+                Corridor cor = new Corridor(I1, I2, false, length, width, 0, trustiness);
+                I1.Neighbors.Add(cor);
+                I2.Neighbors.Add(cor);
+                result.Add(cor);
             }
+
+            return result;
         }
 
         private static List<Indicator> LoadStairNodesInFloor(StreamReader sr, List<Indicator> indicatorList)
@@ -147,13 +154,15 @@ namespace EvaFrame.Models.Building
             foreach (string data in stairData)
             {
                 string[] values = data.Split(';');
-                Indicator from = IdToIndicator(indicatorList, values[0]);
-                Indicator to = IdToIndicator(target, values[1]);
+                Indicator I1 = IdToIndicator(indicatorList, values[0]);
+                Indicator I2 = IdToIndicator(target, values[1]);
                 double length = Double.Parse(values[2]);
                 double width = Double.Parse(values[3]);
                 double trustiness = Double.Parse(values[4]);
-                from.Neighbors.Add(new Corridor(from, to, true, length, width, 0, trustiness));
-                to.Neighbors.Add(new Corridor(to, from, true, length, width, 0, trustiness));
+
+                Corridor cor = new Corridor(I1, I2, true, length, width, 0, trustiness);
+                I1.Neighbors.Add(cor);
+                I2.Neighbors.Add(cor);
             }
         }
 
@@ -176,7 +185,7 @@ namespace EvaFrame.Models.Building
             {
                 string[] peopleData = sr.ReadLine().Split(';');
                 Indicator following = IdToIndicator(target, peopleData[0]);
-                double speedMax = Double.Parse(peopleData[1]);
+                double speedMax = Double.Parse(peopleData[1]) * 3;
                 target.inhabitants.Add(new Person("P-" + i.ToString(), speedMax, following));
             }
         }

@@ -101,15 +101,14 @@ namespace EvaFrame.Utilities
                 double wu = data.DistanceToExit;
                 foreach (Corridor c in u.Neighbors)
                 {
-                    Indicator v = c.To;
+                    Indicator v = c.To(u);
                     double wv = result[v].DistanceToExit;
                     double wc = weightFunction.CalculateWeight(c);
                     if (wv <= wu + wc)
                         continue;
 
                     wv = wu + wc;
-                    Corridor vNext = v.Neighbors.Find(cor => cor.To == u);
-                    Data vData = new Data(v, wv, vNext);
+                    Data vData = new Data(v, wv, c);
                     result[v] = vData;
                     heap.Push(vData);
                 }

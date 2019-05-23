@@ -123,7 +123,10 @@ namespace EvaFrame.Simulator
                     lastAlgorithmRun = simulationLast;
                 }
             }
-            return simulationLast.Subtract(simulationStart).TotalSeconds;
+
+            double result = simulationLast.Subtract(simulationStart).TotalSeconds;
+            Console.WriteLine("Simulation finished! Time: " + result + "s");
+            return result;
         }
     }
 }

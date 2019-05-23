@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
+using EvaFrame.Algorithm.NewAlgo;
 using EvaFrame.Utilities;
 using EvaFrame.Utilities.WeightFunctions;
 
@@ -31,13 +32,15 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         public int numberPeople;
 
         /// <summary>
-        /// 
+        /// Trọng số của cạnh
         /// </summary>
         public double weight
         {
             get
             {
-                return weightFunction.CalculateWeight(correspondingCorridor);
+                return Utility.ContextFunction(correspondingCorridor.Trustiness, 
+                                                correspondingCorridor.Density / correspondingCorridor.Capacity)
+                     * correspondingCorridor.Length;
             }
         }
 

@@ -20,7 +20,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
         /// <param name="density">mật độ người đi trên đoạn đường</param>
         /// <returns>Chỉ số ảnh hưởng</returns>
-        private double ContextFunction(double trustness, double density)
+        public static double ContextFunction(double trustness, double density)
         {
             return 1 /(trustness * (1.0001 - density));
         }
@@ -110,7 +110,40 @@ namespace EvaFrame.Algorithm.NewAlgo
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
-                                * ContextFunction(current, numberPeople);
+                                * ContextFunction(current.CorrespondingCorridor.Trustiness, numberPeople);
+                current = current.To.nextEdge;
+            } while (preEdge.To != to);
+            return weight;
+        }
+
+        public double CalculateCongestionWeight(Node from, Node to, int numberPeople)
+        {
+            /*Implement code in here */
+            /*Xử lý trường hợp đoạn đường có độ dài = 0 và trường hợp đỉnh from đứng trước to */
+            if(from == to || from.label == false)
+            {
+                return 0;
+            }
+            /*------------------------------------------------------------------------------- */
+
+            double weight = 0;
+            Edge current = from.nextEdge;
+            Edge preEdge;
+            do
+            {
+                if(current == null || current.CorrespondingCorridor == null)
+                {
+                    break;
+                }
+                preEdge = current;
+                double CurrentWeight = GetWeight(current, current.numberPeople);
+                if (CurrentWeight > TIME * V_TB - weight)
+                {
+                    numberPeople += current.numberPeople;
+                }
+                double density = GetDensity(current, numberPeople);
+                weight = weight + current.CorrespondingCorridor.Length 
+                                * ContextFunction(current.CorrespondingCorridor.Trustiness, numberPeople);
                 current = current.To.nextEdge;
             } while (preEdge.To != to);
             return weight;
@@ -123,9 +156,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
         /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
-        /// 
-        //private MainAlgo mainAlgo = new MainAlgo();
-        //private MainAlgo.Data data = new mainAlgo.Data();
         public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
@@ -141,7 +171,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*Cập nhật lại trọng số con đường của comingNode mà đi tới được reachedNode */
                 int numberPeople = (int) intermediate.edge.CorrespondingCorridor.Density;
-                double w1 = CalculateWeight(intermediate.node, 
+                double w1 = CalculateCongestionWeight(intermediate.node, 
                                             reachedNode, 
                                             numberPeople);
                 double w2 = CalculateWeight(reachedNode, root, reachedNode.nComingPeople);

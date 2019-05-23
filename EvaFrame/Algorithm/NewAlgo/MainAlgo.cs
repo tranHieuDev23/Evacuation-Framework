@@ -88,37 +88,6 @@ namespace EvaFrame.Algorithm.NewAlgo
 
         void IAlgorithm.Run()
         {
-<<<<<<< HEAD
-            // foreach (var floor in target.FloorGraphs)
-            // {
-            //     foreach (var node in floor.Nodes)
-            //     {
-            //         Console.WriteLine(node.CorrespondingIndicator.Id + " node ");
-            //         // if(node.CorrespondingIndicator.IsExitNode){
-            //         //     Console.WriteLine(node.CorrespondingIndicator.Id + " exit");
-            //             // foreach (var adj in node.adjacences)
-            //             // {
-            //             //     Console.WriteLine(adj.node.CorrespondingIndicator.Id + " adj");
-            //             // }
-            //         // }
-            //     }
-            // foreach (var stair in target.AllStairs)
-            // {
-            //     foreach (var adj in stair.adjacences)
-            //     {
-            //         if(adj.edge.CorrespondingCorridor.IsStairway)
-            //         {
-            //             Console.WriteLine(stair.CorrespondingIndicator.Id + " stair");
-            //             Console.WriteLine(adj.node.CorrespondingIndicator.Id + " to");
-            //         }
-            //     }
-            // }
-            // Console.ReadKey();
-            // }
-            // Console.WriteLine(target.FloorGraphs[0].Nodes[1].CorrespondingIndicator.Id + "kk" + target.FloorGraphs[0].Nodes[1].comingNodes.Count);
-
-=======
->>>>>>> e020957e899ed4d476754f8ff709dfc9bfdcc5f0
             Utility utility = new Utility();
             //Các cấu trúc dữ liệu cần cho thuật toán
             MinHeap<Data> heap = new MinHeap<Data>();
@@ -146,11 +115,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 Node u = data.node;
                 double wu = data.weightToRoot;
 
-<<<<<<< HEAD
-                // Console.WriteLine("label: " + u.CorrespondingIndicator.Id);
-
-=======
->>>>>>> e020957e899ed4d476754f8ff709dfc9bfdcc5f0
                 if (u.label == true) 
                     continue;
 
@@ -161,11 +125,8 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
-<<<<<<< HEAD
+
                 if(s != target.Root) 
-=======
-                if(s != target.Root)
->>>>>>> master
                 {
                     s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
                     s.comingNodes.Add(u);
@@ -188,21 +149,13 @@ namespace EvaFrame.Algorithm.NewAlgo
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
-<<<<<<< HEAD
-                        // Console.WriteLine("neighbor id " + v.node.CorrespondingIndicator.Id);
-=======
->>>>>>> e020957e899ed4d476754f8ff709dfc9bfdcc5f0
                         Edge toU = v.node.adjacences.Find(adj => adj.node == u).edge; // Tìm cạnh mà đi từ đỉnh v tới u
                         
                         s = utility.FindCrossNode(v.node, toU);
                         s.nComingPeople += toU.numberPeople;
-                        double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
+                        double w1 = utility.CalculateCongestionWeight(u, s, toU.numberPeople);
                         double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
                         double newW = v.edge.weight + w1 + w2;
-<<<<<<< HEAD
-                        // Console.WriteLine("id" + v.node.CorrespondingIndicator.Id + "=" + newW);
-=======
->>>>>>> e020957e899ed4d476754f8ff709dfc9bfdcc5f0
 
                         foreach (Adjacence ad in v.node.adjacences)
                             if (ad.node == u)
@@ -213,10 +166,6 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                         if (newW < v.node.weight)
                         {
-<<<<<<< HEAD
-                            // Console.WriteLine(v.node.CorrespondingIndicator.Id);
-=======
->>>>>>> e020957e899ed4d476754f8ff709dfc9bfdcc5f0
                             v.node.weight = newW;
                             v.node.next = u;
                             v.node.nextEdge = toU;
@@ -232,6 +181,9 @@ namespace EvaFrame.Algorithm.NewAlgo
             target.UpdateResultToBuilding();
         }
         
+        /// <summary>
+        /// Hàm dùng để cập nhật thường xuyên xử lý tình hướng hỏa hoạn thay đổi nhanh bất thường.
+        /// </summary>
         public void CheckCondition()
         {
             Utility utility = new Utility();
