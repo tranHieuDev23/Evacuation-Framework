@@ -110,15 +110,12 @@ namespace EvaFrame.Algorithm.NewAlgo
             {
                 if(current == null)
                 {
-                    Console.WriteLine(from.CorrespondingIndicator.Id + " from");
-                    Console.WriteLine(to.CorrespondingIndicator.Id + " to");
-                    return 0;
+                    break;
                 }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
-                                * ContextFunction(current.CorrespondingCorridor.Trustiness, 
-                                                  density);
+                                * ContextFunction(current, numberPeople);
                 current = current.To.nextEdge;
             } while (preEdge.To != to);
             return weight;
@@ -157,9 +154,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    Console.WriteLine("2");
-                    //MainAlgo mainAlgo = new MainAlgo();
-                    //mainAlgo.heapPush(new mainAlgo.Data(comingNode, comingNode.weight));
                     heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
                 }
             }
@@ -188,11 +182,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                     }
                 }
             }
-            if (isChanged)
-            {
-                /*Nếu trọng số  của node thay đổi cần phải lưu lại giá trị mới này
-                vào mảng dictionary */
-            }
             return isChanged;
         }
 
@@ -207,7 +196,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
-            Console.WriteLine(node.CorrespondingIndicator.Id);
             Node reachedNode = FindCrossNode(node, edge);
             if (reachedNode == root) Console.WriteLine("true");
             reachedNode.nComingPeople = reachedNode.nComingPeople 
