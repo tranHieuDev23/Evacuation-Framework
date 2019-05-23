@@ -12,6 +12,18 @@ namespace EvaFrame.Models.Building
         /// <value>String định danh của <c>Indicator</c>, có dạng [số thứ tự trong tầng]@[số tầng].</value>
         public string Id { get { return id; } }
 
+        private int x;
+        /// <value>Tọa độ X của <c>Indicator</c> trên biểu diễn đồ họa.</value>
+        public int X { get { return x; } }
+
+        private int y;
+        /// <value>Tọa độ Y của <c>Indicator</c> trên biểu diễn đồ họa.</value>
+        public int Y { get { return y; } }
+
+        private int floorId;
+        /// <value>Chỉ số của tầng mà <c>Indicator</c> này đang ở trên. Là số nguyên trong khoảng [1, số tầng].</value>
+        public int FloorId { get { return floorId; } }
+
         private List<Corridor> neighbors;
         /// <value>
         /// Danh sách các hành lang dẫn tới các đèn báo kế cận với đèn báo này.
@@ -60,9 +72,18 @@ namespace EvaFrame.Models.Building
         /// <summary>
         /// Khởi tạo một đối tượng đèn báo không có hành lang nào kế cận, và không chỉ tới đâu cả.
         /// </summary>
-        public Indicator(string id)
+        public Indicator(string id, int x, int y, int floorId)
         {
+            if (x < 0)
+                throw new ArgumentOutOfRangeException("x", "x cannot be negative!");
+            if (y < 0)
+                throw new ArgumentOutOfRangeException("y", "y cannot be negative!");
+            if (floorId < 0)
+                throw new ArgumentOutOfRangeException("floorId", "floorId cannot be negative!");
             this.id = id;
+            this.x = x;
+            this.y = y;
+            this.floorId = floorId;
             this.neighbors = new List<Corridor>();
             this.next = null;
         }

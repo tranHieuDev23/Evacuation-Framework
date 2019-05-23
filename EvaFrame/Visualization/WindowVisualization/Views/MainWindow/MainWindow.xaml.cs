@@ -1,109 +1,61 @@
 using System;
 using System.Threading;
 using EvaFrame.Models;
+using EvaFrame.Models.Building;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using ReactiveUI;
 
 namespace EvaFrame.Visualization.WindowVisualization
 {
-    /// <summary>
-    /// Cửa sổ chính trong mô phỏng đồ họa của chương trình. 
-    /// Tại đây, các thông tin cơ bản như số lượng người còn lại trong tòa nhà, hoặc thông tin về người 
-    /// đang ở gần lối thoát nhất sẽ được hiển thị.
-    /// </summary>
-    public class MainWindow : Window
+    class MainWindow : Window
     {
-        private ViewModel viewModel;
-        
-        /// <summary>
-        /// Khởi tạo một đối tượng cửa sổ mới.
-        /// </summary>
+        private DynamicTabControl tabControl;
+        private GeneralTab generalTab;
+        private FloorTab[] floorTabs;
+        private Building target;
+        private Mutex mutex;
+
         public MainWindow()
         {
-            this.viewModel = new ViewModel();
-            this.DataContext = this.viewModel;
-            AvaloniaXamlLoader.Load(this);
+            this.Title = "EvaFrame";
+            this.Width = 1280;
+            this.Height = 720;
+
+            this.tabControl = new DynamicTabControl();
+            this.generalTab = new GeneralTab();
+            this.tabControl.AddTab(generalTab, "General");
+            this.Content = this.tabControl;
+            
+            this.mutex = new Mutex();
         }
 
-        /// <summary>
-        /// Cập nhật nội dung của cửa sổ.
-        /// </summary>
-        /// <param name="timeElapsed">Thời gian kể từ lúc bắt đầu mô phỏng thuật toán, tính theo đơn vị s.</param>
-        /// <param name="remainingCount">Số người còn lại trong tòa nhà mục tiêu.</param>
-        /// <param name="displayedPerson">Cư dân được chọn để hiển thị (người ở gần lối ra nhất).</param>
+        public void Initialize(Building target)
+        {
+            this.target = target;
+            this.floorTabs = new FloorTab[target.Floors.Count];
+            for (int i = 0; i < floorTabs.Length; i++)
+            {
+                floorTabs[i] = new FloorTab(target.Floors[i]);
+                tabControl.AddTab(floorTabs[i], String.Format("Floor {0}", i + 1));
+            }
+        }
+
         public void UpdateContent(double timeElapsed, int remainingCount, Person displayedPerson)
         {
-            viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
-            viewModel.TimeElapsed = String.Format("Time elapsed: {0, 0:F5}s", timeElapsed);
-            viewModel.RemainingCount = String.Format("Remaining inhabitants: {0, 0:D}", remainingCount);
-            viewModel.ClosestId = "Inhabitant Id: " + displayedPerson.Id;
-            viewModel.ClosestSpeedMax = "Inhabitant SpeedMax: " + displayedPerson.SpeedMax;
-            viewModel.ClosestFollowing = "Inhabitant is taking direction from indicator: " + displayedPerson.Following.Id;
-            if (displayedPerson.Location == null)
+            foreach (FloorTab tab in floorTabs)
+                tab.ClearInhabitantIcons();
+            mutex.WaitOne();
+            generalTab.UpdateContent(timeElapsed, remainingCount, displayedPerson);
+            foreach (Person p in target.Inhabitants)
             {
-                viewModel.ClosestLocation = "Inhabitant is currently not running on any corridor.";
-                viewModel.ClosestLocationLength =
-                viewModel.ClosestLocationWidth =
-                viewModel.ClosestLocationCapacity =
-                viewModel.ClosestLocationDensity =
-                viewModel.ClosestLocationTrustiness =
-                viewModel.ClosestCompletedPercentage =
-                viewModel.ClosestActualSpeed = "";
+                if (p.Location != null)
+                    if (p.Location.IsStairway)
+                        continue;
+                floorTabs[p.Following.FloorId - 1].AddInhabitantIcon(p);
             }
-            else
-            {
-                viewModel.ClosestLocation = "Inhabitant is currently running on corridor: " + displayedPerson.Location.Id;
-                viewModel.ClosestLocationLength = "Corridor length: " + displayedPerson.Location.Length;
-                viewModel.ClosestLocationWidth = "Corridor width: " + displayedPerson.Location.Width;
-                viewModel.ClosestLocationCapacity = "Corridor capacity: " + displayedPerson.Location.Capacity;
-                viewModel.ClosestLocationDensity = "Corridor density: " + displayedPerson.Location.Density;
-                viewModel.ClosestLocationTrustiness = "Corridor trustiness: " + displayedPerson.Location.Trustiness;
-                viewModel.ClosestCompletedPercentage = "Inhabitant completedPercentage: " + displayedPerson.CompletedPercentage;
-                viewModel.ClosestActualSpeed = "Inhabitant actualSpeed: " + displayedPerson.CalculateActualSpeed(displayedPerson.Location);
-            }
-        }
-
-        private class ViewModel : ReactiveObject
-        {
-            private string timeElapsed;
-            public string TimeElapsed { get => timeElapsed; set => this.RaiseAndSetIfChanged(ref timeElapsed, value); }
-
-            private string remainingCount;
-            public string RemainingCount { get => remainingCount; set => this.RaiseAndSetIfChanged(ref remainingCount, value); }
-
-            private string closestId;
-            public string ClosestId { get => closestId; set => this.RaiseAndSetIfChanged(ref closestId, value); }
-
-            private string closestSpeedMax;
-            public string ClosestSpeedMax { get => closestSpeedMax; set => this.RaiseAndSetIfChanged(ref closestSpeedMax, value); }
-
-            private string closestFollowing;
-            public string ClosestFollowing { get => closestFollowing; set => this.RaiseAndSetIfChanged(ref closestFollowing, value); }
-
-            private string closestLocation;
-            public string ClosestLocation { get => closestLocation; set => this.RaiseAndSetIfChanged(ref closestLocation, value); }
-
-            private string closestLocationLength;
-            public string ClosestLocationLength { get => closestLocationLength; set => this.RaiseAndSetIfChanged(ref closestLocationLength, value); }
-
-            private string closestLocationWidth;
-            public string ClosestLocationWidth { get => closestLocationWidth; set => this.RaiseAndSetIfChanged(ref closestLocationWidth, value); }
-
-            private string closestLocationCapacity;
-            public string ClosestLocationCapacity { get => closestLocationCapacity; set => this.RaiseAndSetIfChanged(ref closestLocationCapacity, value); }
-
-            private string closestLocationDensity;
-            public string ClosestLocationDensity { get => closestLocationDensity; set => this.RaiseAndSetIfChanged(ref closestLocationDensity, value); }
-
-            private string closestLocationTrustiness;
-            public string ClosestLocationTrustiness { get => closestLocationTrustiness; set => this.RaiseAndSetIfChanged(ref closestLocationTrustiness, value); }
-
-            private string closestCompletedPercentage;
-            public string ClosestCompletedPercentage { get => closestCompletedPercentage; set => this.RaiseAndSetIfChanged(ref closestCompletedPercentage, value); }
-
-            private string closestActualSpeed;
-            public string ClosestActualSpeed { get => closestActualSpeed; set => this.RaiseAndSetIfChanged(ref closestActualSpeed, value); }
+            mutex.ReleaseMutex();
+            foreach (FloorTab tab in floorTabs)
+                tab.InvalidateVisual();
         }
     }
 }
