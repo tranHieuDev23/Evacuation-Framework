@@ -23,21 +23,10 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             
             int cnt = 0;
             foreach (SubCacheGraph subCacheGraph in cacheGraph.SubCacheGraphs) {
-                /* foreach (CacheNode node1 in subCacheGraph.CacheNodes) {
-                    foreach (CacheNode node2 in subCacheGraph.CacheNodes) 
-                    if (!node1.Equals(node2)) {
-                        List<CachePath> listPath = subCacheGraph.FindKPath(k, node1, node2, lenghtThreshold);
-                        Update(listPath);
-                        //Console.WriteLine("Node {0} to Node {1} Done!", node1.CorrespondingIndicator.Id, node2.CorrespondingIndicator.Id);
-                    }
-                }
-                Console.WriteLine("Floor {0} Done!", cnt++);*/
                 List<String> stoppedNode = new List<String>() {
                     "16", "33", "50", "64", "75", "87", "101", "115", "138", "169" 
                 };
                 subCacheGraph.setCachePathFromStoppedNodes(stoppedNode);
-
-                //Console.WriteLine("len srcInds = {0}", srcInds.Count);
 
                 for (int i = 0; i < srcInds.Count; ++i) {
                     CacheNode node1 = subCacheGraph.CacheNodes.Find( node => node.CorrespondingIndicator.getIdNumber() == srcInds[i]);

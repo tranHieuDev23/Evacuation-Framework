@@ -24,10 +24,10 @@ class Program
     {
         Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
-        //Simulator simulator = new Simulator(target, new LCDTAlgorithm(), new BasicConstantHazard(), visualization);
+        Simulator simulator = new Simulator(target, new LCDTAlgorithm(), new BasicConstantHazard(), visualization);
         //Simulator simulator = new Simulator(target, new MainAlgo(), new BasicConstantHazard(), visualization);
-        Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
-        simulator.RunSimulatorAsync(50, 10000);
+        //Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
+        simulator.RunSimulatorAsync(50, 20000);
         app.Run(visualization.MainWindow);
     }
 }

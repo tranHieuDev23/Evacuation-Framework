@@ -37,16 +37,11 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
             foreach (Node exitNode in crossGraph.Nodes) 
             if (exitNode.IsExitNode == true) {
-                //Console.WriteLine("Id : {0}", exitNode.CorresspodingIndicator.Id);
                 Dictionary<PairNN, double> tempWeights = dijkstra(exitNode);
-                
-
+            
                 foreach (KeyValuePair<PairNN, double> item in tempWeights) {
                     wGlobal[item.Key] = item.Value;
                 }
-
-                //Node stairNode = crossGraph.Nodes.Find( node => node.IsStairNode == true );
-                //bool checkGlobalEvaluation = tempWeights.ContainsKey(new PairNN(stairNode, exitNode));
             }
 
             return wGlobal;
@@ -82,13 +77,12 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
                 foreach (Edge e in u.Adjencents) {
                     Node v = e.To;
-                    PairNN ev = new PairNN(exitNode, v);
-                    double wv = weights[ev];
+                    PairNN ve = new PairNN(v, exitNode);
+                    double wv = weights[ve];
 
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;
                         weights[new PairNN(v, exitNode)] = wv;
-                        v.Next = v.Adjencents.Find(edge => edge.To == u);
                         heap.Push(new DataN(v, wv));
                     }
                 }

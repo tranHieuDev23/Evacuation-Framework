@@ -55,7 +55,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                             Node stairNode = option.StairNode;
                             if (stairNode.IsStairNode) continue;
 
-                            if (minPath > weightToS) {
+                            if (minPath >= weightToS) {
                                 minPath = weightToS;
                                 u.Next = option.Next;
                             }
@@ -64,14 +64,13 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     else {
                         foreach (NodeOption option in u.NextOptions) {
                             foreach (Node exitNode in graph.ExitNodes) {
-                                //Node exitNode = new Node(exit);
                                 double weightToS = option.WeightToS;
                                 Node stairNode = option.StairNode;
                                 PairNN stairNodeToExitNode = new PairNN(stairNode, exitNode);
                                 
                                 bool check = wGlobals.ContainsKey(stairNodeToExitNode);
 
-                                if (minPath > weightToS + wGlobals[stairNodeToExitNode]) {
+                                if (minPath >= weightToS + wGlobals[stairNodeToExitNode]) {
                                     minPath = weightToS + wGlobals[stairNodeToExitNode];
                                     u.Next = option.Next;
                                 }
@@ -83,5 +82,29 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                 }
             }
         } 
+
+        /// <summary>
+        /// Thêm phương án chỉ hướng đi xuống tầng dưới và đi lên tầng trên cho các Stair Node.
+        /// </summary>
+        public void updateStairWay() {
+            for (int i = 1; i < graph.CrossGraph.Target.Floors.Count; ++i) {
+                Floor floor = graph.CrossGraph.Target.Floors[i];
+                SubGraph upSubGraph = graph.SubGraphs[i];
+                SubGraph downSubGraph = graph.SubGraphs[i-1];
+
+                foreach (Indicator indicator in floor.Indicators)
+                if (indicator.IsStairNode) 
+                    foreach (Corridor cor in indicator.Neighbors)
+                    if (cor.I1.IsStairNode && cor.I2.IsStairNode) {
+                        if (cor.I1.Equals(indicator) && cor.I1.getFloorNumber() > cor.I2.getFloorNumber()) {
+                            Node upStairNode = upSubGraph.Nodes.Find( node => node.CorresspodingIndicator == cor.I1);
+                            Node downStairNode = downSubGraph.Nodes.Find( node => node.CorresspodingIndicator == cor.I2);
+
+                            upStairNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), downStairNode));
+                            downStairNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), upStairNode));
+                        }
+                    }
+            }
+        }
     }
 }
