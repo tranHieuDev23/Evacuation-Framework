@@ -19,7 +19,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         void IAlgorithm.Initialize(Building target)
         {
             this.target = new Graph(target);
-            int time = 10000;
         }
 
         /// <summary>
@@ -29,7 +28,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         public class Data : IComparable, ICloneable
         {
             /// <summary>
-            /// 
+            /// <c>node</c> tương ứng đối tượng
             /// </summary>
             public Node node;
 
@@ -40,8 +39,8 @@ namespace EvaFrame.Algorithm.NewAlgo
             /// <summary>
             /// Khởi tạo đối tượng với đỉnh và trọng số được truyền vào
             /// </summary>
-            /// <param name="node"></param>
-            /// <param name="weightToRoot"></param>
+            /// <param name="node"><c>node tương ứng</c></param>
+            /// <param name="weightToRoot">trọng số của quáng đường từ <c>node</c> tới <c>root</c></param>
             public Data(Node node, double weightToRoot)
             {
                 this.node = node;
@@ -125,6 +124,7 @@ namespace EvaFrame.Algorithm.NewAlgo
 
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
+
                 if(s != target.Root) 
                 {
                     s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
@@ -152,8 +152,8 @@ namespace EvaFrame.Algorithm.NewAlgo
                         
                         s = utility.FindCrossNode(v.node, toU);
                         s.nComingPeople += toU.numberPeople;
-                        double w1 = utility.CalculateWeight(u, s, toU.numberPeople);
-                        double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople);
+                        double w1 = utility.CalculateWeight(u, s, toU.numberPeople, 0);
+                        double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople, w1);
                         double newW = v.edge.weight + w1 + w2;
 
                         foreach (Adjacence ad in v.node.adjacences)
@@ -180,6 +180,9 @@ namespace EvaFrame.Algorithm.NewAlgo
             target.UpdateResultToBuilding();
         }
         
+        /// <summary>
+        /// Hàm dùng để cập nhật thường xuyên xử lý tình hướng hỏa hoạn thay đổi nhanh bất thường.
+        /// </summary>
         public void CheckCondition()
         {
             Utility utility = new Utility();

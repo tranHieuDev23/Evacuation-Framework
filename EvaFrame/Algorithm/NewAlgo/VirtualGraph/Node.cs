@@ -93,8 +93,9 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         }
         
         /// <summary>
-        /// 
+        /// Khởi tạo một đỉnh tương ứng với <c>indicator</c>
         /// </summary>
+        /// <param name="indicator"><c>Indicator</c> nguồn khởi tạo</param>
         public Node(Indicator indicator)
         {
             this.correspondingIndicator = indicator;

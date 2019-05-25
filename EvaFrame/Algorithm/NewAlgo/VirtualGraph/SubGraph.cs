@@ -37,6 +37,10 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
 
         private Floor correspondingFloor;
 
+        /// <summary>
+        /// <c>floor</c> trong <c>build</c> được mô phỏng
+        /// </summary>
+        /// <value>Giá trị read-only</value>
         public Floor CorrespondingFloor
         {
             get
@@ -45,6 +49,11 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
             }
         }
 
+        /// <summary>
+        /// Khởi tạo các <c>node</c>, <c>edge</c> tương ứng với các <c>indicator</c>, 
+        /// <c>corridor</c> trong <c>floor</c> 
+        /// </summary>
+        /// <param name="floor">Nguồn khởi tạo <c>SubGraph</c></param>
         public SubGraph(Floor floor)
         {
             int numberIndicator = floor.Indicators.Count;

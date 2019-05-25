@@ -12,15 +12,7 @@ namespace EvaFrame.Algorithm.NewAlgo
     public class Utility
     {
         private const double V_TB = 4;
-        private const double TIME = 50;
-
-        /// <summary>
-        /// Setup all data in order to re-execute Algorithm
-        /// </summary>
-        public void Setup()
-        {
-            
-        }
+        private const double TIME = 100;
 
         /// <summary>
         /// Hàm tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường
@@ -28,9 +20,10 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
         /// <param name="density">mật độ người đi trên đoạn đường</param>
         /// <returns>Chỉ số ảnh hưởng</returns>
-        private double ContextFunction(double trustness, double density)
+        public static double ContextFunction(double trustness, double density)
         {
-            return 1 /(trustness * (1.0001 - density));
+            double value = 1 /(trustness * (1.01 - density));
+            return value > 8 ? 8 : value;
         }
 
         /// <summary>
@@ -44,7 +37,6 @@ namespace EvaFrame.Algorithm.NewAlgo
             double density = GetDensity(edge, numberPeople);
             return edge.CorrespondingCorridor.Length
                  * ContextFunction(edge.CorrespondingCorridor.Trustiness, density);
-
         }
 
         /// <summary>
@@ -57,7 +49,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         {
             double density;
             density = numberPeople / (edge.CorrespondingCorridor.Capacity);
-            return density;
+            return (density < 1) ? density : 1;
 
         }
 
@@ -74,12 +66,19 @@ namespace EvaFrame.Algorithm.NewAlgo
         {
             /*Implement code in here */
             double sumWeight = V_TB * TIME;
+            double preWeight = 0;
             int numberPeople = (int)passing.CorrespondingCorridor.Density;
             Node reach = from;
             Edge next = passing;
             while (sumWeight - GetWeight(next, numberPeople) > 0)
             {
-                sumWeight = sumWeight - GetWeight(next, numberPeople);
+                double nextWeight = GetWeight(next, numberPeople);
+                if (nextWeight > preWeight)
+                {
+                    numberPeople += next.numberPeople;
+                }
+                sumWeight = sumWeight - nextWeight;
+                preWeight += nextWeight;
                 reach = next.To;
                 next = reach.nextEdge;
                 if(next == null || next.CorrespondingCorridor == null) break;
@@ -95,8 +94,9 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="from">Đỉnh bắt đăù của đoạn đường</param>
         /// <param name="to">Đỉnh kết thúc của đoạn đường</param>
         /// <param name="numberPeople">Số người đi trên đoạn đường</param>
+        /// <param name="preWeight">Trọng số của đoạn đường đằng trước đỉnh <c>from</c></param>
         /// <returns>Trọng số của của đoạn đường tương ứng với <c>numberPeople</c></returns>
-        public double CalculateWeight(Node from, Node to, int numberPeople)
+        public double CalculateWeight(Node from, Node to, int numberPeople, double preWeight)
         {
             /*Implement code in here */
             /*Xử lý trường hợp đoạn đường có độ dài = 0 và trường hợp đỉnh from đứng trước to */
@@ -115,11 +115,15 @@ namespace EvaFrame.Algorithm.NewAlgo
                 {
                     break;
                 }
+                double currentWeight = GetWeight(current, numberPeople);
+                if (currentWeight > preWeight + weight) 
+                {
+                    numberPeople += current.numberPeople;
+                }
                 preEdge = current;
                 double density = GetDensity(current, numberPeople);
                 weight = weight + current.CorrespondingCorridor.Length 
-                                * ContextFunction(current.CorrespondingCorridor.Trustiness, 
-                                                  density);
+                                * ContextFunction(current.CorrespondingCorridor.Trustiness, density);
                 current = current.To.nextEdge;
             } while (preEdge.To != to);
             return weight;
@@ -132,9 +136,12 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
         /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
+<<<<<<< HEAD
+=======
         /// 
         //private MainAlgo mainAlgo = new MainAlgo();
         //private MainAlgo.Data data = new mainAlgo.Data(); 
+>>>>>>> Giang
         public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */
@@ -152,8 +159,9 @@ namespace EvaFrame.Algorithm.NewAlgo
                 int numberPeople = (int) intermediate.edge.CorrespondingCorridor.Density;
                 double w1 = CalculateWeight(intermediate.node, 
                                             reachedNode, 
-                                            numberPeople);
-                double w2 = CalculateWeight(reachedNode, root, reachedNode.nComingPeople);
+                                            numberPeople,
+                                            0);
+                double w2 = CalculateWeight(reachedNode, root, reachedNode.nComingPeople, w1);
                 intermediate.passingWeight = intermediate.edge.weight + w1 + w2;
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
@@ -185,11 +193,6 @@ namespace EvaFrame.Algorithm.NewAlgo
                         isChanged = true;
                     }
                 }
-            }
-            if (isChanged)
-            {
-                /*Nếu trọng số  của node thay đổi cần phải lưu lại giá trị mới này
-                vào mảng dictionary */
             }
             return isChanged;
         }
@@ -227,7 +230,7 @@ namespace EvaFrame.Algorithm.NewAlgo
             {
                 int numberComing = (int) adj.node.nComingPeople
                                  + checkNode.nComingPeople;
-                double weight = CalculateWeight(adj.node, root, numberComing) 
+                double weight = CalculateWeight(adj.node, root, numberComing, 0) 
                               + GetWeight(adj.edge, checkNode.nComingPeople);
                 if (weight < changedWeight){
                     changeDirectionTo = adj.edge;

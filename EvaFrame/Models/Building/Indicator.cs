@@ -61,7 +61,7 @@ namespace EvaFrame.Models.Building
 
         private bool isExitNode;
         /// <value>
-        /// Trả về true nếu như <c>Indicator</c> này là một Stair Node.
+        /// Trả về true nếu như <c>Indicator</c> này là một Exit Node.
         /// </value>
         public bool IsExitNode
         {
