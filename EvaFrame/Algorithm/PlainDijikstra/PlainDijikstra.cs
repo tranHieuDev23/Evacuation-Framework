@@ -34,7 +34,7 @@ namespace EvaFrame.Algorithm.PlainDijikstra
                 return;
             done = true;
 
-            DijikstraAlgorithm algorithm = new DijikstraAlgorithm(new LcdtFunction());
+            DijikstraAlgorithm algorithm = new DijikstraAlgorithm(new LengthOnlyFunction());
             Dictionary<Indicator, DijikstraAlgorithm.Data> calculation = algorithm.Run(target);
             foreach (Floor floor in target.Floors)
                 foreach (Indicator ind in floor.Indicators)
