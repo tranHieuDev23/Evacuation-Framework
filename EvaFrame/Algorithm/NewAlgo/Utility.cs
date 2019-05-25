@@ -136,12 +136,6 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
         /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
-<<<<<<< HEAD
-=======
-        /// 
-        //private MainAlgo mainAlgo = new MainAlgo();
-        //private MainAlgo.Data data = new mainAlgo.Data(); 
->>>>>>> Giang
         public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
         {
             /*Implement code in here */

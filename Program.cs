@@ -26,6 +26,7 @@ class Program
         Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
 <<<<<<< HEAD
+<<<<<<< HEAD
         Simulator simulator = new Simulator(target, new MainAlgo(), new BasicConstantHazard(), visualization);
         simulator.RunSimulatorAsync(40, 2000);
 =======
@@ -38,6 +39,10 @@ class Program
         simulator.RunSimulatorAsync(50, 10000);
 >>>>>>> Giang
 >>>>>>> khanh
+=======
+        Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
+        simulator.RunSimulatorAsync(40, 2000);
+>>>>>>> 26e170340bfdaa92df0c8b1c4b06df4ed884a52c
         app.Run(visualization.MainWindow);
     }
 }
