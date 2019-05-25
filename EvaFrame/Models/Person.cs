@@ -85,6 +85,7 @@ namespace EvaFrame.Models
             return (result > 0 ? result : 0);
         }
 
+        private Corridor oldLocation = null;
         /// <summary>
         /// Cập nhật sự di chuyển của người này trong tòa nhà sau một khoảng thời gian. Trả về <c>true</c>
         /// nếu như người này di chuyển tới được một Exit Node trong khoảng thời gian đã cho.
@@ -96,11 +97,17 @@ namespace EvaFrame.Models
         public bool Evacuate(double updatePeriod)
         {
             double remainingTime = updatePeriod;
+
             while (true)
             {
                 // Nếu như người này đang đứng ở Exit Node.
                 if (following.IsExitNode)
+                {
+                    if (oldLocation != null)
+                        oldLocation.Density --;
                     return true;
+                }
+
                 // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>.
                 if (location == null)
                 {
@@ -113,6 +120,10 @@ namespace EvaFrame.Models
                     // Nhận chỉ dẫn từ Indicator.
                     location = following.Next;
                     location.Density++;
+                    // Nếu như người này di chuyển từ <c>Corridor</c> cũ sang 
+                    // <c>Corridor</c> mới, giảm mật độ người trên <c>Corridor</c> cũ.
+                    if (oldLocation != null)
+                        oldLocation.Density--;
                 }
 
                 double distanceLeft = location.Length * (1 - completedPercentage);
@@ -126,7 +137,7 @@ namespace EvaFrame.Models
                 }
 
                 // Nếu như người này kịp di chuyển khỏi hành lang.
-                location.Density--;
+                oldLocation = location;
                 remainingTime -= distanceLeft / speed;
                 following = location.To(following);
                 location = null;
