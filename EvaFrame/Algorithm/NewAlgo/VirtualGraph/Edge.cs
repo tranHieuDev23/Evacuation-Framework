@@ -8,7 +8,8 @@ using EvaFrame.Utilities.WeightFunctions;
 namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
 {
     /// <summary>
-    /// 
+    /// Cạnh trong <c>VirtualGraph</c> biểu thị tương ứng cho <c>corridor</c> 
+    /// trong <c>building</c>
     /// </summary>
     public class Edge
     {
@@ -27,8 +28,9 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         public Node To { get { return to; } }
 
         /// <summary>
-        /// Số người hiện tại đang ở cạnh
+        /// Số người hiện tại đang ở <c>corridor</c> tương ứng
         /// </summary>
+        /// <value>Giá trị read-only</value>
         public int numberPeople
         {
             get
@@ -38,8 +40,9 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         }
 
         /// <summary>
-        /// Trọng số của cạnh
+        /// Trọng số hiện tại của <c>corridor</c> tương ứng
         /// </summary>
+        /// <value>Giá trị read-only</value>
         public double weight
         {
             get
@@ -53,12 +56,14 @@ namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
         private static IWeigthFunction weightFunction = new LcdtFunction();
 
         /// <summary>
-        /// 
+        /// Khởi tạo một cạnh tương ứng với <c>corridor</c>
         /// </summary>
-        public Edge(Corridor cor, Node nod)
+        /// <param name="corridor"><c>corridor</c> nguồn khởi tạo</param>
+        /// <param name="node">Đỉnh mà cạnh này chỉ đến</param>
+        public Edge(Corridor corridor, Node node)
         {
-            correspondingCorridor = cor;
-            to = nod;
+            correspondingCorridor = corridor;
+            to = node;
         }
     }
 }
