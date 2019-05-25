@@ -5,7 +5,7 @@ namespace EvaFrame.Simulator
     /// <summary>
     /// Interface cho các đối tượng mô tả thảm họa trong tòa nhà.
     /// </summary>
-    interface IHazard
+    public interface IHazard
     {
         /// <summary>
         /// Khởi tạo thảm họa trên một tòa nhà cụ thể (VD: Chọn các điểm bắt đầu xảy cháy, tinh chỉnh mức độ

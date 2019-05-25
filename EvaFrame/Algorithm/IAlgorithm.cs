@@ -5,7 +5,7 @@ namespace EvaFrame.Algorithm
     /// <summary>
     /// Interface cho các thuật toán tìm đường thoát hiểm trong mô hình LCDT.
     /// </summary>
-    interface IAlgorithm
+    public interface IAlgorithm
     {
         /// <summary>
         /// Khởi tạo thuật toán trên một tòa nhà cụ thể. Trong cài đặt cụ thể, lập trình viên có thể

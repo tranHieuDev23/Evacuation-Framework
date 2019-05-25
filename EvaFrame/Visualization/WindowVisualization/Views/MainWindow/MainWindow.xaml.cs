@@ -19,7 +19,7 @@ namespace EvaFrame.Visualization.WindowVisualization
 
         private Dictionary<string, SKPaint> colors;
         private SKColor[] DEFAULT_COLORS = {
-            new SKColor(238, 64, 53),
+            new SKColor(199, 0, 0),
             new SKColor(243, 119, 54),
             new SKColor(46, 0, 62),
             new SKColor(0, 160, 176),

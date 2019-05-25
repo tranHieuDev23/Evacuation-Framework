@@ -81,8 +81,8 @@ namespace EvaFrame.Models.Building
             List<Indicator> indicatorList = LoadIndicatorsInFloor(sr, floorId);
             List<Corridor> corridorList = LoadCorridorsInFloor(sr, indicatorList);
             List<Indicator> stairList = LoadStairNodesInFloor(sr, indicatorList);
-            LoadStairCorridorsInFloor(sr, target, indicatorList);
-            target.floors.Add(new Floor(indicatorList, stairList, corridorList));
+            List<Corridor> stairways = LoadStairwaysInFloor(sr, target, indicatorList);
+            target.floors.Add(new Floor(indicatorList, stairList, corridorList, stairways));
         }
 
         private static List<Indicator> LoadIndicatorsInFloor(StreamReader sr, int floorId)
@@ -145,11 +145,12 @@ namespace EvaFrame.Models.Building
             return stairList;
         }
 
-        private static void LoadStairCorridorsInFloor(StreamReader sr, Building target, List<Indicator> indicatorList)
+        private static List<Corridor> LoadStairwaysInFloor(StreamReader sr, Building target, List<Indicator> indicatorList)
         {
+            List<Corridor> stairways = new List<Corridor>();
             int numStairCor = Int32.Parse(sr.ReadLine());
             if (numStairCor == 0)
-                return;
+                return stairways;
             string[] stairData = sr.ReadLine().Split(',');
             foreach (string data in stairData)
             {
@@ -163,7 +164,9 @@ namespace EvaFrame.Models.Building
                 Corridor cor = new Corridor(I1, I2, true, length, width, 0, trustiness);
                 I1.Neighbors.Add(cor);
                 I2.Neighbors.Add(cor);
+                stairways.Add(cor);
             }
+            return stairways;
         }
 
         private static void LoadExitNodes(StreamReader sr, Building target)

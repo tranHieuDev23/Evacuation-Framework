@@ -25,8 +25,8 @@ class Program
     {
         Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
-        Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
-        simulator.RunSimulatorAsync(100, 2000);
+        Simulator simulator = new Simulator(target, new LCDTAlgorithm(), new BasicConstantHazard(), visualization);
+        simulator.RunSimulatorAsync(0.1, 2);
         app.Run(visualization.MainWindow);
     }
 }
