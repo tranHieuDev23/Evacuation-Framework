@@ -17,11 +17,11 @@ namespace EvaFrame.Visualization.WindowVisualization
         private SKPaint stairPaint;
         private SKPaint exitPaint;
         private SKPaint corridorPaint;
-        private SKPaint inhabitantPaint;
         private SKPaint densityPaint;
 
         private Floor target;
         private List<SKPoint> inhabitantLocations;
+        private List<SKPaint> inhabitantPaints;
 
         public FloorTab(Floor target)
         {
@@ -29,21 +29,26 @@ namespace EvaFrame.Visualization.WindowVisualization
             this.Height = 720;
             this.IsHitTestVisible = false;
 
-            SetPaintColor(ref indicatorPaint, 0, 0, 255);
-            SetPaintColor(ref stairPaint, 255, 255, 0);
-            SetPaintColor(ref exitPaint, 0, 255, 0);
-            SetPaintColor(ref inhabitantPaint, 255, 0, 0);
+            SetPaintColor(ref indicatorPaint, 3, 146, 207);
+            SetPaintColor(ref stairPaint, 253, 244, 152);
+            SetPaintColor(ref exitPaint, 123, 192, 67);
             SetPaintColor(ref densityPaint, 51, 51, 51);
             corridorPaint = new SKPaint();
 
             this.target = target;
             this.inhabitantLocations = new List<SKPoint>();
+            this.inhabitantPaints = new List<SKPaint>();
         }
 
-        public void ClearInhabitantIcons() { inhabitantLocations.Clear(); }
-
-        public void AddInhabitantIcon(Person person)
+        public void ClearInhabitantIcons()
         {
+            inhabitantLocations.Clear();
+            inhabitantPaints.Clear();
+        }
+
+        public void AddInhabitantIcon(Person person, SKPaint paint)
+        {
+            inhabitantPaints.Add(paint);
             if (person.Location == null)
             {
                 inhabitantLocations.Add(new SKPoint(person.Following.X, person.Following.Y));
@@ -116,8 +121,8 @@ namespace EvaFrame.Visualization.WindowVisualization
                         surface.Canvas.DrawCircle(ind.X, ind.Y, 5, indicatorPaint);
                 }
 
-                foreach (SKPoint icon in inhabitantLocations)
-                    surface.Canvas.DrawCircle(icon, 5, inhabitantPaint);
+                for (int i = 0; i < inhabitantLocations.Count; i++)
+                    surface.Canvas.DrawCircle(inhabitantLocations[i], 5, inhabitantPaints[i]);
 
                 foreach (Corridor cor in target.Corridors)
                     if (!cor.IsStairway)
