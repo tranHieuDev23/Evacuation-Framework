@@ -23,10 +23,10 @@ class Program
 
     private static void AppMain(Application app, string[] args)
     {
-        Building target = Building.LoadFromFile("data_prime.bld");
+        Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
         Simulator simulator = new Simulator(target, new PlainDijikstra(), new BasicConstantHazard(), visualization);
-        simulator.RunSimulatorAsync(40, 2000);
+        simulator.RunSimulatorAsync(100, 2000);
         app.Run(visualization.MainWindow);
     }
 }

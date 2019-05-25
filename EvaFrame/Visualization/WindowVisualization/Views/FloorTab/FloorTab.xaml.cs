@@ -18,6 +18,7 @@ namespace EvaFrame.Visualization.WindowVisualization
         private SKPaint exitPaint;
         private SKPaint corridorPaint;
         private SKPaint inhabitantPaint;
+        private SKPaint densityPaint;
 
         private Floor target;
         private List<SKPoint> inhabitantLocations;
@@ -32,6 +33,7 @@ namespace EvaFrame.Visualization.WindowVisualization
             SetPaintColor(ref stairPaint, 255, 255, 0);
             SetPaintColor(ref exitPaint, 0, 255, 0);
             SetPaintColor(ref inhabitantPaint, 255, 0, 0);
+            SetPaintColor(ref densityPaint, 51, 51, 51);
             corridorPaint = new SKPaint();
 
             this.target = target;
@@ -116,6 +118,14 @@ namespace EvaFrame.Visualization.WindowVisualization
 
                 foreach (SKPoint icon in inhabitantLocations)
                     surface.Canvas.DrawCircle(icon, 5, inhabitantPaint);
+
+                foreach (Corridor cor in target.Corridors)
+                    if (!cor.IsStairway)
+                    {
+                        SKPoint p = new SKPoint((cor.I1.X + cor.I2.X) / 2, (cor.I1.Y + cor.I2.Y) / 2);
+                        string text = cor.Density.ToString();
+                        surface.Canvas.DrawText(text, p, densityPaint);
+                    }
             }
             return bitmap;
         }
