@@ -16,9 +16,9 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public ReadOnlyCollection<Node> Nodes{ get { return nodes.AsReadOnly(); } }
         /// <returns> Danh sách các Stair Node trong đồ thị. </returns>
         public ReadOnlyCollection<Node> StairNodes{ get { return stairNodes.AsReadOnly(); } }
-        private bool isFirstFloor;
+        /* private bool isFirstFloor;
         /// <value> Kiểm tra xem đây có phải đồ thị con tương ứng với tầng 1 tòa nhà hay không. </value>
-        public bool IsFirstFloor { get {return isFirstFloor; } }
+        public bool IsFirstFloor { get {return isFirstFloor; } }*/
 
         /// <summary>
         /// Khởi tạo đồ thị con.
@@ -29,7 +29,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             this.nodes = new List<Node>();
             this.stairNodes = new List<Node>();
 
-            if (building != null) {
+            /* if (building != null) {
                 foreach (Indicator exitNode in building.Exits) {
                     Node node = new Node(exitNode);
                     nodes.Add(node);
@@ -37,13 +37,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     stairNodes.Add(node);
                 }
 
-                isFirstFloor = true;
-            }
-            else isFirstFloor = false;
+            }*/
 
             foreach(Indicator indicator in floor.Indicators) {
                 Node node = new Node(indicator);
                 nodes.Add(node);
+                
+                if (indicator.IsExitNode == true) {
+                    System.Console.WriteLine("Fuk....");
+                    node.IsExitNode = true;
+                    stairNodes.Add(node);
+                }
                 
                 if (indicator.IsStairNode == true) {
                     node.IsStairNode = true;
@@ -55,10 +59,20 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                 foreach(Corridor cor in u.CorresspodingIndicator.Neighbors) {
                     Node v = nodes.Find(node => node.CorresspodingIndicator == cor.To(u.CorresspodingIndicator));
                     if (v == null) continue;
-                    u.Adjencents.Add(new Edge(u, v, cor.calcWeight(), cor));
+                    u.Adjencents.Add(new Edge(u, v, cor.LCDTWeight(), cor));
+                    v.Adjencents.Add(new Edge(v, u, cor.LCDTWeight(), cor));
                 }
             }
 
+        }
+
+        public void Update() {
+            foreach (Node node in nodes) {
+                node.NextOptions = new List<NodeOption>();
+                foreach (Edge e in node.Adjencents) {
+                    e.Weight = e.CorrespondingCorridor.LCDTWeight();
+                }
+            }
         }
 
     }

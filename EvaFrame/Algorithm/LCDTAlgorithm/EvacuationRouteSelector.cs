@@ -47,7 +47,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                 SubGraph subGraph = graph.SubGraphs[i];
                 foreach (Node u in subGraph.Nodes) 
                 if (!u.IsExitNode) {
-                    //Node u = new Node(indicator);
 
                     double minPath = Double.PositiveInfinity;
                     if (i == 0) {

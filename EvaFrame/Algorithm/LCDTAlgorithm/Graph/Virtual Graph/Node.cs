@@ -87,6 +87,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// <value> Danh sách các lựa chọn mà người dân có thể di tản vào. </value>
         public List<NodeOption> NextOptions{
             get { return nextOptions; }
+            set { nextOptions = value; }
         }
     }
 

@@ -149,9 +149,9 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         /// </summary>
         /// <param name="cor"> Corridor cần tính trọng số.</param>
         /// <returns></returns>
-        public static double calcWeight(this Corridor cor) {
-            //if (cor.Density >= cor.Capacity) return Double.PositiveInfinity;
-            double w = cor.Length / (cor.Trustiness * (cor.Capacity - cor.Density + 1));
+        public static double LCDTWeight(this Corridor cor) {
+            if (cor.Density >= Init.Beta * cor.Capacity) return 1e7;
+            double w = cor.Length / (cor.Trustiness * (Math.Max(cor.Capacity - cor.Density,0) + 1));
             return w;
         }
 

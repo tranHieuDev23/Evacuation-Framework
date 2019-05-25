@@ -60,21 +60,23 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     if (cor.I1.IsStairNode == true && cor.I2.IsStairNode == true) {
                         Node from = nodes.Find( node => node.CorresspodingIndicator == indicator);
                         Node to = nodes.Find( node => node.CorresspodingIndicator == cor.To(indicator));
-                        Edge edge = new Edge(from, to, cor.calcWeight(), cor);
+                        Edge edge1 = new Edge(from, to, cor.LCDTWeight(), cor);
+                        Edge edge2 = new Edge(to, from, cor.LCDTWeight(), cor);
                         
                         int fromFloor = from.CorresspodingIndicator.getFloorNumber();
                         int toFloor = to.CorresspodingIndicator.getFloorNumber();
                         //System.Console.WriteLine("From floor = {0}, To Floor = {1}",fromFloor, toFloor);
                         if (fromFloor > toFloor) {
-                            from.Next = edge;
+                            from.Next = edge1;
                         }
-                        edges.Add(edge);
-                        from.Adjencents.Add(edge);
-                        to.Adjencents.Add(edge);
+                        edges.Add(edge1);
+                        from.Adjencents.Add(edge1);
+                        to.Adjencents.Add(edge2);
                     }
                 }   
             }
         }
+
 
         /// <summary>
         /// Cập nhật lại đồ thị khi thêm 1 tầng mới.
@@ -90,12 +92,14 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                 Node to = nodes.Find( node => node.CorresspodingIndicator == item.Key.Second.CorresspodingIndicator );
                 if (to == null) to = new Node( item.Key.Second.CorresspodingIndicator );
                 Edge edge = new Edge(from, to, item.Value);
+                //Edge edge2 = new Edge(to, from, item.Value);
 
                 edges.Add(edge);
+                //edges.Add(edge2);
                 addNode(from);
                 addNode(to);
                 from.Adjencents.Add(edge);
-                to.Adjencents.Add(edge);
+                //to.Adjencents.Add(edge2);
             }
 
         }

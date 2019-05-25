@@ -73,9 +73,11 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                     if (i+1 == listPath.Count) path = listPath[0];
                     else path = listPath[i+1];
                     foreach (Corridor cor in path.Corridors) {
-                        cor.From.Next = cor;
+                        src.Next = cor;
+                        src = cor.To(src);
                     }
-                }*/
+                }
+                else*/
                 if (path.isCongested()) {
                     Console.WriteLine("Path change {0}", i+1);
                     if (i+1 == listPath.Count) path = listPath[0];

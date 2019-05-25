@@ -179,10 +179,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                                             double weight, double threshold){
             visited[src] = true;
             List<CachePath> tempPaths = new List<CachePath>();
-            //System.Console.WriteLine("src Id = {0}", src.getIdNumber());
 
             if (src.Equals(dst) == true) {
-                //System.Console.WriteLine("dst Id = {0}", dst.getIdNumber());
                 List<Corridor> tmp = new List<Corridor>();
                 foreach (Corridor cor in listLocalCor) {
                     tmp.Add(cor);
@@ -229,11 +227,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Cache {
                 }
             }
 
-            //System.Console.WriteLine("Node {0} to Node {1} have {2} path", 
-            //src.CorrespondingIndicator.Id, dst.CorrespondingIndicator.Id, allCachePath.Count);
-
             List<CachePath> listKPath = new List<CachePath>();
-            if (allCachePath.Count < k) {
+            if (allCachePath.Count <= k) {
                 
                 return allCachePath;
             }

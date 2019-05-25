@@ -19,7 +19,10 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         public Node To{ get { return to; } }
         private double weight;
         /// <value> Trọng số của cạnh ảo. </value>
-        public double Weight{ get{ return weight; } }
+        public double Weight{ 
+            get { return weight; } 
+            set { weight = value;}
+        }
         /// <summary>
         /// Khởi tạo cạnh ảo.
         /// </summary>

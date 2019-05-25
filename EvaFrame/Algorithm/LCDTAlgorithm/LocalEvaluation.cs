@@ -41,7 +41,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
             if (u.IsStairNode || u.IsExitNode) {
                 Dictionary<Node, double> tempWeights = runDijkstra(u);
                 
-                foreach (Node v in subGraph.Nodes) {
+                foreach (Node v in subGraph.Nodes) 
+                if (!v.Equals(u)) {
                     double weightToS = tempWeights[v];
                     Edge next = v.Next;
                     v.NextOptions.Add(new NodeOption(next, weightToS, u));
