@@ -32,11 +32,10 @@ namespace EvaFrame.Algorithm.PlainDijikstra
         {
             if (target == null || done)
                 return;
-            done = true;
+            // done = true;
 
             DijikstraAlgorithm algorithm = new DijikstraAlgorithm(new LcdtFunction());
             Dictionary<Indicator, DijikstraAlgorithm.Data> calculation = algorithm.Run(target);
-            
             foreach (Floor floor in target.Floors)
                 foreach (Indicator ind in floor.Indicators)
                     ind.Next = calculation[ind].Next;

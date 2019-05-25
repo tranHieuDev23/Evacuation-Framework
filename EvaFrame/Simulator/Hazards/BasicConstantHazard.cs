@@ -43,7 +43,7 @@ namespace EvaFrame.Simulator.Hazards
             foreach (int id in affectedId)
                 affectedIndicator.Add(this.target.Floors[0].Indicators[id - 1]);
 
-            Random rnd = new Random();
+            Random rnd = new Random(12345);
             foreach (Corridor c in target.Floors[0].Corridors)
             {
                 if (!affectedIndicator.Contains(c.I1) || !affectedIndicator.Contains(c.I2))
