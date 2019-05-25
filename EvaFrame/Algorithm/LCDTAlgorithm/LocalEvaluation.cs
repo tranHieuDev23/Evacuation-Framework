@@ -41,14 +41,12 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
             if (u.IsStairNode || u.IsExitNode) {
                 Dictionary<Node, double> tempWeights = runDijkstra(u);
                 
-                foreach (Node v in subGraph.Nodes) 
-                if (!v.Equals(u)) {
+                foreach (Node v in subGraph.Nodes) {
                     double weightToS = tempWeights[v];
                     Edge next = v.Next;
                     v.NextOptions.Add(new NodeOption(next, weightToS, u));
 
-                    if (v.IsStairNode == true && v.Equals(u) == false) {
-                        //if (u.IsExitNode) Console.WriteLine("abc");
+                    if (v.IsStairNode == true) {
                         wLocal[new PairNN(v, u)] = weightToS;
                     }
                 }
@@ -68,7 +66,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
         /// </returns>
         public Dictionary<Node, double> runDijkstra(Node start) {
             MinHeap<DataN> heap = new MinHeap<DataN>();
-            NodeEqualityComparer nodeCompare = new NodeEqualityComparer();
             Dictionary<Node, double>  weights = new Dictionary<Node, double>();
 
             foreach (Node v in subGraph.Nodes) {
@@ -93,7 +90,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm{
                     if (wv > wu + e.Weight) {
                         wv = wu + e.Weight;
                         heap.Push(new DataN(v, wv));
-                        v.Next = v.Adjencents.Find(edge => edge.To == u);
+                        v.Next = e;
 
                         weights[v] = wv;
                     }

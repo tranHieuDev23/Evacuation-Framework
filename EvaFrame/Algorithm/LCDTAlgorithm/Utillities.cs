@@ -121,7 +121,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         public bool Equals(PairNN p1, PairNN p2) {
             if (p1 == null && p2 == null) return true;
             if (p1 == null || p2 == null) return false;
-            //if (p1.First == p2.First && p1.Second == p2.Second) return true;
             if (p1.First.CorresspodingIndicator.Equals(p2.First.CorresspodingIndicator) 
                 && p1.Second.CorresspodingIndicator.Equals(p2.Second.CorresspodingIndicator)) return true;
             return false;
@@ -148,9 +147,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         /// Tính trọng số của Corridor.
         /// </summary>
         /// <param name="cor"> Corridor cần tính trọng số.</param>
-        /// <returns></returns>
+        /// <returns> Trọng số tính trong thuật toán LCDT.</returns>
         public static double LCDTWeight(this Corridor cor) {
-            if (cor.Density >= Init.Beta * cor.Capacity) return 1e7;
             double w = cor.Length / (cor.Trustiness * (Math.Max(cor.Capacity - cor.Density,0) + 1));
             return w;
         }
@@ -168,13 +166,18 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
         /// Trả về tầng của Indicator.
         /// </summary>
         /// <param name="indicator"> Indicator cần lấy số tầng.</param>
-        /// <returns></returns>
+        /// <returns> Chỉ số tầng của Indicator. </returns>
         public static int getFloorNumber(this Indicator indicator) {
             string[] arr = indicator.Id.Split('@');
 
             return System.Convert.ToInt32(arr[1]);
         }
 
+        /// <summary>
+        /// Lấy chỉ số Id của một indicator.
+        /// </summary>
+        /// <param name="indicator"> Indicator muốn lấy Id. </param>
+        /// <returns> Id của indicator.</returns>
         public static int getIdNumber(this Indicator indicator) {
             string[] arr = indicator.Id.Split('@');
 
