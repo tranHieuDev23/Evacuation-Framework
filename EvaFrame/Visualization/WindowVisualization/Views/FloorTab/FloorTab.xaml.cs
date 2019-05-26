@@ -33,6 +33,7 @@ namespace EvaFrame.Visualization.WindowVisualization
             SetPaintColor(ref stairPaint, 253, 244, 152);
             SetPaintColor(ref exitPaint, 123, 192, 67);
             SetPaintColor(ref densityPaint, 51, 51, 51);
+            densityPaint.TextAlign = SKTextAlign.Center;
             corridorPaint = new SKPaint();
 
             this.target = target;
@@ -128,7 +129,8 @@ namespace EvaFrame.Visualization.WindowVisualization
                     if (!cor.IsStairway)
                     {
                         SKPoint p = new SKPoint((cor.I1.X + cor.I2.X) / 2, (cor.I1.Y + cor.I2.Y) / 2);
-                        string text = cor.Density.ToString();
+                        string text = cor.Density.ToString() + "/" + cor.Capacity.ToString();
+                        
                         surface.Canvas.DrawText(text, p, densityPaint);
                     }
             }
