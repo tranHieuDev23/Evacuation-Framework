@@ -128,8 +128,8 @@ namespace EvaFrame.Simulator
         private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod)
         {
             double result = 0;
-            double situationWait = situationUpdatePeriod;
-            double algorithmWait = algorithmUpdatePeriod;
+            double situationWait = 0;
+            double algorithmWait = 0;
             DateTime simulationLast = DateTime.Now;
             List<SimulationData> dataList = new List<SimulationData>();
             SimulationData lastData = null;

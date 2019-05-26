@@ -80,9 +80,10 @@ namespace EvaFrame.Models
         /// <returns></returns>
         public double CalculateActualSpeed(Corridor corridor)
         {
+            double MIN_SPEED = 0.5;
             double result = corridor.Trustiness * speedMax
                 * ((corridor.Capacity - corridor.Density + 1) / corridor.Capacity);
-            return (result > 0 ? result : 0);
+            return Math.Max(result, MIN_SPEED);
         }
 
         private Corridor oldLocation = null;
