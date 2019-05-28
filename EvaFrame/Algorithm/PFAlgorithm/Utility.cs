@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using EvaFrame.Utilities;
 using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading;
 using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
@@ -185,39 +183,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
                     }
                 /*-------------------------------------------------------------------------------------- */
             }
-
             target.UpdateResultToBuilding();
-        }
-
-        /// <summary>
-        /// Hàm dùng để cập nhật thường xuyên xử lý tình hướng hỏa hoạn thay đổi nhanh bất thường.
-        /// </summary>
-        public void CheckCondition()
-        {
-            Queue<Node> queue = new Queue<Node>();
-            foreach (var subGraph in target.FloorGraphs)
-            {
-                foreach (var node in subGraph.Nodes)
-                {
-                    node.label = false;
-                    if (node.CorrespondingIndicator.IsExitNode)
-                    {
-                        queue.Enqueue(node);
-                    }
-                }
-            }
-
-            while (queue.Count != 0)
-            {
-                Node node = queue.Dequeue();
-                TackleIncidence(node, target.Root);
-                foreach (var adj in node.adjacences)
-                {
-                    if (adj.node.label) continue;
-                    queue.Enqueue(adj.node);
-                    adj.node.label = true;
-                }
-            }
         }
     }
 }
