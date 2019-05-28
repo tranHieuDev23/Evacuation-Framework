@@ -64,8 +64,8 @@ class Program
         IAlgorithm algorithm = new PFAlgorithm(4, 40);
         // Mô phỏng với thảm họa tại các vị trí không trọng yếu ở tầng 6, 7, 8, 9
         IHazard hazard = new RandomNonCriticalHazard(new int[] {5, 6, 7, 8}, 0.3, 3);
-        // Sử dụng giao diện đồ họa của Avalonia
-        WindowVisualization visualization = new WindowVisualization();
+        // Sử dụng giao diện đồ họa của Avalonia, với kích thước màn hình 1280 * 720
+        WindowVisualization visualization = new WindowVisualization(1280,  720);
 
         Simulator simulator = new Simulator(target, algorithm, hazard, visualization);
         // Chạy giả lập, cập nhật tình trạng thảm họa sau 0.1s, chạy lại thuật toán sau 10s và in dữ liệu chạy ra file SimulationData.csv

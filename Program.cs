@@ -23,7 +23,7 @@ class Program
         Building target = Building.LoadFromFile("data.bld");
         IAlgorithm algorithm = new PFAlgorithm(4, 40);
         IHazard hazard = new RandomNonCriticalHazard(new int[] {5, 6, 7, 8}, 0.3, 3);
-        WindowVisualization visualization = new WindowVisualization();
+        WindowVisualization visualization = new WindowVisualization(1280, 720);
         Simulator simulator = new Simulator(target, algorithm, hazard, visualization);
         simulator.RunSimulatorAsync(0.1, 10, "SimulationData.csv");
         app.Run(visualization.MainWindow);

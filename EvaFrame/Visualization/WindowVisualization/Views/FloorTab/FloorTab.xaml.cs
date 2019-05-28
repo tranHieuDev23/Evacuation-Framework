@@ -23,10 +23,10 @@ namespace EvaFrame.Visualization.WindowVisualization
         private List<SKPoint> inhabitantLocations;
         private List<SKPaint> inhabitantPaints;
 
-        public FloorTab(Floor target)
+        public FloorTab(Floor target, double width, double height)
         {
-            this.Width = 1280;
-            this.Height = 720;
+            this.Width = width;
+            this.Height = height;
             this.IsHitTestVisible = false;
 
             SetPaintColor(ref indicatorPaint, 3, 146, 207);

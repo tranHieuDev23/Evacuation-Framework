@@ -12,16 +12,26 @@ namespace EvaFrame.Visualization.WindowVisualization
     /// <summary>
     /// Mô tả tòa nhà bằng giao diện đồ họa đa nền tảng, hỗ trợ bởi thư viên Avalonia và SkiaSharp.
     /// </summary>
-    public class WindowVisualization: IVisualization
+    public class WindowVisualization : IVisualization
     {
         private Building target;
         private Dictionary<Indicator, DijikstraAlgorithm.Data> distanceData;
-        private MainWindow mainWindow = new MainWindow();
 
+        private MainWindow mainWindow;
         /// <value>
         /// Cửa sổ làm việc chính của mô tả. Giá trị này được trả về để sử dụng trong hàm <c>Application.Run()</c>.
         /// </value>
-        public Window MainWindow {get => mainWindow;}
+        public Window MainWindow { get => mainWindow; }
+
+        /// <summary>
+        /// Khởi tạo một đối tượng <c>WindowVisualization</c> mới.
+        /// </summary>
+        /// <param name="width">Chiều rộng của cửa sổ hiển thị.</param>
+        /// <param name="height">Chiều cao của cửa sổ hiển thị.</param>
+        public WindowVisualization(double width, double height)
+        {
+            this.mainWindow = new MainWindow(width, height);
+        }
 
         void IVisualization.Initialize(Building target)
         {

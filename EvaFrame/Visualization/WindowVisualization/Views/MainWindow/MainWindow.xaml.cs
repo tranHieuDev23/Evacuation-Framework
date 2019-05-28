@@ -26,11 +26,11 @@ namespace EvaFrame.Visualization.WindowVisualization
             new SKColor(7, 30, 34),
         };
 
-        public MainWindow()
+        public MainWindow(double width, double height)
         {
             this.Title = "EvaFrame";
-            this.Width = 1280;
-            this.Height = 720;
+            this.Width = width;
+            this.Height = height;
 
             this.tabControl = new DynamicTabControl();
             this.generalTab = new GeneralTab();
@@ -49,7 +49,7 @@ namespace EvaFrame.Visualization.WindowVisualization
             List<SKPaint> floorColors = new List<SKPaint>();
             for (int i = 0; i < floorTabs.Length; i++)
             {
-                floorTabs[i] = new FloorTab(target.Floors[i]);
+                floorTabs[i] = new FloorTab(target.Floors[i], this.Width, this.Height);
                 tabControl.AddTab(floorTabs[i], String.Format("Floor {0}", i + 1));
 
                 SKColor color;
