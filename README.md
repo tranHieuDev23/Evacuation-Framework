@@ -23,7 +23,7 @@ EvaFrame được thiết kế nhằm hướng đến một số mục tiêu:
 
 ### Cài đặt thư viện EvaFrame
 
-Sử dụng Git để clone lại mã nguồn của thư viện từ GitHub, sau đó build lại project bằng bằng .Net.
+Sử dụng Git để clone lại mã nguồn của thư viện từ GitHub, sau đó build lại project bằng .Net.
 
 ```
 git clone https://github.com/tranHieuDev23/Evacuation-Framework.git
