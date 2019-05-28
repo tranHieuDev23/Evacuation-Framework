@@ -8,7 +8,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Cạnh ảo của đồ thị ảo tưởng ứng với một Corridor trong Building.
     /// </summary>
-    public class Edge
+    class Edge
     {
         private Corridor correspondingCorridor;
         /// <value>Corridor tương ứng với cạnh ảo.</value>

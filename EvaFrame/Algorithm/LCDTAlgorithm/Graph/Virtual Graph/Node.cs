@@ -9,7 +9,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Các lựa chọn của đỉnh ảo.
     /// </summary>
-    public class NodeOption
+    class NodeOption
     {
         private Edge next;
         /// <value> Cạnh ảo mà người di tản có thể lựa chọn. </value>
@@ -40,7 +40,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Đỉnh ảo.
     /// </summary>
-    public class Node
+    class Node
     {
         private Indicator corresspondingIndicator;
         /// <value> Indicator tương ứng trong Building. </value>

@@ -9,7 +9,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Đồ thị giữa các exit Node và Stair Node.
     /// </summary>
-    public class CrossGraph
+    class CrossGraph
     {
         private Building target;
         /// <value> Thông số tòa nhà. </value>
@@ -37,18 +37,20 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
         /// </summary>
         public void ConnectFloors()
         {
-            foreach (Floor floor in target.Floors)
+            for (int i = 0; i < target.Floors.Count; i ++)
             {
-
+                Floor floor = target.Floors[i];
                 foreach (Corridor cor in floor.Stairways)
-                    {
-                        Node n1 = nodes.Find(node => node.CorresspodingIndicator == cor.I1);
-                        Node n2 = nodes.Find(node => node.CorresspodingIndicator == cor.To(cor.I2));
-                        Edge edge1 = new Edge(n1, n2, cor.LCDTWeight(), cor);
-                        Edge edge2 = new Edge(n2, n1, cor.LCDTWeight(), cor);
-                        n1.Adjacences.Add(edge1);
-                        n2.Adjacences.Add(edge2);
-                    }
+                {
+                    Node n1 = nodes.Find(node => node.CorresspodingIndicator == cor.I1);
+                    Node n2 = nodes.Find(node => node.CorresspodingIndicator == cor.I2);
+                    if (n1.CorresspodingIndicator.FloorId > i && n2.CorresspodingIndicator.FloorId > i)
+                        continue;
+                    Edge edge1 = new Edge(n1, n2, cor.LCDTWeight(), cor);
+                    Edge edge2 = new Edge(n2, n1, cor.LCDTWeight(), cor);
+                    n1.Adjacences.Add(edge1);
+                    n2.Adjacences.Add(edge2);
+                }
             }
         }
 

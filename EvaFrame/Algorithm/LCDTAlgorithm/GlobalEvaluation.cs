@@ -11,7 +11,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Class mô tả chức năng Global Evaluation của module Global Coordinator trong thuật toán LCDT-GV, có nhiệm vụ tìm khoảng cách từ các Stair node tới Exit node.
     /// </summary>
-    public class GlobalEvaluation
+    class GlobalEvaluation
     {
         private CrossGraph crossGraph;
         /// <summary>

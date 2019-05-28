@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using EvaFrame.Utilities;
+using EvaFrame.Utilities.WeightFunctions;
 using EvaFrame.Models.Building;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
@@ -10,7 +11,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
     /// <summary>
     /// Dữ liệu tương ứng với đỉnh ảo dùng cho thuật toán Dijkstra.
     /// </summary>
-    public class DataN : IComparable, ICloneable
+    class DataN : IComparable, ICloneable
     {
         /// <summary>
         /// Đỉnh ảo tương ứng.
@@ -46,7 +47,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
     /// <summary>
     /// Cặp đỉnh ảo vs đỉnh ảo.
     /// </summary>
-    public class PairNN
+    class PairNN
     {
         private Node first, second;
         /// <summary>
@@ -83,7 +84,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
     /// <summary>
     /// So sánh 2 cặp đỉnh ảo.
     /// </summary>
-    public class NodeEqualityComparer : IEqualityComparer<PairNN>
+    class NodeEqualityComparer : IEqualityComparer<PairNN>
     {
         /// <summary>
         /// So sánh bằng.
@@ -116,7 +117,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
     /// <summary>
     /// Những hàm mở rộng để thuận tiện cho việc tính toán.
     /// </summary>
-    public static class ExtensionMethod
+    static class ExtensionMethod
     {
         /// <summary>
         /// Tính trọng số của Corridor.
@@ -125,18 +126,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
         /// <returns> Trọng số tính trong thuật toán LCDT.</returns>
         public static double LCDTWeight(this Corridor cor)
         {
-            double w = cor.Length / (cor.Trustiness * (Math.Max(cor.Capacity - cor.Density, 0) + 1));
-            return w;
-        }
-
-        /// <summary>
-        /// Tính weight của Corridor trong thuật toán sử dụng cache.
-        /// </summary>
-        /// <param name="cor"> Corridor cần tính weight.</param>
-        /// <returns></returns>
-        public static double CacheWeight(this Corridor cor)
-        {
-            return cor.Length / cor.Width;
+            IWeigthFunction function = new LcdtFunction();
+            return function.CalculateWeight(cor);;
         }
 
         /// <summary>
@@ -147,7 +138,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
         public static int getFloorNumber(this Indicator indicator)
         {
             string[] arr = indicator.Id.Split('@');
-
             return System.Convert.ToInt32(arr[1]);
         }
 
@@ -159,7 +149,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
         public static int getIdNumber(this Indicator indicator)
         {
             string[] arr = indicator.Id.Split('@');
-
             return System.Convert.ToInt32(arr[0]);
         }
     }

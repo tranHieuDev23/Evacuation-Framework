@@ -9,7 +9,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Class mô tả chức năng LocalEvaluation của module Smart Guildance Agent trong thuật toán LCDT-GV, có nhiệm vụ tìm trọng số giữa các Stair Node trong một tầng.
     /// </summary>
-    public class LocalEvaluation
+    class LocalEvaluation
     {
         private SubGraph subGraph;
 
@@ -34,24 +34,22 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
         {
             Dictionary<PairNN, double> wLocal = new Dictionary<PairNN, double>();
 
-            foreach (Node u in subGraph.Nodes)
-                if (u.IsStairNode || u.IsExitNode)
+            foreach (Node u in subGraph.StairNodes)
+            {
+                Dictionary<Node, double> tempWeights = RunDijkstra(u);
+
+                foreach (Node v in subGraph.Nodes)
                 {
-                    Dictionary<Node, double> tempWeights = RunDijkstra(u);
+                    double weightToS = tempWeights[v];
+                    Edge next = v.Next;
+                    v.NextOptions.Add(new NodeOption(next, weightToS, u));
 
-                    foreach (Node v in subGraph.Nodes)
+                    if (v.IsStairNode == true)
                     {
-                        double weightToS = tempWeights[v];
-                        Edge next = v.Next;
-                        v.NextOptions.Add(new NodeOption(next, weightToS, u));
-
-                        if (v.IsStairNode == true)
-                        {
-                            wLocal[new PairNN(v, u)] = weightToS;
-                        }
+                        wLocal[new PairNN(v, u)] = weightToS;
                     }
-
                 }
+            }
             return wLocal;
         }
 

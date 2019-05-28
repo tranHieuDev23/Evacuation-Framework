@@ -7,7 +7,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Đồ thị ảo tương ứng với tòa nhà trong thuật toán LCDT-GV.
     /// </summary>
-    public class Graph
+    class Graph
     {
         private List<SubGraph> subGraphs;
         /// <value>Danh sách các đồ thị con tương ứng với từng tầng.</value>

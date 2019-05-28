@@ -10,7 +10,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
     /// <summary>
     /// Đồ thị con tương ứng với một tầng trong Building. 
     /// </summary>
-    public class SubGraph
+    class SubGraph
     {
         private List<Node> nodes, stairNodes;
 
