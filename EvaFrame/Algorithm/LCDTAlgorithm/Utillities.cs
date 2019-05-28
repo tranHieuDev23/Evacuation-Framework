@@ -183,17 +183,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities {
 
             return System.Convert.ToInt32(arr[0]);
         }
-
-        /// <summary>
-        /// Clone Corridor.
-        /// </summary>
-        /// <param name="item"> Corridor cần Clone.</param>
-        /// <returns></returns>
-        public static Corridor CorClone(this Corridor item) {
-            Corridor newItem = new Corridor(item.I1, item.I2, item.IsStairway, item.Length, item.Width, item.Density, item.Trustiness);
-            return newItem;
-        }
-
     }
     
 }
