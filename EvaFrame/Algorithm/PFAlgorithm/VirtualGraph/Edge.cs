@@ -11,7 +11,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
     /// Cạnh trong <c>VirtualGraph</c> biểu thị tương ứng cho <c>corridor</c> 
     /// trong <c>building</c>
     /// </summary>
-    public class Edge
+    class Edge
     {
         private Corridor correspondingCorridor;
         /// <value>
@@ -35,7 +35,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
         {
             get
             {
-                return (int) correspondingCorridor.Density;
+                return (int)correspondingCorridor.Density;
             }
         }
 
@@ -47,10 +47,22 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
         {
             get
             {
-                return Utility.ContextFunction(correspondingCorridor.Trustiness, 
+                return ContextFunction(correspondingCorridor.Trustiness,
                                                 correspondingCorridor.Density / correspondingCorridor.Capacity)
                      * correspondingCorridor.Length;
             }
+        }
+
+        /// <summary>
+        /// Hàm tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường
+        /// </summary>
+        /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
+        /// <param name="density">mật độ người đi trên đoạn đường</param>
+        /// <returns>Chỉ số ảnh hưởng</returns>
+        private static double ContextFunction(double trustness, double density)
+        {
+            double value = 1 / (trustness * (1.01 - density));
+            return value > 8 ? 8 : value;
         }
 
         private static IWeigthFunction weightFunction = new LcdtFunction();

@@ -8,7 +8,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
     /// cấu trúc lưu thông tin các đỉnh và cạnh gần kề 
     /// với đỉnh đang xét
     /// </summary>
-    public class Adjacence
+    class Adjacence
     {
         /// <summary>
         /// Đỉnh gần kề
@@ -34,7 +34,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
     /// Class thu gọn của Indicator với mục đích chỉ dành cho
     /// thực hiện thuật toán
     /// </summary>
-    public class Node
+    class Node
     {   
         /// <summary>
         /// Danh sách các thông tin gần kề

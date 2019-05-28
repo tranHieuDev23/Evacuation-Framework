@@ -6,21 +6,17 @@ using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 namespace EvaFrame.Algorithm.PFAlgorithm
 {
     /// <summary>
-    /// Lớp gồm các phương thức hỗ trợ để thực hiện 
-    /// <c>MainAlgo</c>
+    /// Class gồm các phương thức hỗ trợ để thực hiện <c>PFAlgorithm</c>.
     /// </summary>
-    public class Utility
+    public partial class PFAlgorithm
     {
-        private const double V_TB = 4;
-        private const double TIME = 100;
-
         /// <summary>
         /// Hàm tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường
         /// </summary>
         /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
         /// <param name="density">mật độ người đi trên đoạn đường</param>
         /// <returns>Chỉ số ảnh hưởng</returns>
-        public static double ContextFunction(double trustness, double density)
+        private static double ContextFunction(double trustness, double density)
         {
             double value = 1 /(trustness * (1.01 - density));
             return value > 8 ? 8 : value;
@@ -45,7 +41,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// <param name="edge"></param> Đoạn đường đang xét
         /// <param name="numberPeople"></param>Số người đang đi trên con đường
         /// <returns>Giá trị mật độ người trên con đường</returns>
-        public double GetDensity(Edge edge, int numberPeople)
+        private double GetDensity(Edge edge, int numberPeople)
         {
             double density;
             density = numberPeople / (edge.CorrespondingCorridor.Capacity);
@@ -62,10 +58,10 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// <param name="passing">Cạnh đi từ <c>u</c> tới đỉnh được gán nhãn</param>
         /// <returns>Đỉnh xa nhất mà những người từ <c>u</c> có thể tới được trong khoảng 
         /// thời gian <c>TIME</c></returns>
-        public Node FindCrossNode(Node from, Edge passing)
+        private Node FindCrossNode(Node from, Edge passing)
         {
             /*Implement code in here */
-            double sumWeight = V_TB * TIME;
+            double sumWeight = averageInhabitantSpeed * predictionPeriod;
             double preWeight = 0;
             int numberPeople = (int)passing.CorrespondingCorridor.Density;
             Node reach = from;
@@ -96,7 +92,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// <param name="numberPeople">Số người đi trên đoạn đường</param>
         /// <param name="preWeight">Trọng số của đoạn đường đằng trước đỉnh <c>from</c></param>
         /// <returns>Trọng số của của đoạn đường tương ứng với <c>numberPeople</c></returns>
-        public double CalculateWeight(Node from, Node to, int numberPeople, double preWeight)
+        private double CalculateWeight(Node from, Node to, int numberPeople, double preWeight)
         {
             /*Implement code in here */
             /*Xử lý trường hợp đoạn đường có độ dài = 0 và trường hợp đỉnh from đứng trước to */
@@ -136,7 +132,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
         /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
-        public void UpdateComingNode(Node reachedNode, Node root, MinHeap<PFAlgorithm.Data> heap)
+        private void UpdateComingNode(Node reachedNode, Node root, MinHeap<PFAlgorithm.Data> heap)
         {
             /*Implement code in here */
             foreach (var comingNode in reachedNode.comingNodes)
@@ -201,7 +197,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// đồ thị</param>
         /// <param name="heap">Heap hiện tại đang được thực hiện tương ứng với thuật toán</param>
         
-        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<PFAlgorithm.Data> heap)
+        private void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<PFAlgorithm.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);
@@ -216,7 +212,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// </summary>
         /// <param name="checkNode">Đỉnh cần chuyển hướng</param>
         /// <param name="root">Đỉnh nguồn</param>
-        public void TackleIncidence(Node checkNode, Node root)
+        private void TackleIncidence(Node checkNode, Node root)
         {
             Edge changeDirectionTo = checkNode.nextEdge;
             double changedWeight = 100000000;

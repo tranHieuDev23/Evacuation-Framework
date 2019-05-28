@@ -7,14 +7,25 @@ using EvaFrame.Utilities;
 using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 
 namespace EvaFrame.Algorithm.PFAlgorithm
-{ 
+{
     /// <summary>
-    /// Class thực hiện thuật toán cải tiến của nhóm
+    /// Class thực hiện thuật toán LCDT-PF (Predict Future) - thuật toán cải tiến của nhóm.
     /// </summary>
-    public class PFAlgorithm : IAlgorithm
+    public partial class PFAlgorithm : IAlgorithm
     {
-        private const double PositiveInfinity = 1000000000;
         private Graph target;
+        private double averageInhabitantSpeed, predictionPeriod;
+
+        /// <summary>
+        /// Khởi tạo đối tượng thuật toán <c>PFAlgorithm</c> mới.
+        /// </summary>
+        /// <param name="averageInhabitantSpeed">Vận tốc trung bình của người dân, sử dụng trong thuật toán dự đoán.</param>
+        /// <param name="predictionPeriod">Khoảng thời gian dự đoán trong tương lai.</param>
+        public PFAlgorithm(double averageInhabitantSpeed, double predictionPeriod)
+        {
+            this.averageInhabitantSpeed = averageInhabitantSpeed;
+            this.predictionPeriod = predictionPeriod;
+        }
 
         void IAlgorithm.Initialize(Building target)
         {
@@ -25,7 +36,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm
         /// Đội tượng được đặt vào heap, gồm có đỉnh và trọng số quãng đường
         /// tốt nhất từ đỉnh đó tới root
         /// </summary>
-        public class Data : IComparable, ICloneable
+        private class Data : IComparable, ICloneable
         {
             /// <summary>
             /// <c>node</c> tương ứng đối tượng
@@ -73,26 +84,24 @@ namespace EvaFrame.Algorithm.PFAlgorithm
                     node.reachedNode = null;
                     node.comingNodes.Clear();
                     node.nComingPeople = 0;
-                    node.weight = PositiveInfinity;
+                    node.weight = double.PositiveInfinity;
                     foreach (var adjacence in node.adjacences)
                     {
-                        adjacence.passingWeight = PositiveInfinity;
+                        adjacence.passingWeight = double.PositiveInfinity;
                         adjacence.reaching = null;
                     }
                 }
             }
             target.Root.reachedNode = target.Root;
-
         }
 
         void IAlgorithm.Run()
         {
-            Utility utility = new Utility();
             //Các cấu trúc dữ liệu cần cho thuật toán
             MinHeap<Data> heap = new MinHeap<Data>();
-                
+
             Setup();
-            /*Đưa các exitnode vào heap */
+            /*Đưa các Exit Node vào heap */
             foreach (var exit in target.Root.adjacences)
             {
                 exit.node.nextEdge = exit.node.adjacences.Find(adj => adj.node == target.Root).edge;
@@ -105,19 +114,19 @@ namespace EvaFrame.Algorithm.PFAlgorithm
                 target.Root.label = true;
                 heap.Push(new Data(exit.node, 0));
             }
-                        
+
             while (heap.Count > 0)
             {
                 Data data = heap.Top();
                 heap.Pop();
-            
+
                 Node u = data.node;
                 double wu = data.weightToRoot;
 
-                if (u.label == true) 
+                if (u.label == true)
                     continue;
 
-                if(u.weight != wu) 
+                if (u.weight != wu)
                     continue;
 
                 u.label = true;
@@ -125,35 +134,35 @@ namespace EvaFrame.Algorithm.PFAlgorithm
                 /*cập nhât thông tin của đỉnh mới được gán nhãn cho đinh nó sẽ tới được */
                 Node s = u.reachedNode;
 
-                if(s != target.Root) 
+                if (s != target.Root)
                 {
-                    s.nComingPeople += (int) u.nextEdge.CorrespondingCorridor.Density;
+                    s.nComingPeople += (int)u.nextEdge.CorrespondingCorridor.Density;
                     s.comingNodes.Add(u);
-                    utility.UpdateComingNode(s, target.Root, heap);
+                    UpdateComingNode(s, target.Root, heap);
                 }
 
                 /*---------------------------------------------------------------------- */
 
-                foreach (Adjacence v in u.adjacences) 
-                    {
-                        /*Cập nhật lượng người ở giữa 2 đỉnh được gán nhãn cho đỉnh tới được 
-                        trong tương lại */
+                foreach (Adjacence v in u.adjacences)
+                {
+                    /*Cập nhật lượng người ở giữa 2 đỉnh được gán nhãn cho đỉnh tới được 
+                    trong tương lại */
 
-                        if (v.node.label == true && v.node != u.next)
-                        utility.UpdateComingPeople(u, v.edge, target.Root, heap);
-                    }
-                
+                    if (v.node.label == true && v.node != u.next)
+                        UpdateComingPeople(u, v.edge, target.Root, heap);
+                }
+
                 /*Tính toán trọng số con đường các đỉnh kề đi qua đỉnh mới được gán nhãn
                 và cập nhật lại con đường tốt nhất */
                 foreach (Adjacence v in u.adjacences)
                     if (v.node.label == false)
                     {
                         Edge toU = v.node.adjacences.Find(adj => adj.node == u).edge; // Tìm cạnh mà đi từ đỉnh v tới u
-                        
-                        s = utility.FindCrossNode(v.node, toU);
+
+                        s = FindCrossNode(v.node, toU);
                         s.nComingPeople += toU.numberPeople;
-                        double w1 = utility.CalculateWeight(u, s, toU.numberPeople, 0);
-                        double w2 = utility.CalculateWeight(s, target.Root, s.nComingPeople, w1);
+                        double w1 = CalculateWeight(u, s, toU.numberPeople, 0);
+                        double w2 = CalculateWeight(s, target.Root, s.nComingPeople, w1);
                         double newW = v.edge.weight + w1 + w2;
 
                         foreach (Adjacence ad in v.node.adjacences)
@@ -179,20 +188,19 @@ namespace EvaFrame.Algorithm.PFAlgorithm
 
             target.UpdateResultToBuilding();
         }
-        
+
         /// <summary>
         /// Hàm dùng để cập nhật thường xuyên xử lý tình hướng hỏa hoạn thay đổi nhanh bất thường.
         /// </summary>
         public void CheckCondition()
         {
-            Utility utility = new Utility();
             Queue<Node> queue = new Queue<Node>();
             foreach (var subGraph in target.FloorGraphs)
             {
                 foreach (var node in subGraph.Nodes)
                 {
                     node.label = false;
-                    if(node.CorrespondingIndicator.IsExitNode)
+                    if (node.CorrespondingIndicator.IsExitNode)
                     {
                         queue.Enqueue(node);
                     }
@@ -202,10 +210,10 @@ namespace EvaFrame.Algorithm.PFAlgorithm
             while (queue.Count != 0)
             {
                 Node node = queue.Dequeue();
-                utility.TackleIncidence(node, target.Root);
+                TackleIncidence(node, target.Root);
                 foreach (var adj in node.adjacences)
                 {
-                    if(adj.node.label) continue;
+                    if (adj.node.label) continue;
                     queue.Enqueue(adj.node);
                     adj.node.label = true;
                 }
