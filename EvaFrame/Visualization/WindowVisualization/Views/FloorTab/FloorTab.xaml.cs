@@ -35,6 +35,7 @@ namespace EvaFrame.Visualization.WindowVisualization
             SetPaintColor(ref densityPaint, 51, 51, 51);
             densityPaint.TextAlign = SKTextAlign.Center;
             corridorPaint = new SKPaint();
+            corridorPaint.StrokeWidth = 3;
 
             this.target = target;
             this.inhabitantLocations = new List<SKPoint>();
