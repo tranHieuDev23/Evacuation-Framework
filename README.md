@@ -110,7 +110,7 @@ Building building = Building LoadFromFile(filepath);
 
 #### Cấu trúc file thông tin tòa nhà
 
-File thông tin tòa nhà là một file text bình thường, có thể có định dạng bất kì. Nội dung của file thông tin tòa nhà có dạng.
+File thông tin tòa nhà là một file text bình thường, có thể có định dạng bất kì. Nội dung của file thông tin tòa nhà có dạng:
 
 - Dòng đầu tiên chứa một số nguyên ```numFloor``` - số tầng trong tòa nhà.
 - ```numFloor``` cụm dòng tiếp theo, mỗi cụm mô tả thông tin của một tầng, bắt đầu từ tầng 1:
