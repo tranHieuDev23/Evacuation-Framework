@@ -21,7 +21,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
         /// </summary>
         public double weightToExit;
 
-
         /// <summary>
         /// Khởi tạo dữ liệu.
         /// </summary>
@@ -42,42 +41,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
         }
 
         object ICloneable.Clone() { return new DataN(node, weightToExit); }
-    }
-
-    /// <summary>
-    /// Dữ liệu tương ứng với đỉnh ảo dùng cho thuật toán Dijkstra.
-    /// </summary>
-    public class DataI : IComparable, ICloneable
-    {
-        /// <summary>
-        /// Indicator tương ứng.
-        /// </summary>
-        public Indicator node;
-        /// <summary>
-        /// Trọng số đến Indicator nguồn trong thuật toán Dijkstra;
-        /// </summary>
-        public double weightToExit;
-
-        /// <summary>
-        /// Khởi tạo dữ liệu.
-        /// </summary>
-        /// <param name="node"> Indicator tương ứng. </param>
-        /// <param name="weightToExit"> Trọng số đến Indicator nguồn trong thuật toán Dijkstra. </param>
-        public DataI(Indicator node, double weightToExit)
-        {
-            this.node = node;
-            this.weightToExit = weightToExit;
-        }
-
-        int IComparable.CompareTo(object obj)
-        {
-            if (obj.GetType() != typeof(DataI))
-                throw new ArgumentException("obj is not the same type as this instance.");
-            DataI data = obj as DataI;
-            return weightToExit.CompareTo(data.weightToExit);
-        }
-
-        object ICloneable.Clone() { return new DataI(node, weightToExit); }
     }
 
     /// <summary>
@@ -138,7 +101,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
         }
 
         /// <summary>
-        /// Hashcode của cặp đỉnh aor
+        /// Hashcode của cặp đỉnh ảo
         /// </summary>
         /// <param name="p"> Đỉnh ảo cần lấy HashCode.</param>
         /// <returns></returns>
@@ -155,7 +118,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
     /// </summary>
     public static class ExtensionMethod
     {
-
         /// <summary>
         /// Tính trọng số của Corridor.
         /// </summary>
