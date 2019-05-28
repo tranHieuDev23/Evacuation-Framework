@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
+namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
 {
     /// <summary>
     /// cấu trúc lưu thông tin các đỉnh và cạnh gần kề 

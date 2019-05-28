@@ -4,14 +4,14 @@ using System.Threading;
 using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
-using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
+using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 
-namespace EvaFrame.Algorithm.NewAlgo
+namespace EvaFrame.Algorithm.PFAlgorithm
 { 
     /// <summary>
     /// Class thực hiện thuật toán cải tiến của nhóm
     /// </summary>
-    public class MainAlgo : IAlgorithm
+    public class PFAlgorithm : IAlgorithm
     {
         private const double PositiveInfinity = 1000000000;
         private Graph target;

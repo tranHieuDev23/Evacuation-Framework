@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
+namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
 {
     class SubGraph
     {

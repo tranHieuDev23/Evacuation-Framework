@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Utilities;
-using EvaFrame.Algorithm.NewAlgo.VirtualGraph;
+using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 
-namespace EvaFrame.Algorithm.NewAlgo
+namespace EvaFrame.Algorithm.PFAlgorithm
 {
     /// <summary>
     /// Lớp gồm các phương thức hỗ trợ để thực hiện 
@@ -136,7 +136,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// <param name="reachedNode">Đỉnh đã được gán nhãn mà các đỉnh tới nó cần được update</param>
         /// <param name="root">Đỉnh nguồn mà các đỉnh khác tìm đường ngắn nhất tới</param>
         /// <param name="heap">Cấu trúc dữ liệu để các đỉnh mới được update push vào</param>
-        public void UpdateComingNode(Node reachedNode, Node root, MinHeap<MainAlgo.Data> heap)
+        public void UpdateComingNode(Node reachedNode, Node root, MinHeap<PFAlgorithm.Data> heap)
         {
             /*Implement code in here */
             foreach (var comingNode in reachedNode.comingNodes)
@@ -160,7 +160,7 @@ namespace EvaFrame.Algorithm.NewAlgo
                 bool isChaged = GetNextNode(comingNode);
                 if (isChaged)
                 {
-                    heap.Push(new MainAlgo.Data(comingNode, comingNode.weight));
+                    heap.Push(new PFAlgorithm.Data(comingNode, comingNode.weight));
                 }
             }
         }
@@ -201,7 +201,7 @@ namespace EvaFrame.Algorithm.NewAlgo
         /// đồ thị</param>
         /// <param name="heap">Heap hiện tại đang được thực hiện tương ứng với thuật toán</param>
         
-        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<MainAlgo.Data> heap)
+        public void UpdateComingPeople(Node node, Edge edge, Node root, MinHeap<PFAlgorithm.Data> heap)
         {
             /*Implement code in here */
             Node reachedNode = FindCrossNode(node, edge);

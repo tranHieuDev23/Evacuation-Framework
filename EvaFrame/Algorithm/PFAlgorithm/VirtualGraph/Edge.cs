@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm.NewAlgo;
+using EvaFrame.Algorithm.PFAlgorithm;
 using EvaFrame.Utilities;
 using EvaFrame.Utilities.WeightFunctions;
 
-namespace EvaFrame.Algorithm.NewAlgo.VirtualGraph
+namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
 {
     /// <summary>
     /// Cạnh trong <c>VirtualGraph</c> biểu thị tương ứng cho <c>corridor</c> 

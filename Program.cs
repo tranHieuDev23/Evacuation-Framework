@@ -4,7 +4,7 @@ using Avalonia;
 using Avalonia.Logging.Serilog;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm.PlainDijikstra;
-using EvaFrame.Algorithm.NewAlgo;
+using EvaFrame.Algorithm.PFAlgorithm;
 using EvaFrame.Simulator;
 using EvaFrame.Simulator.Hazards;
 using EvaFrame.Visualization.WindowVisualization;
