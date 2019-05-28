@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
 using EvaFrame.Models.Building;
-using EvaFrame.Simulator;
 
 namespace EvaFrame.Simulator.Hazards
 {
     /// <summary>
-    /// Class mô phỏng thảm họa, chỉ dùng trong mục đích test
+    /// Class mô phỏng tình trạng không có thảm họa.
     /// </summary>
-    public class NullHazard : IHazard
+    public class NoHazard : IHazard
     {
         void IHazard.Intialize(Building target){
             return;

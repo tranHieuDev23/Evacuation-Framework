@@ -25,7 +25,7 @@ class Program
     {
         Building target = Building.LoadFromFile("data.bld");
         WindowVisualization visualization = new WindowVisualization();
-        Simulator simulator = new Simulator(target, new PFAlgorithm(4, 40), new BasicConstantHazard(), visualization);
+        Simulator simulator = new Simulator(target, new PFAlgorithm(4, 40), new RandomNonCriticalHazard(new int[] {5, 6, 7, 8}, 0.3, 3), visualization);
         simulator.RunSimulatorAsync(0.1, 10);
         app.Run(visualization.MainWindow);
     }
