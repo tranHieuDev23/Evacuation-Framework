@@ -5,6 +5,9 @@ using EvaFrame.Utilities;
 
 namespace EvaFrame.Simulator.Hazards
 {
+    /// <summary>
+    /// Tình trạng thảm họa xảy ra tại các khu vực không trọng yếu (không phải các hành lang nối với Stair Node và Exit Node).
+    /// </summary>
     public class RandomNonCriticalHazard : IHazard
     {
         private int[] affectedFloorIds;
@@ -13,6 +16,13 @@ namespace EvaFrame.Simulator.Hazards
         private Random random;
         private Dictionary<Indicator, bool> mark;
 
+        /// <summary>
+        /// Khởi tạo một đối tượng <c>RandomNonCriticalHazard</c> mới, với thảm họa xảy ra ở một số tầng dưới cùng của tòa nhà.
+        /// </summary>
+        /// <param name="numberOfLowestFloorsAffected">Số lượng tầng dưới cùng của tòa nhà bị ảng hưởng. Giá trị dương.</param>
+        /// <param name="affectedRate">Tỷ lệ số lượng <c>Indicator</c> bị ảnh hưởng bởi thảm họa. Giá trị trong khoảng [0, 1].</param>
+        /// <param name="spread">Bán kính của từng cụm thảm họa (số lượng cạnh bị ảnh hưởng, tính từ <c>Indicator</c> trung tâm của cụm thảm họa). Giá trị dương.</param>
+        /// <param name="seed">Hạt giống ngẫu nhiên. Thay đổi hạt giống này để thay đổi trạng thái thảm họa.</param>
         public RandomNonCriticalHazard(int numberOfLowestFloorsAffected, double affectedRate, int spread, int seed = 12345)
         {
             if (numberOfLowestFloorsAffected <= 0)
@@ -27,6 +37,13 @@ namespace EvaFrame.Simulator.Hazards
             this.random = new Random(seed);
         }
 
+        /// <summary>
+        /// Khởi tạo một đối tượng <c>RandomNonCriticalHazard</c> mới, với thảm họa xảy ra ở một số được chỉ định cụ thể.
+        /// </summary>
+        /// <param name="affectedFloorIds">Mảng chứa chỉ số các tầng bị ảnh hưởng.</param>
+        /// <param name="affectedRate">Tỷ lệ số lượng Stair Node bị ảnh hưởng bởi thảm họa. Giá trị trong khoảng [0, 1].</param>
+        /// <param name="spread">Bán kính của từng cụm thảm họa (số lượng cạnh bị ảnh hưởng, tính từ <c>Indicator</c> trung tâm của cụm thảm họa). Giá trị dương.</param>
+        /// <param name="seed">Hạt giống ngẫu nhiên. Thay đổi hạt giống này để thay đổi trạng thái thảm họa.</param>
         public RandomNonCriticalHazard(int[] affectedFloorIds, double affectedRate, int spread, int seed = 12345)
         {
             foreach (int id in affectedFloorIds)
