@@ -6,7 +6,10 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm
 {
-    class LCDTAlgorithm : IAlgorithm
+    /// <summary>
+    /// Class thuật toán LCDT thuần túy, dựa trên paper A Scalable Approach for Dynamic Evacuation Routing in Large Smart Buildings.
+    /// </summary>
+    public class LCDTAlgorithm : IAlgorithm
     {
         private Building target;
         private Graph graph;

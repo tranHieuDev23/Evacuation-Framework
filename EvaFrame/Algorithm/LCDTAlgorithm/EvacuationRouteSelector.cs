@@ -89,20 +89,21 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
                 SubGraph upSubGraph = graph.SubGraphs[i];
                 SubGraph downSubGraph = graph.SubGraphs[i - 1];
 
-                foreach (Indicator indicator in floor.Indicators)
-                    if (indicator.IsStairNode)
-                        foreach (Corridor cor in indicator.Neighbors)
-                            if (cor.I1.IsStairNode && cor.I2.IsStairNode)
-                            {
-                                if (cor.I1.Equals(indicator) && cor.I1.getFloorNumber() > cor.I2.getFloorNumber())
-                                {
-                                    Node upStairNode = upSubGraph.Nodes.Find(node => node.CorresspodingIndicator == cor.I1);
-                                    Node downStairNode = downSubGraph.Nodes.Find(node => node.CorresspodingIndicator == cor.I2);
-
-                                    upStairNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), downStairNode));
-                                    downStairNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), upStairNode));
-                                }
-                            }
+                foreach (Indicator fromInd in floor.Stairs)
+                {
+                    foreach (Corridor cor in fromInd.Neighbors)
+                    {
+                        if (!cor.IsStairway)
+                            continue;
+                        Indicator toInd = cor.To(fromInd);
+                        if (toInd.FloorId > fromInd.FloorId)
+                            continue;
+                        Node fromNode = upSubGraph.Nodes.Find(node => node.CorresspodingIndicator == fromInd);
+                        Node toNode = downSubGraph.Nodes.Find(node => node.CorresspodingIndicator == toInd);
+                        fromNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), toNode));
+                        toNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), fromNode));
+                    }
+                }
             }
         }
     }
