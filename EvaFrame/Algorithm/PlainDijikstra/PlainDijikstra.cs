@@ -39,7 +39,6 @@ namespace EvaFrame.Algorithm.PlainDijikstra
             foreach (Floor floor in target.Floors)
                 foreach (Indicator ind in floor.Indicators)
                     ind.Next = calculation[ind].Next;
-                
         }
     }
 }
