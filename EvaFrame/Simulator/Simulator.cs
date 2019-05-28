@@ -80,6 +80,8 @@ namespace EvaFrame.Simulator
 
         /// <summary>
         /// Chạy mô phỏng thuật toán cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
+        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv.
+        /// Dữ liệu này bao gồm các thời điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
         /// </summary>
         /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị ms).
@@ -87,18 +89,23 @@ namespace EvaFrame.Simulator
         /// <param name="algorithmUpdatePeriod">
         /// Thời gian giữa hai lần chạy thuật toán liên tiếp (đơn vị ms).
         /// </param>
+        /// <param name="dataFilepath">
+        /// Địa chỉ lưu file dữ liệu về quá trình chạy của thuật toán sau khi kết thúc.
+        /// </param>
         /// <returns>
         /// Thời gian để toàn bộ cư dân trong tòa nhà di tản hết (đơn vị s).
         /// </returns>
-        public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod)
+        public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod, string dataFilepath)
         {
             SimulationInitialize();
-            return SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod);
+            return SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod, dataFilepath);
         }
 
         /// <summary>
         /// Khởi tạo một luồng mới và chạy mô phỏng thuật toán trên luồng này cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
         /// Hàm non-blocking, có thể sử dụng trong một số trường hợp như khi áp dụng giao diện đồ họa của thư viện.
+        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv.
+        /// Dữ liệu này bao gồm các thời điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
         /// </summary>
         /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị s).
@@ -106,13 +113,16 @@ namespace EvaFrame.Simulator
         /// <param name="algorithmUpdatePeriod">
         /// Thời gian giữa hai lần chạy thuật toán liên tiếp (đơn vị s).
         /// </param>
+        /// <param name="dataFilepath">
+        /// Địa chỉ lưu file dữ liệu về quá trình chạy của thuật toán sau khi kết thúc.
+        /// </param>
         /// <returns>
         /// Đối tượng luồng đang chạy mô phỏng thuật toán.
         /// </returns>
-        public Thread RunSimulatorAsync(double situationUpdatePeriod, double algorithmUpdatePeriod)
+        public Thread RunSimulatorAsync(double situationUpdatePeriod, double algorithmUpdatePeriod, string dataFilepath)
         {
             SimulationInitialize();
-            Thread simulationThread = new Thread(() => SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod));
+            Thread simulationThread = new Thread(() => SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod, dataFilepath));
             simulationThread.IsBackground = true;
             simulationThread.Start();
             return simulationThread;
@@ -125,7 +135,7 @@ namespace EvaFrame.Simulator
             visualization.Initialize(target);
         }
 
-        private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod)
+        private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod, string dataFilepath)
         {
             double result = 0;
             double situationWait = 0;
@@ -177,13 +187,13 @@ namespace EvaFrame.Simulator
             }
 
             Console.WriteLine("Simulation finished! Time: " + result + "s");
-            printReport(dataList);
+            printReport(dataList, dataFilepath);
             return result;
         }
 
-        private void printReport(List<SimulationData> dataList)
+        private void printReport(List<SimulationData> dataList, string dataFilepath)
         {
-            using (StreamWriter file = new StreamWriter("SimulationData.csv"))
+            using (StreamWriter file = new StreamWriter(dataFilepath))
             {
                 file.WriteLine("Time Elapsed,Remaining Count,Non-empty Corridor Count,Average Density Over Capacity");
                 foreach (SimulationData data in dataList)
