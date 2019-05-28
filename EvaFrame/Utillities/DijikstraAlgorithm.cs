@@ -8,7 +8,7 @@ namespace EvaFrame.Utilities
     /// Thuật toán Dijikstra tổng quát, chạy trên class <c>Building</c>.
     /// Có thể sử dụng công thức tính trọng số trên cạnh bất kì, bằng cách cài đặt và truyền vào interface <c>IWeightFunction</c>.
     /// </summary>
-    public class DijikstraAlgorithm
+    class DijikstraAlgorithm
     {
         private IWeigthFunction weightFunction;
 
