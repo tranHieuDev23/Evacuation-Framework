@@ -170,3 +170,7 @@ Namespace ```EvaFrame.Simulator``` cung cấp các class và interface liên qua
 ### Todo
 
 - Thư viện ```Avalonia``` vẫn đang trong giai đoạn beta, do đó giao diện đồ họa của chương trình có thể gặp lỗi và dừng lại trong quá trình chạy.
+
+### Giấy phép
+
+MIT
