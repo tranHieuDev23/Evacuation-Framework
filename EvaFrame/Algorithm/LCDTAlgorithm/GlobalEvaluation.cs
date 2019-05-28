@@ -71,7 +71,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
                 if (weights[new PairNN(u, exitNode)] != wu) continue;
 
-                foreach (Edge e in u.Adjencents) {
+                foreach (Edge e in u.Adjacences) {
                     Node v = e.To;
                     PairNN ve = new PairNN(v, exitNode);
                     double wv = weights[ve];

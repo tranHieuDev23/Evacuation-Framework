@@ -4,12 +4,13 @@ using System;
 
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm {
-    
+namespace EvaFrame.Algorithm.LCDTAlgorithm
+{
     /// <summary>
     /// Các lựa chọn của đỉnh ảo.
     /// </summary>
-    public class NodeOption {
+    public class NodeOption
+    {
         private Edge next;
         /// <value> Cạnh ảo mà người di tản có thể lựa chọn. </value>
         public Edge Next { get { return next; } }
@@ -26,28 +27,31 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
         /// <param name="next"> Cạnh ảo mà người di tản có thể lựa chọn. </param>
         /// <param name="weightToS"> Trọng số tương ứng với cạnh ảo. </param>
         /// <param name="stairNode"> Stair node để đi xuống tầng dưới. </param>
-        public NodeOption(Edge next, double weightToS, Node stairNode) {
+        public NodeOption(Edge next, double weightToS, Node stairNode)
+        {
             this.next = next;
             this.weightToS = weightToS;
             this.stairNode = stairNode;
         }
     }
-    
+
     /// <summary>
     /// Đỉnh ảo.
     /// </summary>
-    public class Node {
+    public class Node
+    {
         private Indicator corresspondingIndicator;
         /// <value> Indicator tương ứng trong Building. </value>
-        public Indicator CorresspodingIndicator{ get{ return corresspondingIndicator; } }
-        
+        public Indicator CorresspodingIndicator { get { return corresspondingIndicator; } }
+
         /// <summary>
         /// Khởi tạo đỉnh ảo.
         /// </summary>
         /// <param name="indicator"> Indicator tương ứng trong Building. </param>
-        public Node(Indicator indicator) {
+        public Node(Indicator indicator)
+        {
             this.corresspondingIndicator = indicator;
-            this.adjencents = new List<Edge>();
+            this.adjacences = new List<Edge>();
             this.isStairNode = indicator.IsStairNode;
             this.isExitNode = indicator.IsExitNode;
             this.next = null;
@@ -56,26 +60,30 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
         private bool isStairNode;
         /// <value> Trả true nếu đây là Stair. Ngược lại trả về false. </value>
-        public bool IsStairNode{ 
-            get { return isStairNode; } 
+        public bool IsStairNode
+        {
+            get { return isStairNode; }
             set { isStairNode = value; }
         }
         private bool isExitNode;
         /// <value> Trả về true nếu đây là cổng thoát khỏi tòa nhà. Ngược lại trả về false. </value>
-        public bool IsExitNode{ 
-            get { return isExitNode; } 
+        public bool IsExitNode
+        {
+            get { return isExitNode; }
             set { isExitNode = value; }
         }
-        
-        private List<Edge> adjencents;
+
+        private List<Edge> adjacences;
         /// <value> Danh sách các cảnh ảo kề với đỉnh. </value>
-        public List<Edge> Adjencents{ get { return adjencents; } }
+        public List<Edge> Adjacences { get { return adjacences; } }
 
         private Edge next;
         /// <value> Cạnh tiếp theo mà người dân sẽ di tản. </value>
-        public Edge Next {
+        public Edge Next
+        {
             get { return next; }
-            set {
+            set
+            {
 
                 if (value != null)
                     corresspondingIndicator.Next = value.CorrespondingCorridor;
@@ -85,7 +93,8 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
 
         private List<NodeOption> nextOptions;
         /// <value> Danh sách các lựa chọn mà người dân có thể di tản vào. </value>
-        public List<NodeOption> NextOptions{
+        public List<NodeOption> NextOptions
+        {
             get { return nextOptions; }
             set { nextOptions = value; }
         }
