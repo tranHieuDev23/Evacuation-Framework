@@ -9,7 +9,7 @@ using EvaFrame.Visualization;
 namespace EvaFrame.Visualization.TextVisualization
 {
     /// <summary>
-    /// Mô tả toà nhà trên command line.
+    /// Mô tả toà nhà bằng việc in ra một số thông tin đơn giản của tòa nhà trên giao diện command line.
     /// </summary>
     public class TextVisualization : IVisualization
     {

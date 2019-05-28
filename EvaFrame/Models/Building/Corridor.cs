@@ -3,9 +3,11 @@ using System;
 namespace EvaFrame.Models.Building
 {
     /// <summary>
-    /// Interface mô tả hành lang kết nối giữa hai <c>Indicator</c> trong tòa nhà. 
-    /// Trong sử dụng thực tế, các đối tượng hành lang sẽ được cung cấp thông qua class <c>Building</c> - người dùng không cần phải tự cài đặt interface này.
+    /// Interface mô tả hành lang kết nối giữa hai <c>Indicator</c> trong tòa nhà.
     /// </summary>
+    /// <remarks>
+    /// Trong sử dụng thực tế, các đối tượng hành lang sẽ được cung cấp thông qua class <c>Building</c> - người dùng không cần phải tự cài đặt interface này.
+    /// </remarks>
     public interface Corridor
     {
         /// <value>String định danh của <c>Corridor</c>, có dạng [<c>I1.Id</c>]-[<c>I2.Id</c>]. Giá trị read-only.</value>
@@ -39,15 +41,19 @@ namespace EvaFrame.Models.Building
         double Capacity { get; }
 
         /// <value>
-        /// Mật độ người đi qua trên hành lang. Throw <c>ArgumentOutOfRangeException</c> nếu như 
-        /// được gán giá trị bằng một số âm.
+        /// Mật độ người đi qua trên hành lang.
         /// </value>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Throw nếu như được gán giá trị bằng một số âm.
+        /// </exception>
         double Density { get; set; }
 
         /// <value>
-        /// Giá trị độ tin tưởng của hành lang. Throw <c>ArgumentOutOfRangeException</c> nếu như 
-        /// được gán giá trị bằng một số ngoài khoảng [0, 1].
+        /// Giá trị độ tin tưởng của hành lang.
         /// </value>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Throw nếu như được gán giá trị bằng một số ngoài khoảng [0, 1].
+        /// </exception>
         double Trustiness { get; set; }
 
         /// <summary>
@@ -55,11 +61,15 @@ namespace EvaFrame.Models.Building
         /// </summary>
         /// <param name="from"><c>Indicator</c> xuất phát.</param>
         /// <returns><c>Indicator</c> đi tới.</returns>
+        /// <exception cref="System.ArgumentException">
+        /// Throw nếu như <c>from</c> không phải là một trong hai <c>Indicator</c> của <c>Corridor</c> này.
+        /// </exception>
         Indicator To(Indicator from);
     }
 
     public partial class Building
     {
+        // Cài đặt cụ thể của interface Corridor bên trong Building.
         private class CorridorImpl : Corridor
         {
             private string id;

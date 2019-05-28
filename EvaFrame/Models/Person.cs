@@ -10,60 +10,45 @@ namespace EvaFrame.Models
     {
         private string id;
         /// <value>
-        /// String định danh của cư dân.
+        /// String định danh của cư dân. Giá trị read-only.
         /// </value>
         public string Id { get { return id; } }
 
         private double speedMax;
         /// <value>
-        /// Vận tốc tối đa của cư dân trong môi trường tối ưu (hành lang có độ tin cậy 1, không có người nào khác đi qua).
+        /// Vận tốc tối đa của cư dân trong môi trường tối ưu (hành lang có độ tin cậy 1, không có người nào khác đi qua). Giá trị read-only.
         /// </value>
         public double SpeedMax { get { return speedMax; } }
 
         private Indicator following;
         /// <value>
-        /// <c>Indicator</c> mà người này đang tuân theo chỉ dẫn.
+        /// <c>Indicator</c> mà người này đang tuân theo chỉ dẫn. Giá trị read-only.
         /// </value>
-        public Indicator Following
-        {
-            get { return following; }
-            set { following = value; }
-        }
+        public Indicator Following { get { return following; } }
 
         private Corridor location;
         /// <value>
-        /// Hành lang mà người này đang di chuyển trên. 
-        /// Bằng <c>null</c> vào thời điểm khởi tạo (người này chưa nhận được chỉ dẫn từ <c>Indicator</c> nào cả).
+        /// Hành lang mà người này đang di chuyển trên. Giá trị read-only.
+        /// Bằng <c>null</c> nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>, 
+        /// hoặc chỉ dẫn hiện tại của <c>Indicator</c> dẫn tới một hành lang bị tắc, 
+        /// không thể thêm người vào được.
         /// </value>
-        public Corridor Location
-        {
-            get { return location; }
-            set { location = value; }
-        }
+        public Corridor Location { get { return location; } }
 
         private double completedPercentage;
         /// <value>
-        /// Mức độ hoàn thành hành lang hiện tại của người này, nằm trong khoảng [0, 1]. 
+        /// Mức độ hoàn thành hành lang hiện tại của người này, nằm trong khoảng [0, 1]. Giá trị read-only.
         /// 0 có nghĩa là là vừa xuất phát tại <c>Indicator</c> From. 
-        /// Nếu như <c>Location</c> bằng null, giá trị này không có ý nghĩa.
+        /// Nếu như <c>Location</c> bằng <c>null</c>, giá trị này không có ý nghĩa.
         /// </value>
-        public double CompletedPercentage
-        {
-            get { return completedPercentage; }
-            set
-            {
-                if (value < 0 || value > 1)
-                    throw new ArgumentOutOfRangeException("value", "CompletedPercentage must be in the range of [0, 1].");
-                completedPercentage = value;
-            }
-        }
+        public double CompletedPercentage { get { return completedPercentage; } }
 
         /// <summary>
         /// Khởi tại một đối tượng cư dân mới.
         /// </summary>
         /// <param name="id">String định danh của cư dân.</param>
         /// <param name="speedMax">Vận tốc tối đa của cư dân trong môi trường tối ưu.</param>
-        /// <param name="following">Indicator đầu tiên người này nhận chỉ dẫn.</param>
+        /// <param name="following"><c>Indicator</c> đầu tiên người này nhận chỉ dẫn.</param>
         public Person(string id, double speedMax, Indicator following)
         {
             this.id = id;
@@ -105,24 +90,24 @@ namespace EvaFrame.Models
                 if (following.IsExitNode)
                 {
                     if (oldLocation != null)
-                        oldLocation.Density --;
+                        oldLocation.Density--;
                     return true;
                 }
 
-                // Nếu như người này chưa nhận được chỉ dẫn từ <c>Indicator</c>.
+                // Nếu như người này chưa nhận được chỉ dẫn từ Indicator.
                 if (location == null)
                 {
-                    // Nếu như <c>Indicator</c> đang tuân theo chưa có chỉ thị gì.
+                    // Nếu như Indicator đang tuân theo chưa có chỉ thị gì.
                     if (following.Next == null)
                         return false;
-                    // Hoặc nếu đường đi được chỉ bởi <c>Indicator</c> này đang đầy.
+                    // Hoặc nếu đường đi được chỉ bởi Indicator này đang đầy.
                     if (following.Next.Density + 1 > following.Next.Capacity)
                         return false;
                     // Nhận chỉ dẫn từ Indicator.
                     location = following.Next;
                     location.Density++;
-                    // Nếu như người này di chuyển từ <c>Corridor</c> cũ sang 
-                    // <c>Corridor</c> mới, giảm mật độ người trên <c>Corridor</c> cũ.
+                    // Nếu như người này di chuyển từ Corridor cũ sang 
+                    // Corridor mới, giảm mật độ người trên Corridor cũ.
                     if (oldLocation != null)
                         oldLocation.Density--;
                 }

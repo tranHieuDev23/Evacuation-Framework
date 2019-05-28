@@ -8,7 +8,7 @@ namespace EvaFrame.Simulator.Hazards
     /// <summary>
     /// Tình trạng thảm họa cơ bản: Một số hành lang ở tầng một sẽ bị cháy, và tình trạng thảm họa lan rộng lần hai sau khi thuật toán chạy được 30s.
     /// </summary>
-    public class BasicConstantHazard : IHazard
+    class BasicConstantHazard : IHazard
     {
         private Building target = null;
         private double timeElapsed = 0;

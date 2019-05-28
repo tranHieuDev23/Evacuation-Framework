@@ -55,12 +55,14 @@ namespace EvaFrame.Simulator
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>Simulator</c> để mô phỏng thuật toán.
-        /// Throw <c>ArgumentException</c> nếu như trong các tham số truyền vào có giá trị null.
         /// </summary>
         /// <param name="target">Tòa nhà mục tiêu.</param>
         /// <param name="algorithm">Thuật toán được mô phỏng.</param>
         /// <param name="hazard">Thảm họa trong mô phỏng.</param>
         /// <param name="visualization"></param>
+        /// <exception cref="System.ArgumentException">
+        /// Throw nếu như trong các tham số truyền vào có giá trị <c>null</c>.
+        /// </exception>
         public Simulator(Building target, IAlgorithm algorithm, IHazard hazard, IVisualization visualization)
         {
             if (target == null)
@@ -80,9 +82,15 @@ namespace EvaFrame.Simulator
 
         /// <summary>
         /// Chạy mô phỏng thuật toán cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
-        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv.
-        /// Dữ liệu này bao gồm các thời điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được 
+        /// lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv. Dữ liệu này bao gồm các thời 
+        /// điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng 
+        /// cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
+        /// </para>
+        /// </remarks>
         /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị ms).
         /// </param>
@@ -103,10 +111,19 @@ namespace EvaFrame.Simulator
 
         /// <summary>
         /// Khởi tạo một luồng mới và chạy mô phỏng thuật toán trên luồng này cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
-        /// Hàm non-blocking, có thể sử dụng trong một số trường hợp như khi áp dụng giao diện đồ họa của thư viện.
-        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv.
-        /// Dữ liệu này bao gồm các thời điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// Do hàm này non-blocking, người dùng có thể sử dụng khi cần dùng tới luồng chính
+        /// của chương trình vào việc khác (ví dụ như khi sử dụng giao diện đồ họa).
+        /// </para>
+        /// <para>
+        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được 
+        /// lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv. Dữ liệu này bao gồm các thời 
+        /// điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng 
+        /// cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
+        /// </para>
+        /// </remarks>
         /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị s).
         /// </param>

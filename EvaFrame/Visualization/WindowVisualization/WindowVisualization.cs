@@ -10,7 +10,7 @@ using Avalonia.Controls;
 namespace EvaFrame.Visualization.WindowVisualization
 {
     /// <summary>
-    /// Mô tả tòa nhà bằng giao diện đồ họa đa nền tảng, hỗ trợ bởi thư viên Avalonia.
+    /// Mô tả tòa nhà bằng giao diện đồ họa đa nền tảng, hỗ trợ bởi thư viên Avalonia và SkiaSharp.
     /// </summary>
     public class WindowVisualization: IVisualization
     {

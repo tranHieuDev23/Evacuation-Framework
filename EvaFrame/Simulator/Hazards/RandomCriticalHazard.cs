@@ -23,10 +23,15 @@ namespace EvaFrame.Simulator.Hazards
         /// <param name="affectedRate">Tỷ lệ số lượng Stair Node bị ảnh hưởng bởi thảm họa. Giá trị trong khoảng [0, 1].</param>
         /// <param name="spread">Bán kính của từng cụm thảm họa (số lượng cạnh bị ảnh hưởng, tính từ <c>Indicator</c> trung tâm của cụm thảm họa). Giá trị dương.</param>
         /// <param name="seed">Hạt giống ngẫu nhiên. Thay đổi hạt giống này để thay đổi trạng thái thảm họa.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Throw nếu như <c>numberOfLowestFloorsAffected</c> hoặc <c>spread</c> không phải là số dương, hoặc nếu <c>affectedRate</c> nằm ngoài khoảng [0, 1].
+        /// </exception>
         public RandomCriticalHazard(int numberOfLowestFloorsAffected, double affectedRate, int spread, int seed = 12345)
         {
             if (numberOfLowestFloorsAffected <= 0)
                 throw new ArgumentOutOfRangeException("numberOfLowestFloorsAffected", "numberOfLowestFloorsAffected must be positive!");
+            if (affectedRate < 0 || affectedRate > 1)
+                throw new ArgumentOutOfRangeException("affectedRate", "affectedRate must be in the range of [0, 1]!");
             if (spread <= 0)
                 throw new ArgumentOutOfRangeException("spread", "spread must be positive!");
             this.affectedFloorIds = new int[numberOfLowestFloorsAffected];
@@ -44,6 +49,9 @@ namespace EvaFrame.Simulator.Hazards
         /// <param name="affectedRate">Tỷ lệ số lượng Stair Node bị ảnh hưởng bởi thảm họa. Giá trị trong khoảng [0, 1].</param>
         /// <param name="spread">Bán kính của từng cụm thảm họa (số lượng cạnh bị ảnh hưởng, tính từ <c>Indicator</c> trung tâm của cụm thảm họa). Giá trị dương.</param>
         /// <param name="seed">Hạt giống ngẫu nhiên. Thay đổi hạt giống này để thay đổi trạng thái thảm họa.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Throw nếu như <c>affectedFloorIds</c> chứa chỉ số âm, <c>spread</c> không phải là số dương, hoặc nếu <c>affectedRate</c> nằm ngoài khoảng [0, 1].
+        /// </exception>
         public RandomCriticalHazard(int[] affectedFloorIds, double affectedRate, int spread, int seed = 12345)
         {
             foreach (int id in affectedFloorIds)
@@ -57,6 +65,9 @@ namespace EvaFrame.Simulator.Hazards
             this.random = new Random(seed);
         }
 
+        /// <exception cref="System.Exception">
+        /// Throw nếu như đối tượng này cố gắng thực hiện thảm họa trên một tầng mà <c>target</c> không có.
+        /// </exception>
         void IHazard.Intialize(Building target)
         {
             foreach (int id in affectedFloorIds)

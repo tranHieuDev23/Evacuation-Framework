@@ -6,8 +6,10 @@ namespace EvaFrame.Models.Building
 {
     /// <summary>
     /// Interface mô tả đèn báo chỉ đường thoát hiểm thông minh trong tòa nhà.
-    /// Trong sử dụng thực tế, các đối tượng đèn báo sẽ được cung cấp thông qua class <c>Building</c> - người dùng không cần phải tự cài đặt interface này.
     /// </summary>
+    /// <remarks>
+    /// Trong sử dụng thực tế, các đối tượng đèn báo sẽ được cung cấp thông qua class <c>Building</c> - người dùng không cần phải tự cài đặt interface này.
+    /// </remarks>
     public interface Indicator
     {
         /// <value>String định danh của <c>Indicator</c>, có dạng [số thứ tự trong tầng]@[số tầng].</value>
@@ -28,11 +30,12 @@ namespace EvaFrame.Models.Building
         ReadOnlyCollection<Corridor> Neighbors { get; }
 
         /// <value>
-        /// Hành lang mà đèn báo này đang chỉ lối tới. <c>null</c> nếu như đây là đèn báo ở 
-        /// Exit Node và không cần chỉ đến đâu cả. Nếu được gán bởi một giá trị khác null 
-        /// mà không nằm trong danh sách <c>Neighbors</c>, <c>InvalidOperationException</c> sẽ 
-        /// được throw.
+        /// Hành lang mà đèn báo này đang chỉ lối tới. 
+        /// Có giá trị bằng <c>null</c> nếu như đèn báo không chỉ đến đâu cả. 
         /// </value>
+        /// <exception cref="System.InvalidOperationException">
+        /// Throw nếu được gán bởi một giá trị khác <c>null</c> mà không nằm trong danh sách <c>Neighbors</c>.
+        /// </exception>
         Corridor Next { get; set; }
 
         /// <value>
@@ -48,6 +51,7 @@ namespace EvaFrame.Models.Building
 
     public partial class Building
     {
+        // Cài đặt cụ thể của interface Indicator bên trong Building.
         private class IndicatorImpl : Indicator
         {
             private string id;
@@ -73,7 +77,7 @@ namespace EvaFrame.Models.Building
                 set
                 {
                     if (value != null && !neighbors.Contains(value))
-                        throw new InvalidOperationException("Corridor not found in neighbors.");
+                        throw new InvalidOperationException("Corridor not found in Neighbors.");
                     next = value;
                 }
             }

@@ -7,8 +7,8 @@ using EvaFrame.Models;
 namespace EvaFrame.Models.Building
 {
     /// <summary>
-    /// Class mô tả tòa nhà trong mô hình LCDT. Các thuật toán sẽ thực hiện tính toán trên đối tượng
-    /// thuộc class này.
+    /// Class mô tả tòa nhà trong mô hình LCDT. 
+    /// Các thuật toán sẽ thực hiện tính toán trên đối tượng thuộc class này.
     /// </summary>
     public partial class Building
     {
@@ -36,6 +36,9 @@ namespace EvaFrame.Models.Building
         /// </summary>
         /// <param name="filepath">Đường dẫn tới file.</param>
         /// <returns>Đối tượng <c>Building</c> được xây dựng.</returns>
+        /// <exception cref="System.Exception">
+        /// Throw nếu như xảy ra Exception trong quá trình đọc file.
+        /// </exception>
         public static Building LoadFromFile(string filepath)
         {
             try
@@ -58,9 +61,8 @@ namespace EvaFrame.Models.Building
         }
 
         /// <summary>
-        /// Cập nhật sự di chuyển của cư dân trong tòa nhà sau một khoảng thời gian. Nếu cư dân di 
-        /// chuyển ra khỏi tòa nhà, đối tượng tương ứng sẽ được loại bỏ ra khỏi danh sách.
-        /// <c>Inhabitants</c>.
+        /// Cập nhật sự di chuyển của cư dân trong tòa nhà sau một khoảng thời gian. 
+        /// Nếu cư dân di chuyển ra khỏi tòa nhà, đối tượng tương ứng sẽ được loại bỏ ra khỏi danh sách <c>Inhabitants</c>.
         /// </summary>
         /// <param name="updatePeriod">Khoảng thời gian di chuyển.</param>
         public void MoveInhabitants(double updatePeriod)

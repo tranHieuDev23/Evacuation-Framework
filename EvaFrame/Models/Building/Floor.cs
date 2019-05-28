@@ -5,8 +5,10 @@ namespace EvaFrame.Models.Building
 {
     /// <summary>
     /// Interface mô tả một tầng trong mô hình LCDT.
-    /// Trong sử dụng thực tế, các đối tượng tầng sẽ được cung cấp thông qua class <c>Building</c> - người dùng không cần phải tự cài đặt interface này.
     /// </summary>
+    /// <remarks>
+    /// Trong sử dụng thực tế, các đối tượng tầng sẽ được cung cấp thông qua class <c>Building</c> - người dùng không cần phải tự cài đặt interface này.
+    /// </remarks>
     public interface Floor
     {
         /// <value>
@@ -32,6 +34,7 @@ namespace EvaFrame.Models.Building
 
     public partial class Building
     {
+        // Cài đặt cụ thể của interface Floor bên trong Building.
         private class FloorImpl : Floor
         {
             List<Indicator> indicators, stairs;

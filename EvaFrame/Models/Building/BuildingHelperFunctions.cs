@@ -6,6 +6,7 @@ using EvaFrame.Models;
 
 namespace EvaFrame.Models.Building
 {
+    // Các hàm phụ trợ cho việc load Building từ file dữ liệu
     public partial class Building
     {
         private static void LoadFloor(StreamReader sr, Building target, int floorId)
