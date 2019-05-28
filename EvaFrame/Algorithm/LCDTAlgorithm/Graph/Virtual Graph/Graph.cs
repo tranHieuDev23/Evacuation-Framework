@@ -32,10 +32,16 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
         public Graph(Building target)
         {
             this.subGraphs = new List<SubGraph>();
-            for (int i = 0; i < target.Floors.Count; ++i)
-                this.subGraphs.Add(new SubGraph(target.Floors[i]));
             this.crossGraph = null;
             this.exitNodes = new List<Node>();
+            for (int i = 0; i < target.Floors.Count; ++i)
+            {
+                SubGraph sg = new SubGraph(target.Floors[i]);
+                this.subGraphs.Add(sg);
+                foreach (Node n in sg.Nodes)
+                    if (n.IsExitNode)
+                        this.exitNodes.Add(n);
+            }
         }
     }
 }

@@ -29,10 +29,10 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
             {
                 graph.SubGraphs[i].Update();
                 Dictionary<PairNN, double> weightInFloor = localEvaluators[i].Run();
-                graph.CrossGraph.updateGraph(weightInFloor);
+                graph.CrossGraph.AddFloorFromLocal(weightInFloor);
             }
 
-            graph.CrossGraph.buildGraph();
+            graph.CrossGraph.ConnectFloors();
 
             GlobalEvaluation global = new GlobalEvaluation(graph.CrossGraph);
             Dictionary<PairNN, double> wGlobals = global.Run();

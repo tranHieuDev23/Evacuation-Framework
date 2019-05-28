@@ -7,22 +7,23 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 
 namespace EvaFrame.Algorithm.LCDTAlgorithm
 {
-
     /// <summary>
     /// Đồ thị con tương ứng với một tầng trong Building. 
     /// </summary>
     public class SubGraph
     {
         private List<Node> nodes, stairNodes;
-        /// <returns> Danh sách các đỉnh ảo trong đồ thị. </returns>
+
+        /// <returns>Danh sách các đỉnh ảo trong đồ thị.</returns>
         public List<Node> Nodes { get { return nodes; } }
-        /// <returns> Danh sách các Stair Node trong đồ thị. </returns>
+
+        /// <returns>Danh sách các Stair Node trong đồ thị.</returns>
         public ReadOnlyCollection<Node> StairNodes { get { return stairNodes.AsReadOnly(); } }
 
         /// <summary>
         /// Khởi tạo đồ thị con.
         /// </summary>
-        /// <param name="floor"> Tầng tương ứng trong Building. </param>
+        /// <param name="floor"> Tầng tương ứng trong Building.</param>
         public SubGraph(Floor floor)
         {
             this.nodes = new List<Node>();

@@ -46,6 +46,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
             for (int i = 0; i < graph.SubGraphs.Count; ++i) {
                 SubGraph subGraph = graph.SubGraphs[i];
                 foreach (Node u in subGraph.Nodes) 
+                
                 if (!u.IsExitNode) {
 
                     double minPath = Double.PositiveInfinity;
@@ -68,8 +69,6 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                                 Node stairNode = option.StairNode;
                                 PairNN stairNodeToExitNode = new PairNN(stairNode, exitNode);
                                 
-                                bool check = wGlobals.ContainsKey(stairNodeToExitNode);
-
                                 if (minPath >= weightToS + wGlobals[stairNodeToExitNode]) {
                                     minPath = weightToS + wGlobals[stairNodeToExitNode];
                                     u.Next = option.Next;
@@ -99,7 +98,7 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm {
                         if (cor.I1.Equals(indicator) && cor.I1.getFloorNumber() > cor.I2.getFloorNumber()) {
                             Node upStairNode = upSubGraph.Nodes.Find( node => node.CorresspodingIndicator == cor.I1);
                             Node downStairNode = downSubGraph.Nodes.Find( node => node.CorresspodingIndicator == cor.I2);
-
+                            
                             upStairNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), downStairNode));
                             downStairNode.NextOptions.Add(new NodeOption(new Edge(cor), cor.LCDTWeight(), upStairNode));
                         }

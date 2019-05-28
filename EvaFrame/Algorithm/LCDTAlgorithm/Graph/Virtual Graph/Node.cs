@@ -14,9 +14,11 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
         private Edge next;
         /// <value> Cạnh ảo mà người di tản có thể lựa chọn. </value>
         public Edge Next { get { return next; } }
+
         private double weightToS;
         /// <value> Trọng số của cạnh ảo tướng ứng. </value>
         public double WeightToS { get { return weightToS; } }
+        
         private Node stairNode;
         /// <value> Stair node tương ứng dùng để đi xuống tầng thấp hơn. </value>
         public Node StairNode { get { return stairNode; } }

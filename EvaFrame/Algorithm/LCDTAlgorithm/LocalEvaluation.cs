@@ -7,7 +7,7 @@ using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
 namespace EvaFrame.Algorithm.LCDTAlgorithm
 {
     /// <summary>
-    /// Class mô tả module Smart Guildance Agent trong thuật toán LCDT-GV, có nhiệm vụ tìm trọng số giữa các Stair Node trong một tầng.
+    /// Class mô tả chức năng LocalEvaluation của module Smart Guildance Agent trong thuật toán LCDT-GV, có nhiệm vụ tìm trọng số giữa các Stair Node trong một tầng.
     /// </summary>
     public class LocalEvaluation
     {

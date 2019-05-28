@@ -18,66 +18,49 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
         private List<Node> nodes;
         /// <value> Danh sách các Node của đồ thị.</value>
         public List<Node> Nodes { get { return nodes; } }
-        /// <summary>
-        /// Thêm một node chưa xuất hiện vào danh sách Node.
-        /// </summary>
-        /// <param name="node">
-        /// Một Node bất kì.
-        /// </param>
-        private void addNode(Node node)
-        {
-            if (nodes.Contains(node) == false) nodes.Add(node);
-        }
 
         /// <summary>
-        /// Khởi tạo Cross Graph.
+        /// Khởi tạo CrossGraph dựa trên một đối tượng tòa nhà.
         /// </summary>
-        /// <param name="building">
+        /// <param name="target">
         /// Thông số tòa nhà.
         /// </param>
-        public CrossGraph(Building building)
+        public CrossGraph(Building target)
         {
-            this.target = building;
+            this.target = target;
             this.nodes = new List<Node>();
         }
 
         /// <summary>
-        /// Xây dựng đồ thị.
+        /// Xây dựng các cạnh nối giữa các Stair Node giữa các tầng.
+        /// Hàm này cần được gọi sau khi đã cung cấp đủ các tầng thông qua hàm AddFloorFromLocal()
         /// </summary>
-        public void buildGraph()
+        public void ConnectFloors()
         {
             foreach (Floor floor in target.Floors)
             {
-                foreach (Indicator indicator in floor.Indicators)
-                {
-                    foreach (Corridor cor in indicator.Neighbors)
-                        if (cor.I1.IsStairNode == true && cor.I2.IsStairNode == true)
-                        {
-                            Node from = nodes.Find(node => node.CorresspodingIndicator == indicator);
-                            Node to = nodes.Find(node => node.CorresspodingIndicator == cor.To(indicator));
-                            Edge edge1 = new Edge(from, to, cor.LCDTWeight(), cor);
-                            Edge edge2 = new Edge(to, from, cor.LCDTWeight(), cor);
 
-                            int fromFloor = from.CorresspodingIndicator.getFloorNumber();
-                            int toFloor = to.CorresspodingIndicator.getFloorNumber();
-
-                            from.Adjacences.Add(edge1);
-                            to.Adjacences.Add(edge2);
-                        }
-                }
+                foreach (Corridor cor in floor.Stairways)
+                    {
+                        Node n1 = nodes.Find(node => node.CorresspodingIndicator == cor.I1);
+                        Node n2 = nodes.Find(node => node.CorresspodingIndicator == cor.To(cor.I2));
+                        Edge edge1 = new Edge(n1, n2, cor.LCDTWeight(), cor);
+                        Edge edge2 = new Edge(n2, n1, cor.LCDTWeight(), cor);
+                        n1.Adjacences.Add(edge1);
+                        n2.Adjacences.Add(edge2);
+                    }
             }
         }
 
         /// <summary>
-        /// Cập nhật lại đồ thị khi thêm 1 tầng mới.
+        /// Thêm thông tin về một tầng mới vào CrossGraph, dựa trên tính toán của <c>LocalEvaluation</c>.
         /// </summary>
-        /// <param name="weightInLocal">
+        /// <param name="localWeight">
         /// Trọng số của tầng mới thêm vào.
         /// </param>
-        public void updateGraph(Dictionary<PairNN, double> weightInLocal)
+        public void AddFloorFromLocal(Dictionary<PairNN, double> localWeight)
         {
-
-            foreach (KeyValuePair<PairNN, double> item in weightInLocal)
+            foreach (KeyValuePair<PairNN, double> item in localWeight)
             {
                 Node from = nodes.Find(node => node.CorresspodingIndicator == item.Key.First.CorresspodingIndicator);
                 if (from == null) from = new Node(item.Key.First.CorresspodingIndicator);
@@ -91,6 +74,17 @@ namespace EvaFrame.Algorithm.LCDTAlgorithm
                 from.Adjacences.Add(edge1);
                 to.Adjacences.Add(edge2);
             }
+        }
+
+        /// <summary>
+        /// Thêm một Node vào CrossGraph nếu như Node này chưa xuất hiện trong danh sách Node.
+        /// </summary>
+        /// <param name="node">
+        /// Một Node bất kì.
+        /// </param>
+        private void addNode(Node node)
+        {
+            if (nodes.Contains(node) == false) nodes.Add(node);
         }
     }
 }
