@@ -8,12 +8,9 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
     class Graph
     {
         private List<SubGraph> floorGraphs;
-
-        /// <summary>
-        /// Danh sách các <c>Subgraph</c> tương ứng với các <c>Floor</c>
-        /// trong <c>Building</c>
-        /// </summary>
-        /// <value>Read Only Value</value>
+        /// <value>
+        /// Danh sách các <c>Subgraph</c> tương ứng với các <c>Floor</c> trong <c>Building</c>. Giá trị read-only.
+        /// </value>
         public ReadOnlyCollection<SubGraph> FloorGraphs
         {
             get
@@ -23,11 +20,9 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
         }
 
         private List<Node> allStairs;
-
-        /// <summary>
-        /// Danh sách chứa tất cả các đỉnh stair trong tòa nhà.
-        /// </summary>
-        /// <value></value>
+        /// <value>
+        /// Danh sách chứa tất cả các Stair Node trong tòa nhà. Giá trị read-only.
+        /// </value>
         public ReadOnlyCollection<Node> AllStairs
         {
             get
@@ -35,12 +30,11 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
                 return allStairs.AsReadOnly();
             }
         }
-        private Node root;
 
-        /// <summary>
-        /// Đỉnh nguồn, đại diện cho phía bên ngoài tòa nhà.
-        /// </summary>
-        /// <value>Giá trị Read Only</value>
+        private Node root;
+        /// <value>
+        /// Đỉnh nguồn, đại diện cho phía bên ngoài tòa nhà. Giá trị read-only.
+        /// </value>
         public Node Root
         {
             get
@@ -50,9 +44,9 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
         }
 
         /// <summary>
-        /// Khởi tạo đồ thị tương ứng với <c>building</c>
+        /// Khởi tạo đồ thị tương ứng với <c>Building</c>.
         /// </summary>
-        /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị</param>
+        /// <param name="building">Tòa nhà nguồn khởi tạo cho đồ thị.</param>
         public Graph(Building building)
         {
             floorGraphs = new List<SubGraph>();
@@ -109,8 +103,7 @@ namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
         }
 
         /// <summary>
-        /// Trả lại thông tin về hướng chỉ của các <c> Indicator </c> cho
-        /// <c> building </c>
+        /// Trả lại thông tin về hướng chỉ của các <c>Indicator</c> cho <c>Building</c>.
         /// </summary>
         public void UpdateResultToBuilding()
         {

@@ -8,74 +8,58 @@ using EvaFrame.Utilities.WeightFunctions;
 namespace EvaFrame.Algorithm.PFAlgorithm.VirtualGraph
 {
     /// <summary>
-    /// Cạnh trong <c>VirtualGraph</c> biểu thị tương ứng cho <c>corridor</c> 
-    /// trong <c>building</c>
+    /// Class mô tả cạnh trong <c>VirtualGraph</c> tương ứng với một <c>corridor</c> trong <c>Building</c>.
     /// </summary>
     class Edge
     {
         private Corridor correspondingCorridor;
         /// <value>
-        /// <c>Corridor</c> trong <c>building</c> tương ứng với 
-        /// <c>Edge</c>, dùng trong quá trình trao đổi thông tin 
-        /// giữa <c>Graph</c> và <c>Building</c>.
+        /// <c>Corridor</c> trong <c>building</c> tương ứng với <c>Edge</c>.
+        /// Dùng trong quá trình trao đổi thông tin giữa <c>Graph</c> và <c>Building</c>.
         /// </value>
         public Corridor CorrespondingCorridor { get { return correspondingCorridor; } }
 
         private Node to;
-        /// <value>
-        /// 
-        /// </value>
+        /// <value>Đỉnh tới của cạnh.</value>
         public Node To { get { return to; } }
 
-        /// <summary>
-        /// Số người hiện tại đang ở <c>corridor</c> tương ứng
-        /// </summary>
-        /// <value>Giá trị read-only</value>
-        public int numberPeople
-        {
-            get
-            {
-                return (int)correspondingCorridor.Density;
-            }
-        }
+        /// <value>Số người hiện tại đang ở <c>Corridor</c> tương ứng. Giá trị read-only.</value>
+        public int numberPeople { get => (int)correspondingCorridor.Density; }
 
-        /// <summary>
-        /// Trọng số hiện tại của <c>corridor</c> tương ứng
-        /// </summary>
-        /// <value>Giá trị read-only</value>
+        /// <value>
+        /// Trọng số hiện tại của <c>corridor</c> tương ứng, sử dụng trong thuật toán PFAlgorithm. Giá trị read-only.
+        /// </value>
         public double weight
         {
             get
             {
-                return ContextFunction(correspondingCorridor.Trustiness,
-                                                correspondingCorridor.Density / correspondingCorridor.Capacity)
-                     * correspondingCorridor.Length;
+                return ContextFunction * correspondingCorridor.Length;
             }
         }
 
         /// <summary>
-        /// Hàm tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường
+        /// Giá trị tính toán sự ảnh hưởng của ngoại cảnh tới vận tốc trên đoạn đường.
         /// </summary>
-        /// <param name="trustness">chỉ số trustness của đoạn đường</param> 
-        /// <param name="density">mật độ người đi trên đoạn đường</param>
-        /// <returns>Chỉ số ảnh hưởng</returns>
-        private static double ContextFunction(double trustness, double density)
+        public double ContextFunction 
         {
-            double value = 1 / (trustness * (1.01 - density));
-            return value > 8 ? 8 : value;
+            get 
+            {
+                double trustness = correspondingCorridor.Trustiness;
+                double density = correspondingCorridor.Density / correspondingCorridor.Capacity;
+                double value = 1.0 / (trustness * (1.01 - density));
+                return value > 8 ? 8 : value;
+            }
         }
 
-        private static IWeigthFunction weightFunction = new LcdtFunction();
-
         /// <summary>
-        /// Khởi tạo một cạnh tương ứng với <c>corridor</c>
+        /// Khởi tạo một cạnh tương ứng với <c>corridor</c>.
         /// </summary>
-        /// <param name="corridor"><c>corridor</c> nguồn khởi tạo</param>
-        /// <param name="node">Đỉnh mà cạnh này chỉ đến</param>
+        /// <param name="corridor"><c>Corridor</c> nguồn khởi tạo.</param>
+        /// <param name="node">Đỉnh mà cạnh này chỉ đến.</param>
         public Edge(Corridor corridor, Node node)
         {
-            correspondingCorridor = corridor;
-            to = node;
+            this.correspondingCorridor = corridor;
+            this.to = node;
         }
     }
 }
