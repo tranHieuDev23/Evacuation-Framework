@@ -95,7 +95,7 @@ namespace EvaFrame.Simulator
         /// <returns>
         /// Thời gian để toàn bộ cư dân trong tòa nhà di tản hết (đơn vị s).
         /// </returns>
-        public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod, string dataFilepath)
+        public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod, string dataFilepath = "SimulationData.csv")
         {
             SimulationInitialize();
             return SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod, dataFilepath);
@@ -119,7 +119,7 @@ namespace EvaFrame.Simulator
         /// <returns>
         /// Đối tượng luồng đang chạy mô phỏng thuật toán.
         /// </returns>
-        public Thread RunSimulatorAsync(double situationUpdatePeriod, double algorithmUpdatePeriod, string dataFilepath)
+        public Thread RunSimulatorAsync(double situationUpdatePeriod, double algorithmUpdatePeriod, string dataFilepath = "SimulationData.csv")
         {
             SimulationInitialize();
             Thread simulationThread = new Thread(() => SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod, dataFilepath));
@@ -175,7 +175,7 @@ namespace EvaFrame.Simulator
                     dataList.Add(newData);
                     lastData = newData;
                 }
-                
+
                 if (target.Inhabitants.Count == 0)
                     break;
 
