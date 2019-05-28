@@ -44,7 +44,6 @@ namespace EvaFrame.Models.Building
         /// </value>
         double Density { get; set; }
 
-
         /// <value>
         /// Giá trị độ tin tưởng của hành lang. Throw <c>ArgumentOutOfRangeException</c> nếu như 
         /// được gán giá trị bằng một số ngoài khoảng [0, 1].
@@ -110,7 +109,7 @@ namespace EvaFrame.Models.Building
                 }
             }
 
-           public CorridorImpl(Indicator i1, Indicator i2, bool isStairWay, double length, double width, double density = 0, double trustiness = 1)
+            public CorridorImpl(Indicator i1, Indicator i2, bool isStairWay, double length, double width, double density = 0, double trustiness = 1)
             {
                 this.id = i1.Id + "-" + i2.Id;
                 if (isStairWay)

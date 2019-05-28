@@ -48,7 +48,7 @@ namespace EvaFrame.Models.Building
 
     public partial class Building
     {
-        private class IndicatorImpl: Indicator
+        private class IndicatorImpl : Indicator
         {
             private string id;
             public string Id { get { return id; } }

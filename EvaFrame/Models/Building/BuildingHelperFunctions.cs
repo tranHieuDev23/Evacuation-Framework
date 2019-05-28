@@ -26,7 +26,7 @@ namespace EvaFrame.Models.Building
             int numInd = int.Parse(sr.ReadLine());
             if (numInd == 0)
                 return indicatorList;
-            string[] coordinateData = sr.ReadLine().Split(','); 
+            string[] coordinateData = sr.ReadLine().Split(',');
             for (int i = 1; i <= numInd; i++)
             {
                 string[] data = coordinateData[i - 1].Split(';');
