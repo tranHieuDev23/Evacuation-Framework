@@ -31,6 +31,7 @@ namespace EvaFrame.Models.Building
 
         /// <value>
         /// Hành lang mà đèn báo này đang chỉ lối tới. 
+        /// Các thuật toán sẽ thực hiện thay đổi trên giá trị này nhằm đưa ra chỉ dẫn cho cư dân trong tòa nhà.
         /// Có giá trị bằng <c>null</c> nếu như đèn báo không chỉ đến đâu cả. 
         /// </value>
         /// <exception cref="System.InvalidOperationException">
