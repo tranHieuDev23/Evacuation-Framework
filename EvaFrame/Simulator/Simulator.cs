@@ -1,11 +1,9 @@
 using System;
-using System.IO;
-using System.Collections.Generic;
 using System.Threading;
-using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithm;
 using EvaFrame.Visualization;
+using EvaFrame.Utilities.Callbacks;
 
 namespace EvaFrame.Simulator
 {
@@ -14,44 +12,25 @@ namespace EvaFrame.Simulator
     /// </summary>
     public class Simulator
     {
-        private class SimulationData
-        {
-            public readonly double timeElapsed;
-            public readonly int remainingCount;
-            public readonly int nonEmptyCorridorCount;
-            public readonly double averageDensityOverCapacity;
-
-            public SimulationData(double timeElapsed, Building building)
-            {
-                this.timeElapsed = timeElapsed;
-                this.remainingCount = building.Inhabitants.Count;
-                this.nonEmptyCorridorCount = 0;
-                this.averageDensityOverCapacity = 0;
-
-                foreach (Floor f in building.Floors)
-                {
-                    foreach (Corridor c in f.Corridors)
-                        if (c.Density != 0)
-                        {
-                            this.nonEmptyCorridorCount++;
-                            this.averageDensityOverCapacity += c.Density / c.Capacity;
-                        }
-                    foreach (Corridor c in f.Stairways)
-                        if (c.Density != 0)
-                        {
-                            this.nonEmptyCorridorCount++;
-                            this.averageDensityOverCapacity += c.Density / c.Capacity;
-                        }
-                }
-
-                this.averageDensityOverCapacity /= this.nonEmptyCorridorCount;
-            }
-        }
-
         private Building target;
+        public Building Target { get => target; }
+
         private IAlgorithm algorithm;
+        public IAlgorithm Algorithm { get => algorithm; }
+
         private IHazard hazard;
+        public IHazard Hazard { get => hazard; }
+
         private IVisualization visualization;
+        public IVisualization Visualization { get => visualization; }
+
+        private double timeElapsed;
+        public double TimeElapsed { get => timeElapsed; }
+
+        private event EventHandler simulationStart;
+        private event EventHandler situationUpdated;
+        private event EventHandler algorithmUpdated;
+        private event EventHandler simulationEnd;
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>Simulator</c> để mô phỏng thuật toán.
@@ -80,6 +59,15 @@ namespace EvaFrame.Simulator
             this.visualization = visualization;
         }
 
+        public void AddCallback(ICallback callback)
+        {
+            callback.Initialize(this);
+            simulationStart += (object o, EventArgs args) => callback.OnSimulationStart();
+            situationUpdated += (object o, EventArgs args) => callback.OnSituationUpdate();
+            algorithmUpdated += (object o, EventArgs args) => callback.OnAlgorithmUpdate();
+            simulationEnd += (object o, EventArgs args) => callback.OnSimulationEnd();
+        }
+
         /// <summary>
         /// Chạy mô phỏng thuật toán cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
         /// </summary>
@@ -97,16 +85,13 @@ namespace EvaFrame.Simulator
         /// <param name="algorithmUpdatePeriod">
         /// Thời gian giữa hai lần chạy thuật toán liên tiếp (đơn vị ms).
         /// </param>
-        /// <param name="dataFilepath">
-        /// Địa chỉ lưu file dữ liệu về quá trình chạy của thuật toán sau khi kết thúc.
-        /// </param>
         /// <returns>
         /// Thời gian để toàn bộ cư dân trong tòa nhà di tản hết (đơn vị s).
         /// </returns>
-        public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod, string dataFilepath = "SimulationData.csv")
+        public double RunSimulator(long situationUpdatePeriod, long algorithmUpdatePeriod)
         {
             SimulationInitialize();
-            return SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod, dataFilepath);
+            return SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod);
         }
 
         /// <summary>
@@ -130,16 +115,13 @@ namespace EvaFrame.Simulator
         /// <param name="algorithmUpdatePeriod">
         /// Thời gian giữa hai lần chạy thuật toán liên tiếp (đơn vị s).
         /// </param>
-        /// <param name="dataFilepath">
-        /// Địa chỉ lưu file dữ liệu về quá trình chạy của thuật toán sau khi kết thúc.
-        /// </param>
         /// <returns>
         /// Đối tượng luồng đang chạy mô phỏng thuật toán.
         /// </returns>
-        public Thread RunSimulatorAsync(double situationUpdatePeriod, double algorithmUpdatePeriod, string dataFilepath = "SimulationData.csv")
+        public Thread RunSimulatorAsync(double situationUpdatePeriod, double algorithmUpdatePeriod)
         {
             SimulationInitialize();
-            Thread simulationThread = new Thread(() => SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod, dataFilepath));
+            Thread simulationThread = new Thread(() => SimulationLoop(situationUpdatePeriod, algorithmUpdatePeriod));
             simulationThread.IsBackground = true;
             simulationThread.Start();
             return simulationThread;
@@ -152,22 +134,21 @@ namespace EvaFrame.Simulator
             visualization.Initialize(target);
         }
 
-        private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod, string dataFilepath)
+        private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod)
         {
-            double result = 0;
+            timeElapsed = 0;
             double situationWait = 0;
             double algorithmWait = 0;
             DateTime simulationLast = DateTime.Now;
-            List<SimulationData> dataList = new List<SimulationData>();
-            SimulationData lastData = null;
 
+            simulationStart?.Invoke(this, EventArgs.Empty);
             while (true)
             {
                 DateTime now = DateTime.Now;
                 double deltaTime = Math.Min(now.Subtract(simulationLast).TotalSeconds,
                                             Math.Min(situationWait, algorithmWait));
 
-                result += deltaTime;
+                timeElapsed += deltaTime;
                 simulationLast = now;
 
                 situationWait -= deltaTime;
@@ -180,17 +161,16 @@ namespace EvaFrame.Simulator
                     target.MoveInhabitants(updatePeriod);
                     ThreadPool.QueueUserWorkItem(
                         new WaitCallback(
-                            (callback) => visualization.Update(result)
+                            (callback) => visualization.Update(timeElapsed)
                         )
                     );
+                    ThreadPool.QueueUserWorkItem(
+                        new WaitCallback(
+                            (callback) => situationUpdated?.Invoke(this, EventArgs.Empty)
+                        )
+                    );
+                    
                     situationWait = situationUpdatePeriod;
-                }
-
-                SimulationData newData = new SimulationData(result, target);
-                if (lastData == null || (lastData != null && lastData.remainingCount != newData.remainingCount))
-                {
-                    dataList.Add(newData);
-                    lastData = newData;
                 }
 
                 if (target.Inhabitants.Count == 0)
@@ -199,26 +179,18 @@ namespace EvaFrame.Simulator
                 if (algorithmWait <= 0)
                 {
                     algorithm.Run();
+                    ThreadPool.QueueUserWorkItem(
+                        new WaitCallback(
+                            (callback) => algorithmUpdated?.Invoke(this, EventArgs.Empty)
+                        )
+                    );
                     algorithmWait = algorithmUpdatePeriod;
                 }
             }
 
-            Console.WriteLine("Simulation finished! Time: " + result + "s");
-            printReport(dataList, dataFilepath);
-            return result;
-        }
-
-        private void printReport(List<SimulationData> dataList, string dataFilepath)
-        {
-            using (StreamWriter file = new StreamWriter(dataFilepath))
-            {
-                file.WriteLine("Time Elapsed,Remaining Count,Non-empty Corridor Count,Average Density Over Capacity");
-                foreach (SimulationData data in dataList)
-                    file.WriteLine(data.timeElapsed + ","
-                                   + data.remainingCount + ","
-                                   + data.nonEmptyCorridorCount + ","
-                                   + data.averageDensityOverCapacity);
-            }
+            Console.WriteLine("Simulation finished! Time: " + timeElapsed + "s");
+            simulationEnd?.Invoke(this, EventArgs.Empty);
+            return timeElapsed;
         }
     }
 }
