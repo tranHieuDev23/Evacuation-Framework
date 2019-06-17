@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using EvaFrame.Models.Building;
 using EvaFrame.Simulation;
 
@@ -70,16 +71,25 @@ namespace EvaFrame.Utilities.Callbacks
         {
             double timeElapsed = simulator.TimeElapsed;
             bool changeHappened = false;
+
+            Task[] calculationTasks = new Task[trackingFunction.Count];
             for (int i = 0; i < trackingFunction.Count; i++)
             {
-                IFunction f = trackingFunction[i];
-                double result = f.Calculate(simulator.Target);
-                if (result != lastResults[i])
+                int id = i;
+                calculationTasks[id] = Task.Run(() =>
                 {
-                    changeHappened = true;
-                    lastResults[i] = result;
-                }
+                    IFunction f = trackingFunction[id];
+                    double result = f.Calculate(simulator.Target);
+                    if (result != lastResults[id])
+                    {
+                        changeHappened = true;
+                        lastResults[id] = result;
+                    }
+                });
             }
+            foreach (Task t in calculationTasks)
+                t.Wait();
+
             if (!changeHappened)
                 return;
             results[timeElapsed] = lastResults.ToArray();
