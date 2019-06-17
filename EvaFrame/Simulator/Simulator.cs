@@ -13,18 +13,23 @@ namespace EvaFrame.Simulation
     public class Simulator
     {
         private Building target;
+        /// <value>Đối tượng tòa nhà đang được giả lập.</value>
         public Building Target { get => target; }
 
         private IAlgorithm algorithm;
+        /// <value>Thuật toán đang được giả lập.</value>
         public IAlgorithm Algorithm { get => algorithm; }
 
         private IHazard hazard;
+        /// <value>Thảm họa đang được giả lập.</value>
         public IHazard Hazard { get => hazard; }
 
         private IVisualization visualization;
+        /// <value>Đối tượng biểu diễn tình trạng tòa nhà được sử dụng.</value>
         public IVisualization Visualization { get => visualization; }
 
         private double timeElapsed;
+        /// <value>Quãng thời gian đã trôi qua, tính từ lúc bắt đầu quá trình giả lập.</value>
         public double TimeElapsed { get => timeElapsed; }
 
         private event EventHandler simulationStart;
@@ -57,8 +62,13 @@ namespace EvaFrame.Simulation
             this.algorithm = algorithm;
             this.hazard = hazard;
             this.visualization = visualization;
+            this.timeElapsed = 0;
         }
 
+        /// <summary>
+        /// Thêm một đối tượng <c>Callback</c> vào để theo dõi quá trình giả lập.
+        /// </summary>
+        /// <param name="callback"></param>
         public void AddCallback(ICallback callback)
         {
             callback.Initialize(this);
@@ -136,7 +146,6 @@ namespace EvaFrame.Simulation
 
         private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod)
         {
-            timeElapsed = 0;
             double situationWait = 0;
             double algorithmWait = 0;
             DateTime simulationLast = DateTime.Now;

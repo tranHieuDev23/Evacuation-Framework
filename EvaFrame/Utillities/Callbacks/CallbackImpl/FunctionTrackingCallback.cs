@@ -34,7 +34,6 @@ namespace EvaFrame.Utilities.Callbacks
         private Dictionary<double, double[]> results;
 
         private Simulator simulator;
-        public Simulator Simulator { get => simulator; }
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>FunctionTrackingCallback</c> mới.
@@ -69,7 +68,7 @@ namespace EvaFrame.Utilities.Callbacks
 
         void ICallback.OnSituationUpdate()
         {
-            double timeElapsed = Simulator.TimeElapsed;
+            double timeElapsed = simulator.TimeElapsed;
             bool changeHappened = false;
             for (int i = 0; i < trackingFunction.Count; i++)
             {
