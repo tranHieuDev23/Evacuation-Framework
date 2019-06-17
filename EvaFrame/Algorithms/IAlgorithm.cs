@@ -1,6 +1,6 @@
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm
+namespace EvaFrame.Algorithms
 {
     /// <summary>
     /// Interface cho các thuật toán tìm đường thoát hiểm trong mô hình LCDT.

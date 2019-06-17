@@ -1,10 +1,9 @@
 ﻿using System;
-using EvaFrame.Algorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 
-namespace EvaFrame.Algorithm.PFAlgorithm
+namespace EvaFrame.Algorithms.PFAlgorithm
 {
     /// <summary>
     /// Class thực hiện thuật toán LCDT-PF (Predict Future) - thuật toán cải tiến của nhóm.

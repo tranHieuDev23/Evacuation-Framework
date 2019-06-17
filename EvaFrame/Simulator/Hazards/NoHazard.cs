@@ -1,6 +1,6 @@
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Simulator.Hazards
+namespace EvaFrame.Simulation.Hazards
 {
     /// <summary>
     /// Class mô phỏng tình trạng không có thảm họa.

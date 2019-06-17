@@ -1,9 +1,9 @@
 using System;
 
-using EvaFrame.Algorithm.LCDTAlgorithm;
+using EvaFrame.Algorithms.LCDTAlgorithm;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Cạnh ảo của đồ thị ảo tưởng ứng với một Corridor trong Building.

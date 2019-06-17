@@ -1,6 +1,6 @@
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Simulator
+namespace EvaFrame.Simulation
 {
     /// <summary>
     /// Interface cho các đối tượng mô tả thảm họa trong tòa nhà.

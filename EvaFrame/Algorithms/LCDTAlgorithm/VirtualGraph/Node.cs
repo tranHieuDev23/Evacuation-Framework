@@ -4,7 +4,7 @@ using System;
 
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Các lựa chọn của đỉnh ảo.

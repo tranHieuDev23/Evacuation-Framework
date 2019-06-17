@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Đồ thị ảo tương ứng với tòa nhà trong thuật toán LCDT-GV.

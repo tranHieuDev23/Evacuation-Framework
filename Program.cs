@@ -1,11 +1,10 @@
-using System;
 using Avalonia;
 using Avalonia.Logging.Serilog;
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm;
-using EvaFrame.Algorithm.PFAlgorithm;
-using EvaFrame.Simulator;
-using EvaFrame.Simulator.Hazards;
+using EvaFrame.Algorithms;
+using EvaFrame.Algorithms.PFAlgorithm;
+using EvaFrame.Simulation;
+using EvaFrame.Simulation.Hazards;
 using EvaFrame.Visualization.WindowVisualization;
 using EvaFrame.Utilities.Callbacks;
 

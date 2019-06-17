@@ -1,4 +1,4 @@
-using EvaFrame.Simulator;
+using EvaFrame.Simulation;
 
 namespace EvaFrame.Utilities.Callbacks
 {
@@ -20,7 +20,7 @@ namespace EvaFrame.Utilities.Callbacks
         /// Người dùng có thể viết lại hàm này để mở rộng thêm chức năng trong quá trình khởi tạo.
         /// </remarks>
         /// <param name="simulator"></param>
-        void Initialize(Simulator.Simulator simulator);
+        void Initialize(Simulator simulator);
 
         /// <summary>
         /// Hàm được gọi khi quá trình giả lập bắt đầu.

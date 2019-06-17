@@ -6,7 +6,7 @@ using EvaFrame.Utilities;
 using EvaFrame.Utilities.WeightFunctions;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm.Utilities
+namespace EvaFrame.Algorithms.LCDTAlgorithm.Utilities
 {
     /// <summary>
     /// Dữ liệu tương ứng với đỉnh ảo dùng cho thuật toán Dijkstra.

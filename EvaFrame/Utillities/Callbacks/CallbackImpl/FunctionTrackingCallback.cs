@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using EvaFrame.Models.Building;
+using EvaFrame.Simulation;
 
 namespace EvaFrame.Utilities.Callbacks
 {
@@ -32,8 +33,8 @@ namespace EvaFrame.Utilities.Callbacks
         private List<double> lastResults;
         private Dictionary<double, double[]> results;
 
-        private Simulator.Simulator simulator;
-        public Simulator.Simulator Simulator { get => simulator; }
+        private Simulator simulator;
+        public Simulator Simulator { get => simulator; }
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>FunctionTrackingCallback</c> mới.
@@ -54,7 +55,7 @@ namespace EvaFrame.Utilities.Callbacks
         public void AddFunction(IFunction function) { trackingFunction.Add(function); }
 
 
-        void ICallback.Initialize(Simulator.Simulator simulator)
+        void ICallback.Initialize(Simulator simulator)
         {
             this.simulator = simulator;
         }

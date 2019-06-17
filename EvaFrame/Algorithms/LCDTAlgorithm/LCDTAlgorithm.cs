@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using EvaFrame.Algorithm;
+using EvaFrame.Algorithms;
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
+using EvaFrame.Algorithms.LCDTAlgorithm.Utilities;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Class thuật toán LCDT thuần túy, dựa trên paper A Scalable Approach for Dynamic Evacuation Routing in Large Smart Buildings.

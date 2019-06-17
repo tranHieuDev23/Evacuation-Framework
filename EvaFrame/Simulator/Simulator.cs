@@ -1,11 +1,11 @@
 using System;
 using System.Threading;
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm;
+using EvaFrame.Algorithms;
 using EvaFrame.Visualization;
 using EvaFrame.Utilities.Callbacks;
 
-namespace EvaFrame.Simulator
+namespace EvaFrame.Simulation
 {
     /// <summary>
     /// Class thực hiện mô phỏng thuật toán.
@@ -169,7 +169,7 @@ namespace EvaFrame.Simulator
                             (callback) => situationUpdated?.Invoke(this, EventArgs.Empty)
                         )
                     );
-                    
+
                     situationWait = situationUpdatePeriod;
                 }
 

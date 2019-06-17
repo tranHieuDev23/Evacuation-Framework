@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 
-using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
-using EvaFrame.Algorithm.LCDTAlgorithm;
+using EvaFrame.Algorithms.LCDTAlgorithm.Utilities;
+using EvaFrame.Algorithms.LCDTAlgorithm;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Class mô tả chức năng Global Evaluation của module Global Coordinator trong thuật toán LCDT-GV, có nhiệm vụ tìm khoảng cách từ các Stair node tới Exit node.

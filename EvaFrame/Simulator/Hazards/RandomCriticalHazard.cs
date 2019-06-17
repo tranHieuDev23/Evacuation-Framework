@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 
-namespace EvaFrame.Simulator.Hazards
+namespace EvaFrame.Simulation.Hazards
 {
     /// <summary>
     /// Tình trạng thảm họa xảy ra tại các khu vực trọng yếu (các hành lang nối với Stair Node).

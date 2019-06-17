@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
-using EvaFrame.Algorithm;
+using EvaFrame.Algorithms;
 using EvaFrame.Utilities;
 using EvaFrame.Utilities.WeightFunctions;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.PlainDijikstra
+namespace EvaFrame.Algorithms.PlainDijikstra
 {
     /// <summary>
     /// Thuật toán Dijikstra cổ điển, áp dụng lên mô hình tòa nhà thông minh để tìm đường đi vật lý ngắn nhất.

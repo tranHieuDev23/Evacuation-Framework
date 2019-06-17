@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
+using EvaFrame.Algorithms.LCDTAlgorithm.Utilities;
 using EvaFrame.Models.Building;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Đưa ra hướng đi an toàn và nhanh nhất có thể cho các Indicator.

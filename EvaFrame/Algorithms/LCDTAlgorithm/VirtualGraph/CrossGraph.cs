@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
+using EvaFrame.Algorithms.LCDTAlgorithm.Utilities;
 
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Đồ thị giữa các exit Node và Stair Node.

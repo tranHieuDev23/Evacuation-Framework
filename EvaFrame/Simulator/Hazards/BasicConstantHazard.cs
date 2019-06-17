@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
-using EvaFrame.Simulator;
 
-namespace EvaFrame.Simulator.Hazards
+namespace EvaFrame.Simulation.Hazards
 {
     /// <summary>
     /// Tình trạng thảm họa cơ bản: Một số hành lang ở tầng một sẽ bị cháy, và tình trạng thảm họa lan rộng lần hai sau khi thuật toán chạy được 30s.

@@ -1,8 +1,7 @@
-using System;
 using EvaFrame.Utilities;
 using EvaFrame.Algorithm.PFAlgorithm.VirtualGraph;
 
-namespace EvaFrame.Algorithm.PFAlgorithm
+namespace EvaFrame.Algorithms.PFAlgorithm
 {
     /// <summary>
     /// Class gồm các phương thức hỗ trợ để thực hiện <c>PFAlgorithm</c>.

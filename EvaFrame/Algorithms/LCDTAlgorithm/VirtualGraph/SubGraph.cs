@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-using EvaFrame.Algorithm.LCDTAlgorithm;
+using EvaFrame.Algorithms.LCDTAlgorithm;
 using EvaFrame.Models.Building;
-using EvaFrame.Algorithm.LCDTAlgorithm.Utilities;
+using EvaFrame.Algorithms.LCDTAlgorithm.Utilities;
 
-namespace EvaFrame.Algorithm.LCDTAlgorithm
+namespace EvaFrame.Algorithms.LCDTAlgorithm
 {
     /// <summary>
     /// Đồ thị con tương ứng với một tầng trong Building. 
