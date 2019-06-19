@@ -5,15 +5,19 @@ using EvaFrame.Utilities;
 namespace EvaFrame.Utilities
 {
     /// <summary>
-    /// Interface của hàm tính toán trọng số trên cạnh. Trọng số này có thể chỉ dựa trên độ dài vật lý của cạnh (thuật toán Dijikstra cơ bản),
-    /// hoặc sử dụng một công thức phức tạp hơn dựa vào các thông số khác như khả năng thông qua, số lượng người trên cạnh, vân vân.
+    /// Interface của hàm tính toán trọng số trên cạnh.
     /// </summary>
+    /// <remarks>
+    /// Trọng số này có thể chỉ dựa trên độ dài vật lý của cạnh (thuật toán Dijikstra cơ bản),
+    /// hoặc sử dụng một công thức phức tạp hơn dựa vào các thông số khác như khả năng thông qua, 
+    /// số lượng người trên cạnh, vân vân.
+    /// </remarks>
     public interface IWeigthFunction
     {
         /// <summary>
         /// Tính toán trọng số trên một cạnh cụ thể.
         /// </summary>
-        /// <param name="corridor">Cạnh cần tính trọng số</param>
+        /// <param name="corridor">Cạnh cần tính trọng số.</param>
         /// <returns>Trọng số của cạnh.</returns>
         double CalculateWeight(Corridor corridor);
     }
@@ -38,6 +42,7 @@ namespace EvaFrame.Utilities
         {
             double IWeigthFunction.CalculateWeight(Corridor corridor)
             {
+                if (corridor.Density >= 0.6 * corridor.Capacity) return 1e7;
                 return corridor.Length / (corridor.Trustiness * (Math.Max(corridor.Capacity - corridor.Density, 0) + 1));
             }
         }
