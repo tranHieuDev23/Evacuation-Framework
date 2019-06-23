@@ -167,7 +167,7 @@ namespace EvaFrame.Simulation
 
                     onSituationUpdatedTasks.Add(Task.Run(() => visualization.Update(timeElapsed)));
                     foreach (ICallback c in callbacks)
-                        onSituationUpdatedTasks.Add(Task.Run(c.OnSituationUpdate));
+                        onSituationUpdatedTasks.Add(Task.Run(c.OnSituationUpdated));
 
                     situationWait = situationUpdatePeriod;
                 }
@@ -184,7 +184,7 @@ namespace EvaFrame.Simulation
                     algorithm.Run();
 
                     foreach (ICallback c in callbacks)
-                        onAlgorithmUpdatedTasks.Add(Task.Run(c.OnAlgorithmUpdate));
+                        onAlgorithmUpdatedTasks.Add(Task.Run(c.OnAlgorithmUpdated));
 
                     algorithmWait = algorithmUpdatePeriod;
                 }

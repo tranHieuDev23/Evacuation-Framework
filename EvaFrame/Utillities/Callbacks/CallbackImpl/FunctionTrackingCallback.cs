@@ -67,7 +67,7 @@ namespace EvaFrame.Utilities.Callbacks
             results[0.0] = lastResults.ToArray();
         }
 
-        void ICallback.OnSituationUpdate()
+        void ICallback.OnSituationUpdated()
         {
             double timeElapsed = simulator.TimeElapsed;
             bool changeHappened = false;
@@ -95,7 +95,7 @@ namespace EvaFrame.Utilities.Callbacks
             results[timeElapsed] = lastResults.ToArray();
         }
 
-        void ICallback.OnAlgorithmUpdate() { }
+        void ICallback.OnAlgorithmUpdated() { }
 
         void ICallback.OnSimulationEnd()
         {
