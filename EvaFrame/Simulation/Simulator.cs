@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using EvaFrame.Models.Building;
 using EvaFrame.Algorithms;
 using EvaFrame.Visualization;
@@ -32,10 +34,7 @@ namespace EvaFrame.Simulation
         /// <value>Quãng thời gian đã trôi qua, tính từ lúc bắt đầu quá trình giả lập.</value>
         public double TimeElapsed { get => timeElapsed; }
 
-        private event EventHandler simulationStart;
-        private event EventHandler situationUpdated;
-        private event EventHandler algorithmUpdated;
-        private event EventHandler simulationEnd;
+        private List<ICallback> callbacks;
 
         /// <summary>
         /// Khởi tạo một đối tượng <c>Simulator</c> để mô phỏng thuật toán.
@@ -62,6 +61,7 @@ namespace EvaFrame.Simulation
             this.algorithm = algorithm;
             this.hazard = hazard;
             this.visualization = visualization;
+            this.callbacks = new List<ICallback>();
             this.timeElapsed = 0;
         }
 
@@ -72,22 +72,15 @@ namespace EvaFrame.Simulation
         public void AddCallback(ICallback callback)
         {
             callback.Initialize(this);
-            simulationStart += (object o, EventArgs args) => callback.OnSimulationStart();
-            situationUpdated += (object o, EventArgs args) => callback.OnSituationUpdate();
-            algorithmUpdated += (object o, EventArgs args) => callback.OnAlgorithmUpdate();
-            simulationEnd += (object o, EventArgs args) => callback.OnSimulationEnd();
+            callbacks.Add(callback);
         }
 
         /// <summary>
         /// Chạy mô phỏng thuật toán cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được 
-        /// lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv. Dữ liệu này bao gồm các thời 
-        /// điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng 
-        /// cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
-        /// </para>
+        /// Do hàm này có tính blocking, người dùng có thể sử dụng hàm này khi không cần tới luồng
+        /// chính của chương trình vào việc khác (ví dụ như khi giao diện command line).
         /// </remarks>
         /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị ms).
@@ -108,16 +101,8 @@ namespace EvaFrame.Simulation
         /// Khởi tạo một luồng mới và chạy mô phỏng thuật toán trên luồng này cho tới khi toàn bộ cư dân trong tòa nhà đã di tản hết.
         /// </summary>
         /// <remarks>
-        /// <para>
         /// Do hàm này non-blocking, người dùng có thể sử dụng khi cần dùng tới luồng chính
         /// của chương trình vào việc khác (ví dụ như khi sử dụng giao diện đồ họa).
-        /// </para>
-        /// <para>
-        /// Sau khi mô phỏng thuật toán kết thúc, dữ liệu về quá trình chạy của thuật toán sẽ được 
-        /// lưu tại file tại địa chỉ đã chỉ định dưới định dạng csv. Dữ liệu này bao gồm các thời 
-        /// điểm số lượng cư dân còn lại trong tòa nhà thay đổi, số lượng cư dân còn lại, số lượng 
-        /// cạnh có người và tỉ số Density/Capacity trung bình trên các cạnh đó.
-        /// </para>
         /// </remarks>
         /// <param name="situationUpdatePeriod">
         /// Thời gian giữa hai lần cập nhật tình trạng thảm họa và vị trí của cư dân (đơn vị s).
@@ -146,11 +131,18 @@ namespace EvaFrame.Simulation
 
         private double SimulationLoop(double situationUpdatePeriod, double algorithmUpdatePeriod)
         {
+            List<Task> onStartTasks = new List<Task>();
+            foreach (ICallback c in callbacks)
+                onStartTasks.Add(Task.Run(c.OnSimulationStart));
+            foreach (Task t in onStartTasks)
+                t.Wait();
+            onStartTasks.Clear();
+
             double situationWait = 0;
             double algorithmWait = 0;
             DateTime simulationLast = DateTime.Now;
-
-            simulationStart?.Invoke(this, EventArgs.Empty);
+            List<Task> onSituationUpdatedTasks = new List<Task>();
+            List<Task> onAlgorithmUpdatedTasks = new List<Task>();
             while (true)
             {
                 DateTime now = DateTime.Now;
@@ -165,19 +157,17 @@ namespace EvaFrame.Simulation
 
                 if (situationWait <= 0)
                 {
+                    foreach (Task t in onSituationUpdatedTasks)
+                        t.Wait();
+                    onSituationUpdatedTasks.Clear();
+
                     double updatePeriod = situationUpdatePeriod;
                     hazard.Update(updatePeriod);
                     target.MoveInhabitants(updatePeriod);
-                    ThreadPool.QueueUserWorkItem(
-                        new WaitCallback(
-                            (callback) => visualization.Update(timeElapsed)
-                        )
-                    );
-                    ThreadPool.QueueUserWorkItem(
-                        new WaitCallback(
-                            (callback) => situationUpdated?.Invoke(this, EventArgs.Empty)
-                        )
-                    );
+
+                    onSituationUpdatedTasks.Add(Task.Run(() => visualization.Update(timeElapsed)));
+                    foreach (ICallback c in callbacks)
+                        onSituationUpdatedTasks.Add(Task.Run(c.OnSituationUpdate));
 
                     situationWait = situationUpdatePeriod;
                 }
@@ -187,18 +177,33 @@ namespace EvaFrame.Simulation
 
                 if (algorithmWait <= 0)
                 {
+                    foreach (Task t in onAlgorithmUpdatedTasks)
+                        t.Wait();
+                    onAlgorithmUpdatedTasks.Clear();
+
                     algorithm.Run();
-                    ThreadPool.QueueUserWorkItem(
-                        new WaitCallback(
-                            (callback) => algorithmUpdated?.Invoke(this, EventArgs.Empty)
-                        )
-                    );
+
+                    foreach (ICallback c in callbacks)
+                        onAlgorithmUpdatedTasks.Add(Task.Run(c.OnAlgorithmUpdate));
+
                     algorithmWait = algorithmUpdatePeriod;
                 }
             }
 
+            foreach (Task t in onSituationUpdatedTasks)
+                t.Wait();
+            onSituationUpdatedTasks.Clear();
+            foreach (Task t in onAlgorithmUpdatedTasks)
+                t.Wait();
+            onAlgorithmUpdatedTasks.Clear();
+
+            List<Task> onEndTasks = new List<Task>();
+            foreach (ICallback c in callbacks)
+                onEndTasks.Add(Task.Run(c.OnSimulationEnd));
+            foreach (Task t in onEndTasks)
+                t.Wait();
+
             Console.WriteLine("Simulation finished! Time: " + timeElapsed + "s");
-            simulationEnd?.Invoke(this, EventArgs.Empty);
             return timeElapsed;
         }
     }
