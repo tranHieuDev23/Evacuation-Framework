@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using EvaFrame.Models.Building;
+using EvaFrame.Utilities.WeightFunctions;
 
 namespace EvaFrame.Utilities
 {

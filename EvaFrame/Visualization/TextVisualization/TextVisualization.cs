@@ -4,7 +4,6 @@ using EvaFrame.Models;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 using EvaFrame.Utilities.WeightFunctions;
-using EvaFrame.Visualization;
 
 namespace EvaFrame.Visualization.TextVisualization
 {

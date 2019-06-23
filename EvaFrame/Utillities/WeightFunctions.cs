@@ -2,7 +2,7 @@ using System;
 using EvaFrame.Models.Building;
 using EvaFrame.Utilities;
 
-namespace EvaFrame.Utilities
+namespace EvaFrame.Utilities.WeightFunctions
 {
     /// <summary>
     /// Interface của hàm tính toán trọng số trên cạnh.
@@ -22,29 +22,28 @@ namespace EvaFrame.Utilities
         double CalculateWeight(Corridor corridor);
     }
 
-    namespace WeightFunctions
-    {
-        /// <summary>
-        /// Class hàm trọng số của hành lang đơn giản, chỉ trả về độ dài vật lý của hành lang.
-        /// </summary>
-        public class LengthOnlyFunction : IWeigthFunction
-        {
-            double IWeigthFunction.CalculateWeight(Corridor corridor)
-            {
-                return corridor.Length;
-            }
-        }
 
-        /// <summary>
-        /// Class hàm trọng số của hành lang dựa theo mô hình LCDT, dựa trên paper A Scalable Approach for Dynamic Evacuation Routing in Large Smart Buildings.
-        /// </summary>
-        public class LcdtFunction : IWeigthFunction
+    /// <summary>
+    /// Class hàm trọng số của hành lang đơn giản, chỉ trả về độ dài vật lý của hành lang.
+    /// </summary>
+    public class LengthOnlyFunction : IWeigthFunction
+    {
+        double IWeigthFunction.CalculateWeight(Corridor corridor)
         {
-            double IWeigthFunction.CalculateWeight(Corridor corridor)
-            {
-                if (corridor.Density >= 0.6 * corridor.Capacity) return 1e7;
-                return corridor.Length / (corridor.Trustiness * (Math.Max(corridor.Capacity - corridor.Density, 0) + 1));
-            }
+            return corridor.Length;
         }
     }
+
+    /// <summary>
+    /// Class hàm trọng số của hành lang dựa theo mô hình LCDT, dựa trên paper A Scalable Approach for Dynamic Evacuation Routing in Large Smart Buildings.
+    /// </summary>
+    public class LcdtFunction : IWeigthFunction
+    {
+        double IWeigthFunction.CalculateWeight(Corridor corridor)
+        {
+            if (corridor.Density >= 0.6 * corridor.Capacity) return 1e7;
+            return corridor.Length / (corridor.Trustiness * (Math.Max(corridor.Capacity - corridor.Density, 0) + 1));
+        }
+    }
+
 }
