@@ -85,7 +85,7 @@ EvaFrame cung cấp 4 module tương ứng với 4 yếu tố cần thiết tron
 - ```Visualization```: Công cụ mô tả lại tình trạng của tòa nhà, giúp cho lập trình viên nắm rõ được tình hình đang diễn ra và đưa ra các thiết kế hợp lý.
 - ```Simulator```: Chương trình mô phỏng thảm họa (được mô tả dưới dạng các đối tượng ```Hazards```) và quá trình chạy thuật toán trên tòa nhà.
 
-Ngoài các module trên, EvaFrame còn có một module thứ 5 là ```Utilities```, cung cấp các class và interface phụ trở phổ biến dùng trong thuật toán, ví dụ như interface ```IWeightFunction``` - hàm tính trọng số của hành lang.
+Ngoài các module trên, EvaFrame còn có một module thứ 5 là ```Utilities```, cung cấp các class và interface phụ trở phổ biến dùng trong quá trình chạy giả lập, ví dụ như interface ```IWeightFunction``` - hàm tính trọng số của hành lang hay interface ```Callback``` - class bao gồm các hàm gọi được trong quá trình chạy giả lập.
 
 5 module này được tổ chức trong các namespace đặt tên tương ứng. Người dùng có thể sử dụng các tính năng được cài đặt sẵn có trong chương trình, hoặc mở rộng theo nhu cầu của bản thân.
 
@@ -166,6 +166,29 @@ Namespace ```EvaFrame.Simulator``` cung cấp các class và interface liên qua
 - ```NoHazard```: Không có thảm họa xảy ra.
 - ```RandomNonCriticalHazard```: Thảm họa xảy ra ngẫu nhiên ở các khu vực không trọng yếu (các điểm không phải cầu thang hay lối thoát). Bằng cách cố định hạt giống ngẫu nhiên, người dùng có thể cố định cùng một tình trạng thảm họa để kiểm tra nhiều lần.
 - ```RandomCriticalHazard```: Thảm họa xảy ra ngẫu nhiên ở các khu vực trọng yếu (xung quanh cầu thang). Có thể cố định hạt giống ngẫu nhiên tương tự như ```RandomNonCriticalHazard```.
+
+### ```Callback```
+
+```Callback``` là một interface trong namespace ```EvaFrame.Utilities```, cung cấp giao diện bao gồm 4 hàm có thể được gọi bởi ```Simulator``` trong quá trình chạy giả lập:
+
+- ```OnSimulationStart()```: Hàm được gọi một lần khi quá trình giả lập bắt đầu.
+- ```OnSituationUpdated()```: Hàm được gọi mỗi khi tình trạng thảm họa trong tòa nhà được cập nhật. Thích hợp để theo dõi các giá trị liên quan tới tòa nhà và cư dân trong tòa nhà.
+- ```OnAlgorithmUpdated()```: Hàm được gọi mỗi khi thuật toán tìm đường chạy xong một lần. Thích hợp để theo dõi các giá trị liên quan tới thuật toán.
+- ```OnSimulationEnd()```: Hàm được gọi một lần khi quá trình giả lập kết thúc.
+
+```Simulator``` sẽ chạy các hàm này song song với tiến trình giả lập và đảm bảo không xảy ra data race tại thời điểm gọi hàm. Một ứng dụng cụ thể của việc sử dụng ```Callback``` là class ```FunctionTrackingCallback``` - Một class dùng để theo dõi các hàm số tình trạng trong tòa nhà, và lưu kết quả dưới dạng file CSV.
+
+Cách sử dụng ```Callback```:
+
+```
+FunctionTrackingCallback fcb = new FunctionTrackingCallback("SimulationData.csv");
+fcb.AddFunction(new RemainingCountFunction());
+fcb.AddFunction(new NonEmptyCorridorCountFunction());
+fcb.AddFunction(new AverageDensityOverCapacityFunction());
+
+Simulator simulator = new Simulator(target, algorithm, hazard, visualization);
+simulator.AddCallback(fcb);
+```
 
 ### Todo
 
